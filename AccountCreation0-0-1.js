@@ -22,7 +22,8 @@ var userAccountDict = {
     'email' : '',
     'dateCreated' : 0,
     'referralCode' : '',
-    'isAdmin' : false
+    'isAdmin' : false,
+    'availableBalance' : 0
 }
 
 
