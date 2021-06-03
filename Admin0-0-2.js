@@ -15,6 +15,8 @@ const atcButton = document.getElementById('atc-button')
 const atcCloseModal = document.getElementById('atc-close-modal')
 atcButton.addEventListener('click', () => {
     setInitialState()
+    atcModal.style.display = "flex"
+
     $("#atc-modal").fadeIn();
 })
 atcCloseModal.addEventListener('click', () => {
@@ -37,8 +39,6 @@ var atcCategoryAccessory = document.getElementById('atc-category-accessories')
 var atcBrandXbox = document.getElementById('atc-brand-xbox')
 var atcBrandPlaystation = document.getElementById('atc-brand-playstation')
 var atcBrandNintendo = document.getElementById('atc-brand-nintendo')
-
-atcModal.style.visibility = "hidden"
 
 var atcCategory,
     atcBrand,
