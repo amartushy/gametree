@@ -38,6 +38,8 @@ var atcBrandXbox = document.getElementById('atc-brand-xbox')
 var atcBrandPlaystation = document.getElementById('atc-brand-playstation')
 var atcBrandNintendo = document.getElementById('atc-brand-nintendo')
 
+atcModal.style.visibility = "hidden"
+
 var atcCategory,
     atcBrand,
     atcProductTitle,
