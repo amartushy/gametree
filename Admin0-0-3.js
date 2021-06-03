@@ -16,7 +16,6 @@ const atcCloseModal = document.getElementById('atc-close-modal')
 atcButton.addEventListener('click', () => {
     setInitialState()
     atcModal.style.display = "flex"
-
     $("#atc-modal").fadeIn();
 })
 atcCloseModal.addEventListener('click', () => {
@@ -149,6 +148,7 @@ const consoleGPU = document.getElementById('console-gpu')
 const consoleMemory = document.getElementById('console-memory')
 const consoleMedia = document.getElementById('console-media')
 const consoleVideoOutput = document.getElementById('console-video-output')
+const consoleResolution = document.getElementById('console-resolution')
 const consoleNetwork = document.getElementById('console-network')
 const consoleAudio = document.getElementById('console-audio')
 const consoleControllers = document.getElementById('console-controllers')
@@ -157,7 +157,7 @@ const consoleSubmitATC = document.getElementById('console-submit-atc')
 
 let consoleFormFields = [consoleTitle, consoleStorageOptions, consoleColors, consoleReleaseDate,
     consolePurchasePrice, consoleManufacturer, consoleCPU, consoleGPU, consoleMemory, consoleMedia, 
-    consoleVideoOutput, consoleNetwork, consoleAudio, consoleControllers, consoleCodeName]
+    consoleVideoOutput, consoleResolution, consoleNetwork, consoleAudio, consoleControllers, consoleCodeName]
 
 function setConsoleFormInitialState() {
     consoleFormFields.forEach(element => {element.value = "", element.placeholder = ""})
@@ -208,6 +208,7 @@ consoleSubmitATC.addEventListener('click', () => {
             'GPU' : consoleGPU.value,
             'Network' : consoleNetwork.value,
             'Video Output' : consoleVideoOutput.value,
+            'Resolution' : consoleResolution.value,
             'Manufacturer' : consoleManufacturer.value,
             'Media' : consoleMedia.value,
             'Memory' : consoleMemory.value,
