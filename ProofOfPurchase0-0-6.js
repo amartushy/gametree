@@ -34,7 +34,7 @@ window.onload = function() {
             database.collection("users").doc(user.uid).get().then((doc) => {
                 if(doc.data().isAdmin) {
                     popObject.purchaser = user.uid
-                    purchaserNameString = doc.data.name
+                    purchaserNameString = doc.data().name
                     availableBalance = doc.data().availableBalance
                 } else {
                     location.href = 'https://thegametree.io'
