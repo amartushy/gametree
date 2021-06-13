@@ -59,6 +59,7 @@ submitPopForm.addEventListener("click", () => {
 	console.log(purchaseID)
 
     let purchaseID = createID(8)
+    console.log(purchaseID)
     var promises = []
 
     //Update global purchases collection
