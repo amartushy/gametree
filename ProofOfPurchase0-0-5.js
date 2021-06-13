@@ -56,7 +56,6 @@ submitPopForm.addEventListener("click", () => {
     popObject.time = Date.now()
     popObject.purchaserName = purchaserNameString
     console.log(popObject)
-	console.log(purchaseID)
 
     let purchaseID = createID(8)
     console.log(purchaseID)
