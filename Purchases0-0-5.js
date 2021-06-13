@@ -274,3 +274,12 @@ function updatePurchaseStatus(ID, status) {
 	
 	showPurchases()
 }
+
+//Helper Functions
+
+function formatDate(epochDate) {
+	var date = new Date(epochDate)
+	var formattedDate = date.toLocaleDateString("en-US", {month:'long', day: 'numeric',
+			hour: 'numeric', minute:'numeric'})
+	return formattedDate
+}
