@@ -41,7 +41,7 @@ function inTransitPurchases() {
 	showPurchases()
 	
 	allTab.classtitle = 'purchase-filter'
-	inTransitTab.classtitle = 'purchase-filter'
+	inTransitTab.classtitle = 'purchase-filters-selected'
 	processingTab.classtitle = 'purchase-filter'
 	listedTab.classtitle = 'purchase-filter'
 	repairsTab.classtitle = 'purchase-filter'
@@ -54,7 +54,7 @@ function processingPurchases() {
 	
 	allTab.classtitle = 'purchase-filter'
 	inTransitTab.classtitle = 'purchase-filter'
-	processingTab.classtitle = 'purchase-filter'
+	processingTab.classtitle = 'purchase-filters-selected'
 	listedTab.classtitle = 'purchase-filter'
 	repairsTab.classtitle = 'purchase-filter'
 	soldTab.classtitle = 'purchase-filter'
@@ -67,7 +67,7 @@ function listedPurchases() {
 	allTab.classtitle = 'purchase-filter'
 	inTransitTab.classtitle = 'purchase-filter'
 	processingTab.classtitle = 'purchase-filter'
-	listedTab.classtitle = 'purchase-filter'
+	listedTab.classtitle = 'purchase-filters-selected'
 	repairsTab.classtitle = 'purchase-filter'
 	soldTab.classtitle = 'purchase-filter'
 }
@@ -80,7 +80,7 @@ function repairsPurchases() {
 	inTransitTab.classtitle = 'purchase-filter'
 	processingTab.classtitle = 'purchase-filter'
 	listedTab.classtitle = 'purchase-filter'
-	repairsTab.classtitle = 'purchase-filter'
+	repairsTab.classtitle = 'purchase-filters-selected'
 	soldTab.classtitle = 'purchase-filter'
 }
 
@@ -93,5 +93,5 @@ function soldPurchases() {
 	processingTab.classtitle = 'purchase-filter'
 	listedTab.classtitle = 'purchase-filter'
 	repairsTab.classtitle = 'purchase-filter'
-	soldTab.classtitle = 'purchase-filter'
+	soldTab.classtitle = 'purchase-filters-selected'
 }
