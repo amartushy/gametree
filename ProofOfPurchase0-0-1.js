@@ -1,6 +1,7 @@
 var database = firebase.firestore();
 var mapsAPIKey = "AIzaSyA_IJmCMbq_9m_5ybA9zkyNR8ff-J7JuGw"
 var availableBalance
+var purchaserNameString
 
 const itemTitleField = document.getElementById("item-title-field")
 const purchasePriceField = document.getElementById("purchase-price-field")
@@ -18,6 +19,8 @@ var popObject = {
     "photos":[],
     "time":"",
     "purchaser":"",
+    "purchaserName":"",
+    "status" : "in transit",
     "location":{}
 }
 
@@ -31,6 +34,7 @@ window.onload = function() {
             database.collection("users").doc(user.uid).get().then((doc) => {
                 if(doc.data().isAdmin) {
                     popObject.purchaser = user.uid
+                    purchaserNameString = doc.data.name
                     availableBalance = doc.data().availableBalance
                 } else {
                     location.href = 'https://thegametree.io'
@@ -50,6 +54,7 @@ submitPopForm.addEventListener("click", () => {
     popObject.seller = sellerNameField.value
     popObject.notes = notesField.value
     popObject.time = Date.now()
+    popObject.purchaserName = purchaserNameString
     console.log(popObject)
 
     let purchaseID = createID(8)
