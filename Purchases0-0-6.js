@@ -2,7 +2,7 @@
 var database = firebase.firestore()
 
 //FILTERS
-var tabFilters = ["in transit", "processing", "listed", "repairs", "sold"]
+var tabFilters = ["in transit", "processing", "listed", "needs repair", "sold"]
 var purchaseFilters = "All prices"
 
 //______________________
@@ -73,7 +73,7 @@ function listedPurchases() {
 }
 
 function repairsPurchases() {
-	tabFilters = ["repairs"]
+	tabFilters = ["needs repair"]
 	showPurchases()
 	
 	allTab.className = 'purchase-filter'
@@ -274,6 +274,7 @@ function updatePurchaseStatus(ID, status) {
 	
 	showPurchases()
 }
+
 
 //Helper Functions
 
