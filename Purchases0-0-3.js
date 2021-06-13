@@ -29,7 +29,7 @@ function allPurchases() {
 	showPurchases()
 	
 	allTab.className = 'purchase-filters-selected'
-	inTransitTab.className = 'purchase-filters'
+	inTransitTab.className = 'purchase-filter'
 	processingTab.className = 'purchase-filter'
 	listedTab.className = 'purchase-filter'
 	repairsTab.className = 'purchase-filter'
