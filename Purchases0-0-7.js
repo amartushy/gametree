@@ -25,7 +25,7 @@ soldTab.addEventListener('click', soldPurchases)
 
 //Tab filter functions
 function allPurchases() {
-	tabFilters = ["in transit", "processing", "listed", "repairs", "sold"]
+	tabFilters = ["in transit", "processing", "listed", "needs repair", "sold"]
 	showPurchases()
 	
 	allTab.className = 'purchase-filters-selected'
