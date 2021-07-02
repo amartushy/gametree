@@ -209,3 +209,22 @@ scsPaymentCash.addEventListener('click', () => {
 })
 
 
+
+function loadSaleConfirmationScreen() {
+    sellObject["productData"] = productData
+
+    $('#product-section').fadeOut(function() {$('#scs-section').fadeIn()})
+    scsBottomDiv.style.display = 'none'
+
+    scsImageContainer.removeChild(scsImageContainer.firstChild)
+    let newSCSImage = document.createElement('img')
+    newSCSImage.setAttribute('class', 'scs-image')
+    newSCSImage.src = productData.productImage
+    scsImageContainer.appendChild(newSCSImage)
+
+    scsHeader.innerHTML = productData.productTitle 
+    scsValue.innerHTML = '$' + productData.purchasePrice
+    changePaymentClasses()
+}
+
+
