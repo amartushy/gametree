@@ -179,7 +179,12 @@ function changePaymentClasses(targetElement) {
 
 
 //Sale Confirmation Screen (SCS) Functions
-var sellObject
+var sellObject = {
+    'productData' : {},
+    'paymentType' : '',
+    'location' : {},
+    'pickupTime' : ''
+}
 
 const scsTopDiv = document.getElementById('scs-top-div')
 const scsBottomDiv = document.getElementById('scs-bottom-div')
@@ -209,9 +214,8 @@ scsPaymentCash.addEventListener('click', () => {
 })
 
 
-
 function loadSaleConfirmationScreen() {
-    sellObject["productData"] = productData
+    sellObject.productData = productData
 
     $('#product-section').fadeOut(function() {$('#scs-section').fadeIn()})
     scsBottomDiv.style.display = 'none'
