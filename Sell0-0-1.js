@@ -179,7 +179,7 @@ function changePaymentClasses(targetElement) {
 
 
 //Sale Confirmation Screen (SCS) Functions
-var paymentType
+var sellObject
 
 const scsTopDiv = document.getElementById('scs-top-div')
 const scsBottomDiv = document.getElementById('scs-bottom-div')
@@ -192,24 +192,26 @@ const scsPaymentPaypal = document.getElementById('scs-payment-paypal')
 const scsPaymentCash = document.getElementById('scs-payment-cash')
 
 scsPaymentZelle.addEventListener('click', () => {
-    paymentType = 'zelle'
+    sellObject.paymentType = 'zelle'
     changePaymentClasses(scsPaymentZelle)
 })
 scsPaymentVenmo.addEventListener('click', () => {
-    paymentType = 'venmo'
-    changePaymentClasses(scsPaymentZelle)
+    sellObject.paymentType = 'venmo'
+    changePaymentClasses(scsPaymentVenmo)
 })
 scsPaymentPaypal.addEventListener('click', () => {
-    paymentType = 'paypal'
-    changePaymentClasses(scsPaymentZelle)
+    sellObject.paymentType = 'paypal'
+    changePaymentClasses(scsPaymentPaypal)
 })
 scsPaymentCash.addEventListener('click', () => {
-    paymentType = 'cash'
-    changePaymentClasses(scsPaymentZelle)
+    sellObject.paymentType = 'cash'
+    changePaymentClasses(scsPaymentCash)
 })
 
 
 function loadSaleConfirmationScreen() {
+    sellObject.productData = productData
+
     $('#product-section').fadeOut(function() {$('#scs-section').fadeIn()})
     scsBottomDiv.style.display = 'none'
 
