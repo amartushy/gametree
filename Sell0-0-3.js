@@ -209,9 +209,11 @@ scsPaymentCash.addEventListener('click', () => {
 })
 
 
-function loadSaleConfirmationScreen() {
-    sellObject.productData = productData
 
+function loadSaleConfirmationScreen() {
+    //sellObject.productData = productData
+    console.log(productData)
+    
     $('#product-section').fadeOut(function() {$('#scs-section').fadeIn()})
     scsBottomDiv.style.display = 'none'
 
