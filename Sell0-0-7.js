@@ -183,7 +183,10 @@ var sellObject = {
     'productData' : {},
     'paymentType' : '',
     'location' : {},
-    'pickupTime' : ''
+    'pickupTime' : '',
+    'contactPhoneNumber' : '',
+    'contactName' : '',
+    'additionalNotes' : ''
 }
 
 const scsTopDiv = document.getElementById('scs-top-div')
