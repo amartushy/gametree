@@ -173,7 +173,8 @@ function buildPurchaseBlock(ID, index, title, buyer, date, price, status) {
 	var purchaseBlock = document.createElement('div')
 	purchaseBlock.setAttribute('id', ID)
 	//TODO: Onclick purchaseBlock.setAttribute('onClick', 'showTutorModal("' + ID + '")')
-	
+	purchaseBlock.setAttribute('onClick', 'buildInfoBlock("' + ID + '")')
+
 	//Alternate background colors from gray to black based on if index is even or odd
 	if (index % 2 == 0) {
 		purchaseBlock.setAttribute('class', 'purchase-block-gray')
@@ -283,4 +284,8 @@ function formatDate(epochDate) {
 	var formattedDate = date.toLocaleDateString("en-US", {month:'long', day: 'numeric',
 			hour: 'numeric', minute:'numeric'})
 	return formattedDate
+}
+
+function insertAfter(newNode, existingNode) {
+    existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling);
 }
