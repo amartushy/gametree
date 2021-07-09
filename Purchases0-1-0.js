@@ -285,7 +285,3 @@ function formatDate(epochDate) {
 			hour: 'numeric', minute:'numeric'})
 	return formattedDate
 }
-
-function insertAfter(newNode, existingNode) {
-    existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling);
-}
