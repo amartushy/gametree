@@ -274,9 +274,13 @@ function buildPurchaseBlock(ID, index, title, buyer, date, price, status) {
         if(document.getElementById(`purchase-bottom-${ID}`)) {
             $(`#purchase-bottom-${ID}`).toggle()
             let chevron = document.getElementById(`purchase-details-chevron-${ID}`)
-            console.log(document.getElementById(`purchase-bottom-${ID}`).style.display)
+            if(document.getElementById(`purchase-bottom-${ID}`).style.display == 'none') {
+                chevron.setAttribute('class', 'purchase-chevron')
+            } else {
+                chevron.setAttribute('class', 'purchase-chevron-down')
+            }
         } else {
-            buildInfoBlock(ID)
+            buildInfoBlock(ID, index)
         }
     })
 
