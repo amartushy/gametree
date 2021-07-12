@@ -273,6 +273,8 @@ function buildPurchaseBlock(ID, index, title, buyer, date, price, status) {
     purchaseDetails.addEventListener('click', () => {
         if(document.getElementById(`purchase-bottom-${ID}`)) {
             $(`#purchase-bottom-${ID}`).toggle()
+            let chevron = document.getElementById(`purchase-details-chevron-${ID}`)
+            chevron.get.style.transform = 'rotate(90deg)'
         } else {
             buildInfoBlock(ID)
         }
@@ -280,13 +282,14 @@ function buildPurchaseBlock(ID, index, title, buyer, date, price, status) {
 
     var purchaseDetailsText = document.createElement('div')
 	purchaseDetailsText.setAttribute('class', 'purchase-details-text')
+    purchaseDetailsText.innerHTML = 'Details'
 	purchaseDetails.appendChild(purchaseDetailsText)
 
     var purchaseDetailsChevron = document.createElement('div')
 	purchaseDetailsChevron.setAttribute('class', 'purchase-chevron')
+    purchaseDetailsChevron.innerHTML = ''
+    purchaseDetailsChevron.setAttribute('id', `purchase-details-chevron-${ID}`)
 	purchaseDetails.appendChild(purchaseDetailsChevron)
-
-
 }
 
 
