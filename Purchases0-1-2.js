@@ -280,7 +280,7 @@ function buildPurchaseBlock(ID, index, title, buyer, date, price, status) {
 
     var purchaseDetailsText = document.createElement('div')
 	purchaseDetailsText.setAttribute('class', 'purchase-details-text')
-	purchaseDetails.appendChild(purchaseDetails)
+	purchaseDetails.appendChild(purchaseDetailsText)
 
     var purchaseDetailsChevron = document.createElement('div')
 	purchaseDetailsChevron.setAttribute('class', 'purchase-chevron')
