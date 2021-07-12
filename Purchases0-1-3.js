@@ -274,7 +274,7 @@ function buildPurchaseBlock(ID, index, title, buyer, date, price, status) {
         if(document.getElementById(`purchase-bottom-${ID}`)) {
             $(`#purchase-bottom-${ID}`).toggle()
             let chevron = document.getElementById(`purchase-details-chevron-${ID}`)
-            chevron.get.style.transform = 'rotate(90deg)'
+            console.log(document.getElementById(`purchase-bottom-${ID}`).style.display)
         } else {
             buildInfoBlock(ID)
         }
