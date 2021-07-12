@@ -172,8 +172,6 @@ function buildPurchaseBlock(ID, index, title, buyer, date, price, status) {
 	//Main block that holds all applicant elements
 	var purchaseBlock = document.createElement('div')
 	purchaseBlock.setAttribute('id', ID)
-	//TODO: Onclick purchaseBlock.setAttribute('onClick', 'showTutorModal("' + ID + '")')
-	purchaseBlock.setAttribute('onClick', 'buildInfoBlock("' + ID + '")')
 
 	//Alternate background colors from gray to black based on if index is even or odd
 	if (index % 2 == 0) {
@@ -267,6 +265,28 @@ function buildPurchaseBlock(ID, index, title, buyer, date, price, status) {
 	purchaseActionSold.setAttribute('onClick', `updatePurchaseStatus("${ID}", "sold")`)
 	purchaseActionSold.innerHTML = ''
 	purchaseActions.appendChild(purchaseActionSold)
+
+    //Details Block
+    var purchaseDetails = document.createElement('div')
+	purchaseDetails.setAttribute('class', 'purchase-details-div')
+	purchaseBlock.appendChild(purchaseDetails)
+    purchaseDetails.addEventListener('click', () => {
+        if(document.getElementById(`purchase-bottom-${ID}`)) {
+            $(`#purchase-bottom-${ID}`).toggle()
+        } else {
+            buildInfoBlock(ID)
+        }
+    })
+
+    var purchaseDetailsText = document.createElement('div')
+	purchaseDetailsText.setAttribute('class', 'purchase-details-text')
+	purchaseDetails.appendChild(purchaseDetails)
+
+    var purchaseDetailsChevron = document.createElement('div')
+	purchaseDetailsChevron.setAttribute('class', 'purchase-chevron')
+	purchaseDetails.appendChild(purchaseDetailsChevron)
+
+
 }
 
 
