@@ -300,13 +300,6 @@ function setATCGameInitialState() {
     atcGameOverviewLower.style.display = 'none'
     atcGameSpecificationsLower.style.display = 'none'
     atcGameSpecificationsChevron.setAttribute('class', 'atc-game-chevron')
-    
-    buildATCGameFeatures()
-
-    buildATCGameIncluded()
-
-    gameID = createID(8)
-    console.log(`Game ID: ${gameID}`)
 
     //Create Image
     while(atcGameImageContainer.firstChild) {
@@ -368,4 +361,12 @@ function setATCGameInitialState() {
             'UPC' : ''
         }
     }
+
+
+    buildATCGameFeatures()
+
+    buildATCGameIncluded()
+
+    gameID = createID(8)
+    console.log(`Game ID: ${gameID}`)
 }
