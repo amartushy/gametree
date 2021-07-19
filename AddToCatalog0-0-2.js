@@ -1,3 +1,4 @@
+
 var atcGameObject = {
     'productImage' : '',
     'purchasePrices' : {
@@ -135,6 +136,7 @@ atcAddFeatureSubmit.addEventListener('click', () => {
     atcGameObject.overview.features.push(atcAddGameDescriptionField.value)
     buildATCGameFeatures()
     $('#atc-add-feature-form').fadeOut()
+    atcAddGameDescriptionField.value = ''
 })
 
 function buildATCGameFeatures() {
@@ -169,9 +171,10 @@ atcAddIncludedCancel.addEventListener('click', () => {
     $('#atc-add-included-form').fadeOut()
 })
 atcAddIncludedSubmit.addEventListener('click', () => {
-    atcGameObject.overview.features.push(atcAddGameIncludedField.value)
+    atcGameObject.overview.included.push(atcAddGameIncludedField.value)
     buildATCGameIncluded()
     $('#atc-add-included-form').fadeOut()
+    atcAddGameIncludedField.value = ''
 })
 
 function buildATCGameIncluded() {
