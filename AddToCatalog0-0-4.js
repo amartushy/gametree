@@ -49,7 +49,6 @@ var atcGameObject = {
 }
 
 //ATC Game Top Container
-let atcGameImageContainer = document.getElementById('atc-game-image-container')
 //TODO: add image to database and update object
 
 let atcGamePurchaseAcceptable = document.getElementById('atc-game-purchase-acceptable')
