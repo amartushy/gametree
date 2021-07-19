@@ -189,19 +189,11 @@ let atcGameButton = document.getElementById('atc-game-button')
 
 atcGameButton.addEventListener('click', () => {
     setATCGameInitialState()
-    $('#atc-game-modal').fadeIn()
+    $('#atc-game-modal').fadeIn().css('display', 'flex');
 })
 atcCloseGameModal.addEventListener('click', () => {
     $('#atc-game-modal').fadeOut()
 })
-
-
-
-
-
-
-
-
 
 
 
@@ -324,7 +316,6 @@ function setATCGameInitialState() {
     newImage.setAttribute('class', 'atc-game-image')
     atcGameImageContainer.appendChild(newImage)
     newImage.addEventListener('click', () => {
-        console.log('clicked')
         hiddenGameImageUploadButton.click();
     })
 
@@ -378,23 +369,3 @@ function setATCGameInitialState() {
         }
     }
 }
-
-
-let submitATCGame = document.getElementById('submit-atc-game')
-submitATCGame.addEventListener('click', () => {
-    console.log(atcGameObject)
-
-    database.collection("catalog").doc(gameID).set(atcGameObject)
-    .then(function() {
-        $("#admin-processing-text-container").hide()
-        $("#admin-confirmation-container").show()
-        adminProductID.innerHTML = gameID
-        adminProductTitleText.innerHTML = atcGameObject['general']['productName']
-
-    }).catch(function(error) {
-        $("#atc-completion-div").hide(() => {
-            $("#atc-div").show()
-        })
-        alert(error.message)
-    })
-})
