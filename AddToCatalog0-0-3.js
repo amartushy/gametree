@@ -1,4 +1,5 @@
-
+//Globals
+var gameID
 var atcGameObject = {
     'productImage' : '',
     'purchasePrices' : {
