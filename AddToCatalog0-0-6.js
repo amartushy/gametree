@@ -1,6 +1,8 @@
 //Globals
 var gameID
 var atcGameObject = {
+    'category' : 'game',
+    'brand' : '',
     'productImage' : '',
     'purchasePrices' : {
         'usedAcceptable' :  0,
@@ -304,6 +306,7 @@ atcGameGeneralProduct.addEventListener('blur', () => {
 })
 atcGameGeneralBrand.addEventListener('blur', () => {
     atcGameObject['general']['brand'] = atcGameGeneralBrand.value
+    atcGameObject['brand'] = atcGameGeneralBrand.value
 })
 atcGameGeneralPublisher.addEventListener('blur', () => {
     atcGameObject['general']['publisher'] = atcGameGeneralPublisher.value
