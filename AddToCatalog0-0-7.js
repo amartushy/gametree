@@ -1,54 +1,6 @@
 //Globals
 var gameID
-var atcGameObject = {
-    'category' : 'game',
-    'brand' : '',
-    'productImage' : '',
-    'purchasePrices' : {
-        'usedAcceptable' :  0,
-        'usedGood' : 0,
-        'usedGreat' : 0,
-        'usedFantastic' : 0,
-        'new' : 0,
-    },
-    'salePrices' : {
-        'usedAcceptable' :  0,
-        'usedGood' : 0,
-        'usedGreat' : 0,
-        'usedFantastic' : 0,
-        'new' : 0,
-    },
-    'overview' : {
-        'description' : '',
-        'features' : [],
-        'included' : [],
-    },
-    'keySpecs' : {
-        'edition' : '',
-        'ESRBRating' : '',
-        'ESRBDescriptors' : '',
-        'compatiblePlatforms' : '',
-        'softwareFormat' : '',
-    },
-    'general' : {
-        'productName' : '',
-        'brand' : '',
-        'publisher' : '',
-        'developer' : '',
-        'modelNumber' : '',
-        'releaseDate' : '',
-    },
-    'gameDetails' : {
-        'genre' : '',
-        'gameFranchise' : '',
-        'gameSeries' : '',
-        'enhancedFor' : '',
-        'multiplayer' : '',
-    },
-    'other' : {
-        'UPC' : ''
-    }
-}
+var atcGameObject = {}
 
 //ATC Game Top Container______________________________________________________________________________________________
 //Product Image Upload - GAME
@@ -87,7 +39,6 @@ async function uploadAndCreateGameImage() {
         hiddenGameImageUploadButton.click();
     })
 }
-//TODO: add image to database and update object
 
 let atcGamePurchaseAcceptable = document.getElementById('atc-game-purchase-acceptable')
 let atcGamePurchaseGood = document.getElementById('atc-game-purchase-good')
@@ -376,4 +327,74 @@ function setATCGameInitialState() {
         console.log('clicked')
         hiddenGameImageUploadButton.click();
     })
+
+    atcGameObject = {
+        'category' : 'game',
+        'brand' : '',
+        'productImage' : '',
+        'purchasePrices' : {
+            'usedAcceptable' :  0,
+            'usedGood' : 0,
+            'usedGreat' : 0,
+            'usedFantastic' : 0,
+            'new' : 0,
+        },
+        'salePrices' : {
+            'usedAcceptable' :  0,
+            'usedGood' : 0,
+            'usedGreat' : 0,
+            'usedFantastic' : 0,
+            'new' : 0,
+        },
+        'overview' : {
+            'description' : '',
+            'features' : [],
+            'included' : [],
+        },
+        'keySpecs' : {
+            'edition' : '',
+            'ESRBRating' : '',
+            'ESRBDescriptors' : '',
+            'compatiblePlatforms' : '',
+            'softwareFormat' : '',
+        },
+        'general' : {
+            'productName' : '',
+            'brand' : '',
+            'publisher' : '',
+            'developer' : '',
+            'modelNumber' : '',
+            'releaseDate' : '',
+        },
+        'gameDetails' : {
+            'genre' : '',
+            'gameFranchise' : '',
+            'gameSeries' : '',
+            'enhancedFor' : '',
+            'multiplayer' : '',
+        },
+        'other' : {
+            'UPC' : ''
+        }
+    }
 }
+
+
+let submitATCGame = document.getElementById('submit-atc-game')
+submitATCGame.addEventListener('click', () => {
+    console.log(atcGameObject)
+
+    database.collection("catalog").doc(gameID).set(atcGameObject)
+    .then(function() {
+        $("#admin-processing-text-container").hide()
+        $("#admin-confirmation-container").show()
+        adminProductID.innerHTML = gameID
+        adminProductTitleText.innerHTML = atcGameObject['general']['productName']
+
+    }).catch(function(error) {
+        $("#atc-completion-div").hide(() => {
+            $("#atc-div").show()
+        })
+        alert(error.message)
+    })
+})
