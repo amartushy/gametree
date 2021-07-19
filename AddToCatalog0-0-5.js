@@ -48,7 +48,43 @@ var atcGameObject = {
     }
 }
 
-//ATC Game Top Container
+//ATC Game Top Container______________________________________________________________________________________________
+//Product Image Upload - GAME
+let atcGameImageContainer = document.getElementById('atc-game-image-container')
+var hiddenGameImageUploadButton = document.getElementById('hidden-game-image-upload-button')
+
+hiddenGameImageUploadButton.addEventListener('change', uploadGameImage);
+
+var selectedGameImageFile;
+function uploadGameImage(e) {
+    selectedGameImageFile = e.target.files[0];
+    handleGameImageUpload()
+}
+
+async function handleGameImageUpload() {
+	const uploadTask = await storageRef.child(`productImages/${gameID}`).put(selectedGameImageFile);
+	uploadAndCreateGameImage()
+}
+
+//final submit button and update firebase
+async function uploadAndCreateGameImage() {
+	await storageRef.child('/productImages/'+gameID)
+		.getDownloadURL()
+		.then(function(url) { atcGameObject['productImage'] = url.toString() })
+
+    //Create Image
+    while(atcGameImageContainer.firstChild) {
+        atcGameImageContainer.removeChild(atcGameImageContainer.firstChild)
+    }
+    var newImage = document.createElement('img')
+    newImage.setAttribute('class', 'atc-game-image')
+    newImage.src = atcGameObject['productImage']
+    atcGameImageContainer.appendChild(newImage)
+    newImage.addEventListener('click', () => {
+        console.log('clicked')
+        hiddenGameImageUploadButton.click();
+    })
+}
 //TODO: add image to database and update object
 
 let atcGamePurchaseAcceptable = document.getElementById('atc-game-purchase-acceptable')
@@ -205,3 +241,136 @@ atcGameButton.addEventListener('click', () => {
 atcCloseGameModal.addEventListener('click', () => {
     $('#atc-game-modal').fadeOut()
 })
+
+
+
+
+
+
+
+
+
+
+
+
+//Specifications__________________________________________________________________________________________________________________
+let atcGameSpecificationsHeader = document.getElementById('atc-game-specifications-header')
+let atcGameSpecificationsLower = document.getElementById('atc-game-specifications-lower')
+let atcGameSpecificationsChevron = document.getElementById('atc-game-specifications-chevron')
+
+atcGameSpecificationsHeader.setAttribute('onClick', 'displaySpecificationsLower()')
+function displaySpecificationsLower() {
+    $('#atc-game-specifications-lower').toggle()
+
+    if(atcGameOverviewLower.style.display == 'none') {
+        atcGameSpecificationsChevron.setAttribute('class', 'atc-game-chevron-down')
+    } else {
+        atcGameSpecificationsChevron.setAttribute('class', 'atc-game-chevron')
+    }
+}
+
+//Specifications
+let atcGameSpecsEdition = document.getElementById('game-specs-edition')
+let atcGameSpecsRating = document.getElementById('game-specs-rating')
+let atcGameSpecsDescriptors = document.getElementById('game-specs-descriptors')
+let atcGameSpecsPlatform = document.getElementById('game-specs-platform')
+let atcGameSpecsFormat = document.getElementById('game-specs-format')
+
+atcGameSpecsEdition.addEventListener('blur', () => {
+    atcGameObject['keySpecs']['edition'] = atcGameSpecsEdition.value
+})
+atcGameSpecsRating.addEventListener('blur', () => {
+    atcGameObject['keySpecs']['ESRBRating'] = atcGameSpecsRating.value
+})
+atcGameSpecsDescriptors.addEventListener('blur', () => {
+    atcGameObject['keySpecs']['ESRBDescriptors'] = atcGameSpecsDescriptors.value
+})
+atcGameSpecsPlatform.addEventListener('blur', () => {
+    atcGameObject['keySpecs']['compatiblePlatforms'] = atcGameSpecsPlatform.value
+})
+atcGameSpecsFormat.addEventListener('blur', () => {
+    atcGameObject['keySpecs']['softwareFormat'] = atcGameSpecsFormat.value
+})
+
+//General
+let atcGameGeneralProduct = document.getElementById('game-general-product')
+let atcGameGeneralBrand = document.getElementById('game-general-brand')
+let atcGameGeneralPublisher = document.getElementById('game-general-publisher')
+let atcGameGeneralDeveloper = document.getElementById('game-general-developer')
+let atcGameGeneralModel = document.getElementById('game-general-model')
+let atcGameGeneralRelease = document.getElementById('game-general-release')
+atcGameGeneralProduct.addEventListener('blur', () => {
+    atcGameObject['general']['productName'] = atcGameGeneralProduct.value
+})
+atcGameGeneralBrand.addEventListener('blur', () => {
+    atcGameObject['general']['brand'] = atcGameGeneralBrand.value
+})
+atcGameGeneralPublisher.addEventListener('blur', () => {
+    atcGameObject['general']['publisher'] = atcGameGeneralPublisher.value
+})
+atcGameGeneralDeveloper.addEventListener('blur', () => {
+    atcGameObject['general']['developer'] = atcGameGeneralDeveloper.value
+})
+atcGameGeneralModel.addEventListener('blur', () => {
+    atcGameObject['general']['modelNumber'] = atcGameGeneralModel.value
+})
+atcGameGeneralRelease.addEventListener('blur', () => {
+    atcGameObject['general']['releaseDate'] = atcGameGeneralRelease.value
+})
+
+//Details
+let atcGameDetailsGenre = document.getElementById('game-details-genre')
+let atcGameDetailsFranchise = document.getElementById('game-details-franchise')
+let atcGameDetailsSeries = document.getElementById('game-details-series')
+let atcGameDetailsEnhanced = document.getElementById('game-details-enhanced')
+let atcGameDetailsMultiplayer = document.getElementById('game-details-multiplayer')
+atcGameDetailsGenre.addEventListener('blur', () => {
+    atcGameObject['gameDetails']['genre'] = atcGameDetailsGenre.value
+})
+atcGameDetailsFranchise.addEventListener('blur', () => {
+    atcGameObject['gameDetails']['gameFranchise'] = atcGameDetailsFranchise.value
+})
+atcGameDetailsSeries.addEventListener('blur', () => {
+    atcGameObject['gameDetails']['gameSeries'] = atcGameDetailsSeries.value
+})
+atcGameDetailsEnhanced.addEventListener('blur', () => {
+    atcGameObject['gameDetails']['enhancedFor'] = atcGameDetailsEnhanced.value
+})
+atcGameDetailsMultiplayer.addEventListener('blur', () => {
+    atcGameObject['gameDetails']['multiplayer'] = atcGameDetailsMultiplayer.value
+})
+
+//Other
+let atcGameOtherUPC = document.getElementById('game-other-upc')
+atcGameOtherUPC.addEventListener('blur', () => {
+    atcGameObject['other']['UPC'] = atcGameOtherUPC.value
+})
+
+
+
+
+
+function setATCGameInitialState() {
+    atcGameOverviewLower.style.display = 'none'
+    atcGameSpecificationsLower.style.display = 'none'
+    atcGameSpecificationsChevron.setAttribute('class', 'atc-game-chevron')
+    
+    buildATCGameFeatures()
+
+    buildATCGameIncluded()
+
+    gameID = createID(8)
+    console.log(`Game ID: ${gameID}`)
+
+    //Create Image
+    while(atcGameImageContainer.firstChild) {
+        atcGameImageContainer.removeChild(atcGameImageContainer.firstChild)
+    }
+    var newImage = document.createElement('img')
+    newImage.setAttribute('class', 'atc-game-image')
+    atcGameImageContainer.appendChild(newImage)
+    newImage.addEventListener('click', () => {
+        console.log('clicked')
+        hiddenGameImageUploadButton.click();
+    })
+}
