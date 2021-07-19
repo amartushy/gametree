@@ -56,44 +56,44 @@ let atcGamePurchaseGreat = document.getElementById('atc-game-purchase-great')
 let atcGamePurchaseFantastic = document.getElementById('atc-game-purchase-fantastic')
 let atcGamePurchaseNew = document.getElementById('atc-game-purchase-new')
 
+atcGamePurchaseAcceptable.addEventListener('blur', () => {
+    atcGameObject['purchasePrices']['usedAcceptable'] = atcGamePurchaseAcceptable.value
+})
+atcGamePurchaseGood.addEventListener('blur', () => {
+    atcGameObject['purchasePrices']['usedGood'] = atcGamePurchaseGood.value
+})
+atcGamePurchaseGreat.addEventListener('blur', () => {
+    atcGameObject['purchasePrices']['usedGreat'] = atcGamePurchaseGreat.value
+})
+atcGamePurchaseFantastic.addEventListener('blur', () => {
+    atcGameObject['purchasePrices']['usedFantastic'] = atcGamePurchaseFantastic.value
+})
+atcGamePurchaseNew.addEventListener('blur', () => {
+    atcGameObject['purchasePrices']['new'] = atcGamePurchaseNew.value
+})
+
+
 let atcGameSaleAcceptable = document.getElementById('atc-game-sale-acceptable')
 let atcGameSaleGood = document.getElementById('atc-game-sale-good')
 let atcGameSaleGreat = document.getElementById('atc-game-sale-great')
 let atcGameSaleFantastic = document.getElementById('atc-game-sale-fantastic')
 let atcGameSaleNew = document.getElementById('atc-game-sale-new')
 
-atcGamePurchaseAcceptable.onBlur = () => {
-    atcGameObject.purchasePrices.usedAcceptable = atcGamePurchaseAcceptable.value
-}
-atcGamePurchaseGood.onBlur = () => {
-    atcGameObject.purchasePrices.usedGood = atcGamePurchaseGood.value
-}
-atcGamePurchaseGreat.onBlur = () => {
-    atcGameObject.purchasePrices.usedGreat = atcGamePurchaseGreat.value
-}
-atcGamePurchaseFantastic.onBlur = () => {
-    atcGameObject.purchasePrices.usedFantastic = atcGamePurchaseFantastic.value
-}
-atcGamePurchaseNew.onBlur = () => {
-    atcGameObject.purchasePrices.new = atcGamePurchaseNew.value
-}
-
-
-atcGameSaleAcceptable.onBlur = () => {
-    atcGameObject.salePrices.usedAcceptable = atcGameSaleAcceptable.value
-}
-atcGameSaleGood.onBlur = () => {
-    atcGameObject.salePrices.usedGood = atcGameSaleGood.value
-}
-atcGameSaleGreat.onBlur = () => {
-    atcGameObject.salePrices.usedGreat = atcGameSaleGreat.value
-}
-atcGameSaleFantastic.onBlur = () => {
-    atcGameObject.salePrices.usedFantastic = atcGameSaleFantastic.value
-}
-atcGameSaleNew.onBlur = () => {
-    atcGameObject.salePrices.new = atcGameSaleNew.value
-}
+atcGameSaleAcceptable.addEventListener('blur', () => {
+    atcGameObject['salePrices']['usedAcceptable'] = atcGameSaleAcceptable.value
+})
+atcGameSaleGood.addEventListener('blur', () => {
+    atcGameObject['salePrices']['usedGood'] = atcGameSaleGood.value
+})
+atcGameSaleGreat.addEventListener('blur', () => {
+    atcGameObject['salePrices']['usedGreat'] = atcGameSaleGreat.value
+})
+atcGameSaleFantastic.addEventListener('blur', () => {
+    atcGameObject['salePrices']['usedFantastic'] = atcGameSaleFantastic.value
+})
+atcGameSaleNew.addEventListener('blur', () => {
+    atcGameObject['salePrices']['new'] = atcGameSaleNew.value
+})
 
 
 //Overview elements
@@ -113,9 +113,9 @@ function displayOverviewLower() {
 }
 
 let atcDescriptionTextInput = document.getElementById('atc-description-text-input')
-atcDescriptionTextInput.onblur = () => {
-    atcGameObject.overview.description = atcDescriptionTextInput.value
-}
+atcDescriptionTextInput.addEventListener('blur', () => {
+    atcGameObject['overview']['description'] = atcDescriptionTextInput.value
+})
 
 let atcAddFeatureButton = document.getElementById('atc-add-feature-button')
 let atcFeaturesContainer = document.getElementById('atc-features-container')
