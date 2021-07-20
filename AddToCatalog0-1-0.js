@@ -232,6 +232,7 @@ atcGameSpecsDescriptors.addEventListener('blur', () => {
 })
 atcGameSpecsPlatform.addEventListener('blur', () => {
     atcGameObject['keySpecs']['compatiblePlatforms'] = atcGameSpecsPlatform.value
+    atcGameObject['brand'] = atcGameSpecsPlatform.value
 })
 atcGameSpecsFormat.addEventListener('blur', () => {
     atcGameObject['keySpecs']['softwareFormat'] = atcGameSpecsFormat.value
@@ -249,7 +250,6 @@ atcGameGeneralProduct.addEventListener('blur', () => {
 })
 atcGameGeneralBrand.addEventListener('blur', () => {
     atcGameObject['general']['brand'] = atcGameGeneralBrand.value
-    atcGameObject['brand'] = atcGameGeneralBrand.value
 })
 atcGameGeneralPublisher.addEventListener('blur', () => {
     atcGameObject['general']['publisher'] = atcGameGeneralPublisher.value
