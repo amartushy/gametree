@@ -42,8 +42,7 @@ async function uploadAndCreateGameImage() {
 
 let atcGamePurchaseAcceptable = document.getElementById('atc-game-purchase-acceptable')
 let atcGamePurchaseGood = document.getElementById('atc-game-purchase-good')
-let atcGamePurchaseGreat = document.getElementById('atc-game-purchase-great')
-let atcGamePurchaseFantastic = document.getElementById('atc-game-purchase-fantastic')
+let atcGamePurchaseExcellent = document.getElementById('atc-game-purchase-excellent')
 let atcGamePurchaseNew = document.getElementById('atc-game-purchase-new')
 
 atcGamePurchaseAcceptable.addEventListener('blur', () => {
@@ -52,11 +51,8 @@ atcGamePurchaseAcceptable.addEventListener('blur', () => {
 atcGamePurchaseGood.addEventListener('blur', () => {
     atcGameObject['purchasePrices']['usedGood'] = atcGamePurchaseGood.value
 })
-atcGamePurchaseGreat.addEventListener('blur', () => {
-    atcGameObject['purchasePrices']['usedGreat'] = atcGamePurchaseGreat.value
-})
-atcGamePurchaseFantastic.addEventListener('blur', () => {
-    atcGameObject['purchasePrices']['usedFantastic'] = atcGamePurchaseFantastic.value
+atcGamePurchaseExcellent.addEventListener('blur', () => {
+    atcGameObject['purchasePrices']['usedFantastic'] = atcGamePurchaseExcellent.value
 })
 atcGamePurchaseNew.addEventListener('blur', () => {
     atcGameObject['purchasePrices']['new'] = atcGamePurchaseNew.value
@@ -65,8 +61,7 @@ atcGamePurchaseNew.addEventListener('blur', () => {
 
 let atcGameSaleAcceptable = document.getElementById('atc-game-sale-acceptable')
 let atcGameSaleGood = document.getElementById('atc-game-sale-good')
-let atcGameSaleGreat = document.getElementById('atc-game-sale-great')
-let atcGameSaleFantastic = document.getElementById('atc-game-sale-fantastic')
+let atcGameSaleExcellent = document.getElementById('atc-game-sale-excellent')
 let atcGameSaleNew = document.getElementById('atc-game-sale-new')
 
 atcGameSaleAcceptable.addEventListener('blur', () => {
@@ -75,11 +70,8 @@ atcGameSaleAcceptable.addEventListener('blur', () => {
 atcGameSaleGood.addEventListener('blur', () => {
     atcGameObject['salePrices']['usedGood'] = atcGameSaleGood.value
 })
-atcGameSaleGreat.addEventListener('blur', () => {
-    atcGameObject['salePrices']['usedGreat'] = atcGameSaleGreat.value
-})
-atcGameSaleFantastic.addEventListener('blur', () => {
-    atcGameObject['salePrices']['usedFantastic'] = atcGameSaleFantastic.value
+atcGameSaleExcellent.addEventListener('blur', () => {
+    atcGameObject['salePrices']['usedFantastic'] = atcGameSaleExcellent.value
 })
 atcGameSaleNew.addEventListener('blur', () => {
     atcGameObject['salePrices']['new'] = atcGameSaleNew.value
@@ -294,8 +286,6 @@ atcGameOtherUPC.addEventListener('blur', () => {
 
 
 
-
-
 function setATCGameInitialState() {
     atcGameOverviewLower.style.display = 'none'
     atcGameSpecificationsLower.style.display = 'none'
@@ -319,14 +309,12 @@ function setATCGameInitialState() {
         'purchasePrices' : {
             'usedAcceptable' :  0,
             'usedGood' : 0,
-            'usedGreat' : 0,
             'usedFantastic' : 0,
             'new' : 0,
         },
         'salePrices' : {
             'usedAcceptable' :  0,
             'usedGood' : 0,
-            'usedGreat' : 0,
             'usedFantastic' : 0,
             'new' : 0,
         },
