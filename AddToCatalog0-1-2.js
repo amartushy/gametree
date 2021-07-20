@@ -77,8 +77,20 @@ atcGameSaleNew.addEventListener('blur', () => {
     atcGameObject['salePrices']['new'] = atcGameSaleNew.value
 })
 
+function resetPriceFields() {
+    atcGamePurchaseAcceptable.value = ''
+    atcGamePurchaseGood.value = ''
+    atcGamePurchaseExcellent.value = ''
+    atcGamePurchaseNew.value = ''
 
-//Overview elements
+    atcGameSaleAcceptable.value = ''
+    atcGameSaleGood.value = ''
+    atcGameSaleExcellent.value = ''
+    atcGameSaleNew.value = ''
+}
+
+
+//Overview elements___________________________________________________________________________________________________________________________________________________
 let atcGameHeaderDiv = document.getElementById('atc-game-header-div')
 let atcGameOverviewLower = document.getElementById('atc-game-overview-lower')
 let atcGameOverviewChevron = document.getElementById('atc-game-overview-chevron')
@@ -185,6 +197,7 @@ atcGameButton.addEventListener('click', () => {
 })
 atcCloseGameModal.addEventListener('click', () => {
     $('#atc-game-modal').fadeOut()
+    $('#admin-nav-section').fadeIn().css('display', 'flex');
 })
 
 
@@ -284,6 +297,29 @@ atcGameOtherUPC.addEventListener('blur', () => {
     atcGameObject['other']['UPC'] = atcGameOtherUPC.value
 })
 
+function resetSpecificationFiels() {
+    atcGameSpecsEdition.value = ''
+    atcGameSpecsRating.value = ''
+    atcGameSpecsDescriptors.value = ''
+    atcGameSpecsPlatform.value = ''
+    atcGameSpecsFormat.value = ''
+
+    atcGameGeneralProduct.value = ''
+    atcGameGeneralBrand.value = ''
+    atcGameGeneralPublisher.value = ''
+    atcGameGeneralDeveloper.value = ''
+    atcGameGeneralModel.value = ''
+    atcGameGeneralRelease.value = ''
+
+    atcGameDetailsGenre.value = ''
+    atcGameDetailsFranchise.value = ''
+    atcGameDetailsSeries.value = ''
+    atcGameDetailsEnhanced.value = ''
+    atcGameDetailsMultiplayer.value = ''
+
+    atcGameOtherUPC.value = ''
+}
+
 
 
 function setATCGameInitialState() {
@@ -349,12 +385,66 @@ function setATCGameInitialState() {
             'UPC' : ''
         }
     }
+    resetPriceFields()
 
+    atcDescriptionTextInput.value = ''
 
     buildATCGameFeatures()
 
     buildATCGameIncluded()
 
+    resetSpecificationFiels()
+
     gameID = createID(8)
     console.log(`Game ID: ${gameID}`)
+}
+
+
+
+
+
+let submitATCGame = document.getElementById('submit-atc-game')
+submitATCGame.addEventListener('click', () => {
+    console.log(atcGameObject)
+    loadATCGameProcessingState()
+
+    database.collection("catalog").doc(gameID).set(atcGameObject)
+    .then(function() {
+        $("#admin-processing-text-container").hide()
+        $("#admin-confirmation-container").show()
+        adminProductID.innerHTML = gameID
+        adminProductTitleText.innerHTML = atcGameObject['general']['productName']
+
+    }).catch(function(error) {
+        $('#admin-processing-screen').hide( () => {
+            $('#atc-game-modal').fadeIn()
+        })
+        alert(error.message)
+    })
+})
+
+
+//load ATC Processing
+let adminConfirmationContainer = document.getElementById('admin-confirmation-container')
+let adminConfirmationCheck = document.getElementById('admin-confirmation-check')
+let adminProcessingTextContainer = document.getElementById('admin-processing-text-container')
+let adminProductID = document.getElementById('admin-product-id')
+let adminProductTitleText = document.getElementById('product-title-text')
+let adminConfirmationATCGame = document.getElementById('admin-confirmation-atc-game')
+adminConfirmationATCGame.addEventListener('click', () => {
+    $('#admin-processing-screen').hide( () => {
+        setATCGameInitialState()
+        $('#atc-game-modal').fadeIn()
+    })
+})
+function loadATCGameProcessingState() {
+    document.getElementById('admin-nav-section').style.display = 'none'
+
+    $("#atc-game-modal").hide( () => {
+        $("#admin-processing-screen").show()
+        $("#admin-processing-text-container").show()
+
+        $("#admin-confirmation-check").hide()
+        $("#admin-confirmation-container").hide()
+    })
 }
