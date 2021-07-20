@@ -410,8 +410,8 @@ submitATCGame.addEventListener('click', () => {
 
     database.collection("catalog").doc(gameID).set(atcGameObject)
     .then(function() {
-        $("#admin-processing-text-container").hide()
-        $("#admin-confirmation-container").show()
+        adminProcessingTextContainer.style.display = 'none'
+        adminConfirmationContainer.style.display = 'flex'
         adminProductID.innerHTML = gameID
         adminProductTitleText.innerHTML = atcGameObject['general']['productName']
 
