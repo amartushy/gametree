@@ -312,3 +312,141 @@ function formatDate(epochDate) {
 			hour: 'numeric', minute:'numeric'})
 	return formattedDate
 }
+
+//Build bottom block
+
+function buildInfoBlock(purchaseID, index) {
+
+    database.collection("purchases").doc(purchaseID).get().then(function(doc) {
+        let data = doc.data()
+
+        let purchaseBlockNode = document.getElementById(purchaseID)
+        console.log(index)
+        //Main Area
+        let purchaseBlockBottom = document.createElement('div')
+        if (index % 2 == 0) {
+            purchaseBlockBottom.setAttribute('class', 'purchase-block-bottom-gray')
+        } else {
+            purchaseBlockBottom.setAttribute('class', 'purchase-block-bottom-black')
+        }
+        purchaseBlockBottom.setAttribute('id', `purchase-bottom-${purchaseID}`)
+        purchaseBlockNode.insertAdjacentElement('afterend', purchaseBlockBottom)
+
+        //Left Container
+        let purchaseBlockBottomLeft = document.createElement('div')
+        purchaseBlockBottomLeft.setAttribute('class', 'purchase-block-bottom-left')
+        purchaseBlockBottom.appendChild(purchaseBlockBottomLeft)
+    
+        let purchaseHeaderLeft = document.createElement('div')
+        purchaseHeaderLeft.setAttribute('class', 'purchase-header-left')
+        purchaseHeaderLeft.innerHTML = 'Photos'
+        purchaseBlockBottomLeft.appendChild(purchaseHeaderLeft)
+
+        let photos = data.photos
+        for (var photo in photos) {
+            if(photos.hasOwnProperty(photo)) {
+                let purchaseImage = document.createElement('img')
+                purchaseImage.setAttribute('class', 'purchase-image')
+                purchaseImage.src = photos[photo]
+                purchaseBlockBottomLeft.appendChild(purchaseImage)
+            }
+        }
+
+        //Middle Container
+        let purchaseBlockBottomMiddle = document.createElement('div')
+        purchaseBlockBottomMiddle.setAttribute('class', 'purchase-block-bottom-middle')
+        purchaseBlockBottom.appendChild(purchaseBlockBottomMiddle)
+
+        let purchaseDividerMiddle = document.createElement('div')
+        purchaseDividerMiddle.setAttribute('class', 'purchase-divider-middle')
+        purchaseBlockBottomMiddle.appendChild(purchaseDividerMiddle)
+
+        let purchaseInfoNotesDiv = document.createElement('div')
+        purchaseInfoNotesDiv.setAttribute('class', 'purchase-info-div')
+        purchaseBlockBottomMiddle.appendChild(purchaseInfoNotesDiv)
+
+        let purchaseInfoNotesHeader = document.createElement('div')
+        purchaseInfoNotesHeader.setAttribute('class', 'purchase-bottom-subheader')
+        purchaseInfoNotesHeader.innerHTML = 'Notes'
+        purchaseInfoNotesDiv.appendChild(purchaseInfoNotesHeader)
+
+        let purchaseInfoNotes = document.createElement('div')
+        purchaseInfoNotes.setAttribute('class', 'purchase-info')
+        purchaseInfoNotes.innerHTML = data.notes
+        purchaseInfoNotesDiv.appendChild(purchaseInfoNotes)
+
+
+        let purchaseInfoLocationDiv = document.createElement('div')
+        purchaseInfoLocationDiv.setAttribute('class', 'purchase-info-div')
+        purchaseBlockBottomMiddle.appendChild(purchaseInfoLocationDiv)
+
+        let purchaseInfoLocationHeader = document.createElement('div')
+        purchaseInfoLocationHeader.setAttribute('class', 'purchase-bottom-subheader')
+        purchaseInfoLocationHeader.innerHTML = 'Location Bought'
+        purchaseInfoLocationDiv.appendChild(purchaseInfoLocationHeader)
+
+        let purchaseInfoLocation = document.createElement('div')
+        purchaseInfoLocation.setAttribute('class', 'purchase-info')
+        purchaseInfoLocation.innerHTML = data.location['formatted_address']
+        purchaseInfoLocationDiv.appendChild(purchaseInfoLocation)
+
+        let addItemContainer = document.createElement('div')
+        addItemContainer.setAttribute('class', 'add-item-container')
+        purchaseBlockBottomMiddle.appendChild(addItemContainer)
+
+        let addItemPlus = document.createElement('div')
+        addItemPlus.setAttribute('class', 'add-item-plus')
+        addItemPlus.innerHTML = ''
+        addItemContainer.appendChild(addItemPlus)
+
+        let addItemText = document.createElement('div')
+        addItemText.setAttribute('class', 'add-item-text')
+        addItemText.innerHTML = 'Add Item'
+        //TODO: Onclick
+        addItemContainer.appendChild(addItemText)
+
+        //Right Container
+        let purchaseBlockBottomRight = document.createElement('div')
+        purchaseBlockBottomRight.setAttribute('class', 'purchase-block-bottom-right')
+        purchaseBlockBottom.appendChild(purchaseBlockBottomRight)
+        
+        let itemizationHeaderDiv = document.createElement('div')
+        itemizationHeaderDiv.setAttribute('class', 'itemization-header-div')
+        purchaseBlockBottomRight.appendChild(itemizationHeaderDiv)
+
+        let headerTextArray = ['Item ID', 'Product Title', 'Purchase Price', 'Status', 'Revenue']
+        for (i = 0; i < 5; i++) {
+            let letItemizationHeader = document.createElement('div')
+            letItemizationHeader.setAttribute('class', 'itemization-header')
+            letItemizationHeader.innerHTML = headerTextArray[i]
+            itemizationHeaderDiv.appendChild(letItemizationHeader)
+        }
+
+        let itemizationArea = document.createElement('div')
+        itemizationArea.setAttribute('class', 'itemization-area')
+        purchaseBlockBottomRight.appendChild(itemizationArea)
+
+        buildSubPurchases(purchaseID, itemizationArea)
+    })
+}
+
+function buildSubPurchases(purchaseID, DOMElement) {
+    //TODO: Loop through sub purchase collection
+    database.collection("purchases").doc(purchaseID).collection("subpurchases").get().then(function(subpurchases) {
+
+        subpurchases.forEach(function(doc)  {
+            var data = doc.data()
+            let subPurchaseArray = [doc.id, data.productTitle, data.purchasePrice, data.status, data.revenue]
+            let purchaseItemizationBlock = document.createElement('div')
+            purchaseItemizationBlock.setAttribute('class', 'purchase-itemization-block')
+            DOMElement.appendChild(purchaseItemizationBlock)
+
+            for (i=0; i<5; i++) {
+                let itemizationSubtext = document.createElement('div')
+                itemizationSubtext.setAttribute('class', 'itemization-subtext')
+                itemizationSubtext.innerHTML = subPurchaseArray[i]
+                purchaseItemizationBlock.appendChild(itemizationSubtext)
+            }
+        })
+    })
+}
