@@ -1,3 +1,4 @@
+
 window.onload = function() {
 	document.getElementById('pop-nav').addEventListener('click', () => {
         location.href = 'https://thegametree.io/proof-of-purchase'
@@ -7,8 +8,21 @@ window.onload = function() {
         location.href = 'https://thegametree.io/purchases'
     })
 	
-    document.getElementById('admin-nav-main-header').innerHTML = 'Welcome Back, ' + getFirstName(globalUserData.name)
-	
+	firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            firebase.firestore().collection('users').doc(user.uid).get().then(function(doc) {
+                let data = doc.data()
+                if(isAdmin) {    
+                    console.log('User is an admin, loading page')
+                    document.getElementById('admin-nav-main-header').innerHTML = 'Welcome Back, ' + getFirstName(data.name)
+                } else {
+                    location.href = 'https://wwww.thegametree.io/'
+                }
+            })
+        } else {
+            location.href = 'https://wwww.thegametree.io/login'
+        }
+    })
 }
 
 var database = firebase.firestore()
