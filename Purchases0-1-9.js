@@ -405,7 +405,7 @@ function buildInfoBlock(purchaseID, index) {
         addItemText.setAttribute('class', 'add-item-text')
         addItemText.innerHTML = 'Add Item'
         //TODO: Onclick
-		addItemContainer.setAttribute('onClick', `showAITPModal("${purchaseID}")`)
+		addItemContainer.setAttribute('onClick', `showAITPModal("${purchaseID}, ${data.time}")`)
         addItemContainer.appendChild(addItemText)
 
         //Right Container
@@ -435,7 +435,7 @@ function buildInfoBlock(purchaseID, index) {
 
 function buildSubPurchases(purchaseID, DOMElement) {
     //TODO: Loop through sub purchase collection
-    database.collection("purchases").doc(purchaseID).collection("subpurchases").get().then(function(subpurchases) {
+    database.collection("purchases").doc(purchaseID).collection("subPurchases").get().then(function(subpurchases) {
 
         subpurchases.forEach(function(doc)  {
             var data = doc.data()
