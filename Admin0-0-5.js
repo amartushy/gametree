@@ -6,11 +6,14 @@ window.onload = function() {
     document.getElementById('purchases-nav').addEventListener('click', () => {
         location.href = 'https://thegametree.io/purchases'
     })
+	
+    document.getElementById('admin-nav-main-header').innerHTML = 'Welcome Back, ' + getFirstName(globalUserData.name)
+	
 }
 
 var database = firebase.firestore()
 
-//Admin Elements
+//Admin Nav Elements
 const atcButton = document.getElementById('atc-button')
 const atcCloseModal = document.getElementById('atc-close-modal')
 atcButton.addEventListener('click', () => {
@@ -21,6 +24,7 @@ atcButton.addEventListener('click', () => {
 atcCloseModal.addEventListener('click', () => {
     $("#atc-modal").fadeOut();
 })
+
 
 
 //Add to Catalog Elements
@@ -252,25 +256,6 @@ async function uploadAndUpdateFirebasePhoto() {
 }
 
 //Helper functions
-function createID(length) {
-    var result           = [];
-    var characters       = 'ABCDEFGHJKMNPQRTUVWXYZ2346789';
-    var charactersLength = characters.length;
-    for ( var i = 0; i < length; i++ ) {
-        result.push(characters.charAt(Math.floor(Math.random() * 
-        charactersLength)));
-   }
-   return result.join('');
-}
-
-function getNumber(strNum) {
-    var containsDollarSign = strNum.includes("$")
-    if(containsDollarSign) {
-        strNum = strNum.replace(/\$/g,'');
-    }
-    let num = parseFloat(strNum)
-    return (num)
-}
 
 function addToCatalog(object) {
     loadATCUpdatingState()
