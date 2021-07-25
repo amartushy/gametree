@@ -313,6 +313,8 @@ function formatDate(epochDate) {
 	return formattedDate
 }
 
+
+
 //Build bottom block
 
 function buildInfoBlock(purchaseID, index) {
@@ -403,6 +405,7 @@ function buildInfoBlock(purchaseID, index) {
         addItemText.setAttribute('class', 'add-item-text')
         addItemText.innerHTML = 'Add Item'
         //TODO: Onclick
+		addItemContainer.setAttribute('onClick', `showAITPModal("${purchaseID}")`)
         addItemContainer.appendChild(addItemText)
 
         //Right Container
