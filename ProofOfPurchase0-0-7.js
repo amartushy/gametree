@@ -21,7 +21,8 @@ var popObject = {
     "purchaser":"",
     "purchaserName":"",
     "status" : "in transit",
-    "location":{}
+    "location":{},
+    "numItems" : 0
 }
 
 window.onload = function() {
