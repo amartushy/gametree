@@ -354,12 +354,7 @@ function setATCGameInitialState() {
             'usedFantastic' : 0,
             'new' : 0,
         },
-	'availability' : {
-            'usedAcceptable' : 0,
-            'usedGood' : 0,
-            'usedFantastic' : 0,
-            'new' : 0
-        },
+	'availability' : {},
         'overview' : {
             'description' : '',
             'features' : [],
