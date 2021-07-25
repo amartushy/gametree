@@ -405,7 +405,7 @@ function buildInfoBlock(purchaseID, index) {
         addItemText.setAttribute('class', 'add-item-text')
         addItemText.innerHTML = 'Add Item'
         //TODO: Onclick
-		addItemContainer.setAttribute('onClick', `showAITPModal("${purchaseID}, ${data.time}")`)
+		addItemContainer.setAttribute('onClick', `showAITPModal("${purchaseID}", "${data.time}")`)
         addItemContainer.appendChild(addItemText)
 
         //Right Container
