@@ -427,6 +427,7 @@ function buildInfoBlock(purchaseID, index) {
 
         let itemizationArea = document.createElement('div')
         itemizationArea.setAttribute('class', 'itemization-area')
+		itemizationArea.id = `sub-purchases-area-${purchaseID}`
         purchaseBlockBottomRight.appendChild(itemizationArea)
 
         buildSubPurchases(purchaseID, itemizationArea)
@@ -434,6 +435,10 @@ function buildInfoBlock(purchaseID, index) {
 }
 
 function buildSubPurchases(purchaseID, DOMElement) {
+	while(DOMElement.firstChild) {
+		DOMElement.removeChild(DOMElement.firstChild)
+	}
+
     //TODO: Loop through sub purchase collection
     database.collection("purchases").doc(purchaseID).collection("subPurchases").get().then(function(subpurchases) {
 
