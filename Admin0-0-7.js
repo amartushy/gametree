@@ -12,7 +12,7 @@ window.onload = function() {
         if (user) {
             firebase.firestore().collection('users').doc(user.uid).get().then(function(doc) {
                 let data = doc.data()
-                if(isAdmin) {    
+                if(data.isAdmin) {    
                     console.log('User is an admin, loading page')
                     document.getElementById('admin-nav-main-header').innerHTML = 'Welcome Back, ' + getFirstName(data.name)
                 } else {
