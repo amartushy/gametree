@@ -572,6 +572,7 @@ async function uploadAndCreateAdditionalConsoleImages() {
     }
     let addAdditionalImageButton = document.createElement('div')
     addAdditionalImageButton.className = 'atc-add-product-image'
+    addAdditionalImageButton.innerHTML = ''
     atcConsoleAdditionalImagesContainer.appendChild(addAdditionalImageButton)
     addAdditionalImageButton.addEventListener('click', () => {
         hiddenConsoleAdditionalImageUploadButton.click()
@@ -1037,6 +1038,7 @@ function setATCConsoleInitialState() {
 
     let addAdditionalImageButton = document.createElement('div')
     addAdditionalImageButton.className = 'atc-add-product-image'
+    addAdditionalImageButton.innerHTML = ''
     atcConsoleAdditionalImagesContainer.appendChild(addAdditionalImageButton)
     addAdditionalImageButton.addEventListener('click', () => {
         hiddenConsoleAdditionalImageUploadButton.click()
@@ -1189,3 +1191,5 @@ submitATCConsole.addEventListener('click', () => {
 //         $("#admin-confirmation-container").hide()
 //     })
 // }
+
+
