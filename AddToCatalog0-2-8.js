@@ -710,7 +710,7 @@ function buildATCConsoleFeatures() {
 let atcConsoleAddIncludedButton = document.getElementById('atc-console-add-included')
 let atcConsoleWhatsIncludedContainer = document.getElementById('atc-console-whats-included-container')
 let atcConsoleAddIncludedForm = document.getElementById('atc-console-add-included-form')
-let atcConsoleAddIncludedField = document.getElementById('atc-console-add-game-included-field')
+let atcConsoleAddIncludedField = document.getElementById('atc-console-add-included-field')
 let atcConsoleAddIncludedCancel = document.getElementById('atc-console-add-included-cancel')
 let atcConsoleAddIncludedSubmit = document.getElementById('atc-console-add-included-submit')
 
