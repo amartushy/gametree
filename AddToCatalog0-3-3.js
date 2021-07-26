@@ -435,8 +435,7 @@ let adminProductTitleText = document.getElementById('product-title-text')
 let adminConfirmationATC = document.getElementById('admin-confirmation-atc')
 adminConfirmationATC.addEventListener('click', () => {
     $('#admin-processing-screen').hide( () => {
-        setATCGameInitialState()
-        $('#atc-game-modal').fadeIn()
+	${'#admin-nav-section').fadeIn().css('display', 'flex')
     })
 })
 function loadATCProcessingState() {
