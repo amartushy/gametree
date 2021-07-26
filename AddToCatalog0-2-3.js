@@ -511,7 +511,7 @@ async function handleConsoleImageUpload() {
 
 //final submit button and update firebase
 async function uploadAndCreateConsoleImage() {
-	await storageRef.child('/productImages/'+consoleID)
+	await storageRef.child('/testImages/'+consoleID)
 		.getDownloadURL()
 		.then(function(url) { atcConsoleObject['productImages'] = {
             'mainImage' : url.toString()
