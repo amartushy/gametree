@@ -408,7 +408,7 @@ function setATCGameInitialState() {
 let submitATCGame = document.getElementById('submit-atc-game')
 submitATCGame.addEventListener('click', () => {
     console.log(atcGameObject)
-    loadATCGameProcessingState()
+    loadATCProcessingState()
 
     database.collection("catalog").doc(gameID).set(atcGameObject)
     .then(function() {
@@ -432,14 +432,14 @@ let adminConfirmationCheck = document.getElementById('admin-confirmation-check')
 let adminProcessingTextContainer = document.getElementById('admin-processing-text-container')
 let adminProductID = document.getElementById('admin-product-id')
 let adminProductTitleText = document.getElementById('product-title-text')
-let adminConfirmationATCGame = document.getElementById('admin-confirmation-atc-game')
-adminConfirmationATCGame.addEventListener('click', () => {
+let adminConfirmationATC = document.getElementById('admin-confirmation-atc')
+adminConfirmationATC.addEventListener('click', () => {
     $('#admin-processing-screen').hide( () => {
         setATCGameInitialState()
         $('#atc-game-modal').fadeIn()
     })
 })
-function loadATCGameProcessingState() {
+function loadATCProcessingState() {
     document.getElementById('admin-nav-section').style.display = 'none'
 
     $("#atc-game-modal").hide( () => {
