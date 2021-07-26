@@ -545,11 +545,10 @@ function uploadConsoleAdditionalImage(e) {
 
 var newImageID, numImages
 async function handleConsoleAdditionalImageUpload() {
-    numImages = Object.keys(atcConsoleObject['productImages']).length + 1
+    numImages = Object.keys(atcConsoleObject['productImages']).length
     newImageID = `${consoleID}-${numImages} `
-    console.log(newImageID, numImages)
-	//const uploadTask = await storageRef.child(`productImages/${newID}`).put(selectedConsoleAdditionalImageFile);
-	//uploadAndCreateAdditionalConsoleImages()
+	const uploadTask = await storageRef.child(`productImages/${newID}`).put(selectedConsoleAdditionalImageFile);
+	uploadAndCreateAdditionalConsoleImages()
 }
 
 //final submit button and update firebase
