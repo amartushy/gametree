@@ -701,7 +701,7 @@ function buildATCConsoleFeatures() {
 
         let atcFeatureDescription = document.createElement('div')
         atcFeatureDescription.className = 'atc-feature-description'
-        atcFeatureDescription = feature.description 
+        atcFeatureDescription.innerHTML = feature.description 
         atcFeatureDiv.appendChild(atcFeatureDescription)
     })
 }
