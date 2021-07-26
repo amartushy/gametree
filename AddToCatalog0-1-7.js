@@ -459,8 +459,20 @@ function loadATCGameProcessingState() {
 
 
 
-//________________________________________________________________ADD CONSOLE TO CATALOG____________________________________________________________________
 
+
+
+
+
+
+
+
+
+
+
+
+
+//________________________________________________________________ADD CONSOLE TO CATALOG____________________________________________________________________
 let atcConsoleModal = document.getElementById('atc-console-modal')
 let atcCloseconsoleModal = document.getElementById('atc-close-console-modal')
 let atcConsoleButton = document.getElementById('atc-console-button')
@@ -1132,48 +1144,48 @@ function setATCConsoleInitialState() {
 
 
 
-let submitATCGame = document.getElementById('submit-atc-game')
-submitATCGame.addEventListener('click', () => {
-    console.log(atcGameObject)
-    loadATCGameProcessingState()
+let submitATCConsole = document.getElementById('submit-atc-console')
+submitATCConsole.addEventListener('click', () => {
+    console.log(atcConsoleObject)
+    // loadATCConsoleProcessingState()
 
-    database.collection("catalog").doc(gameID).set(atcGameObject)
-    .then(function() {
-        adminProcessingTextContainer.style.display = 'none'
-        adminConfirmationContainer.style.display = 'flex'
-        adminProductID.innerHTML = gameID
-        adminProductTitleText.innerHTML = atcGameObject['general']['productName']
+    // database.collection("catalog").doc(gameID).set(atcGameObject)
+    // .then(function() {
+    //     adminProcessingTextContainer.style.display = 'none'
+    //     adminConfirmationContainer.style.display = 'flex'
+    //     adminProductID.innerHTML = gameID
+    //     adminProductTitleText.innerHTML = atcGameObject['general']['productName']
 
-    }).catch(function(error) {
-        $('#admin-processing-screen').hide( () => {
-            $('#atc-game-modal').fadeIn()
-        })
-        alert(error.message)
-    })
+    // }).catch(function(error) {
+    //     $('#admin-processing-screen').hide( () => {
+    //         $('#atc-game-modal').fadeIn()
+    //     })
+    //     alert(error.message)
+    // })
 })
 
 
-//load ATC Processing
-let adminConfirmationContainer = document.getElementById('admin-confirmation-container')
-let adminConfirmationCheck = document.getElementById('admin-confirmation-check')
-let adminProcessingTextContainer = document.getElementById('admin-processing-text-container')
-let adminProductID = document.getElementById('admin-product-id')
-let adminProductTitleText = document.getElementById('product-title-text')
-let adminConfirmationATCGame = document.getElementById('admin-confirmation-atc-game')
-adminConfirmationATCGame.addEventListener('click', () => {
-    $('#admin-processing-screen').hide( () => {
-        setATCGameInitialState()
-        $('#atc-game-modal').fadeIn()
-    })
-})
-function loadATCGameProcessingState() {
-    document.getElementById('admin-nav-section').style.display = 'none'
+// //load ATC Processing
+// let adminConfirmationContainer = document.getElementById('admin-confirmation-container')
+// let adminConfirmationCheck = document.getElementById('admin-confirmation-check')
+// let adminProcessingTextContainer = document.getElementById('admin-processing-text-container')
+// let adminProductID = document.getElementById('admin-product-id')
+// let adminProductTitleText = document.getElementById('product-title-text')
+// let adminConfirmationATCGame = document.getElementById('admin-confirmation-atc-game')
+// adminConfirmationATCGame.addEventListener('click', () => {
+//     $('#admin-processing-screen').hide( () => {
+//         setATCGameInitialState()
+//         $('#atc-game-modal').fadeIn()
+//     })
+// })
+// function loadATCConsoleProcessingState() {
+//     document.getElementById('admin-nav-section').style.display = 'none'
 
-    $("#atc-game-modal").hide( () => {
-        $("#admin-processing-screen").show()
-        $("#admin-processing-text-container").show()
+//     $("#atc-game-modal").hide( () => {
+//         $("#admin-processing-screen").show()
+//         $("#admin-processing-text-container").show()
 
-        $("#admin-confirmation-check").hide()
-        $("#admin-confirmation-container").hide()
-    })
-}
+//         $("#admin-confirmation-check").hide()
+//         $("#admin-confirmation-container").hide()
+//     })
+// }
