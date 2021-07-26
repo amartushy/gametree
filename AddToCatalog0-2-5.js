@@ -547,7 +547,7 @@ var newImageID, numImages
 async function handleConsoleAdditionalImageUpload() {
     numImages = Object.keys(atcConsoleObject['productImages']).length
     newImageID = `${consoleID}-${numImages} `
-	const uploadTask = await storageRef.child(`productImages/${newID}`).put(selectedConsoleAdditionalImageFile);
+	const uploadTask = await storageRef.child(`testImages/${newImageID}`).put(selectedConsoleAdditionalImageFile);
 	uploadAndCreateAdditionalConsoleImages()
 }
 
