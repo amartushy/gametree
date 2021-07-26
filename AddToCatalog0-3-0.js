@@ -727,6 +727,7 @@ atcConsoleAddIncludedSubmit.addEventListener('click', () => {
     $('#atc-console-add-included-form').fadeOut()
     atcConsoleAddIncludedField.value = ''
 })
+console.log(atcConsoleAddIncludedField)
 
 function buildATCConsoleIncluded() {
     atcConsoleAddIncludedForm.style.display = 'none'
