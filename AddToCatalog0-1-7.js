@@ -606,7 +606,7 @@ atcConsoleSaleNew.addEventListener('blur', () => {
     atcConsoleObject['salePrices']['new'] = atcConsoleSaleNew.value
 })
 
-function resetPriceFields() {
+function resetConsolePriceFields() {
     atcConsolePurchaseAcceptable.value = ''
     atcConsolePurchaseGood.value = ''
     atcConsolePurchaseExcellent.value = ''
@@ -947,7 +947,7 @@ atcConsoleOtherUPC.addEventListener('blur', () => {
 
 
 
-function resetSpecificationFiels() {
+function resetConsoleSpecificationFiels() {
     atcConsoleSpecs4K.value = ''
     atcConsoleSpecsGraphics.value = ''
     atcConsoleSpecsResolution.value = ''
@@ -1126,4 +1126,54 @@ function setATCConsoleInitialState() {
 
     consoleID = createID(8)
     console.log(`Console ID: ${consoleID}`)
+}
+
+
+
+
+
+let submitATCGame = document.getElementById('submit-atc-game')
+submitATCGame.addEventListener('click', () => {
+    console.log(atcGameObject)
+    loadATCGameProcessingState()
+
+    database.collection("catalog").doc(gameID).set(atcGameObject)
+    .then(function() {
+        adminProcessingTextContainer.style.display = 'none'
+        adminConfirmationContainer.style.display = 'flex'
+        adminProductID.innerHTML = gameID
+        adminProductTitleText.innerHTML = atcGameObject['general']['productName']
+
+    }).catch(function(error) {
+        $('#admin-processing-screen').hide( () => {
+            $('#atc-game-modal').fadeIn()
+        })
+        alert(error.message)
+    })
+})
+
+
+//load ATC Processing
+let adminConfirmationContainer = document.getElementById('admin-confirmation-container')
+let adminConfirmationCheck = document.getElementById('admin-confirmation-check')
+let adminProcessingTextContainer = document.getElementById('admin-processing-text-container')
+let adminProductID = document.getElementById('admin-product-id')
+let adminProductTitleText = document.getElementById('product-title-text')
+let adminConfirmationATCGame = document.getElementById('admin-confirmation-atc-game')
+adminConfirmationATCGame.addEventListener('click', () => {
+    $('#admin-processing-screen').hide( () => {
+        setATCGameInitialState()
+        $('#atc-game-modal').fadeIn()
+    })
+})
+function loadATCGameProcessingState() {
+    document.getElementById('admin-nav-section').style.display = 'none'
+
+    $("#atc-game-modal").hide( () => {
+        $("#admin-processing-screen").show()
+        $("#admin-processing-text-container").show()
+
+        $("#admin-confirmation-check").hide()
+        $("#admin-confirmation-container").hide()
+    })
 }
