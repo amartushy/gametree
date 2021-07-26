@@ -1025,10 +1025,11 @@ function setATCConsoleInitialState() {
         atcConsoleMainImageContainer.removeChild(atcConsoleMainImageContainer.firstChild)
     }
 
-    var newImage = document.createElement('img')
-    newImage.setAttribute('class', 'atc-main-product-image')
-    atcConsoleMainImageContainer.appendChild(newImage)
-    newImage.addEventListener('click', () => {
+    var mainImageButton = document.createElement('div')
+    mainImageButton.setAttribute('class', 'atc-main-product-image')
+    mainImageButton.innerHTML = ''
+    atcConsoleMainImageContainer.appendChild(mainImageButton)
+    mainImageButton.addEventListener('click', () => {
         hiddenConsoleMainImageUploadButton.click();
     })
 
