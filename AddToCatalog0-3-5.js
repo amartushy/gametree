@@ -408,7 +408,7 @@ function setATCGameInitialState() {
 let submitATCGame = document.getElementById('submit-atc-game')
 submitATCGame.addEventListener('click', () => {
     console.log(atcGameObject)
-    loadATCProcessingState()
+    loadATCProcessingState('game')
 
     database.collection("catalog").doc(gameID).set(atcGameObject)
     .then(function() {
@@ -438,16 +438,26 @@ adminConfirmationATC.addEventListener('click', () => {
 	$('#admin-nav-section').fadeIn().css('display', 'flex')
     })
 })
-function loadATCProcessingState() {
+function loadATCProcessingState(source) {
     document.getElementById('admin-nav-section').style.display = 'none'
 
-    $("#atc-game-modal").hide( () => {
-        $("#admin-processing-screen").show()
-        $("#admin-processing-text-container").show()
-
-        $("#admin-confirmation-check").hide()
-        $("#admin-confirmation-container").hide()
-    })
+    if(source == 'game'){
+        $("#atc-game-modal").hide( () => {
+            $("#admin-processing-screen").show()
+            $("#admin-processing-text-container").show()
+    
+            $("#admin-confirmation-check").hide()
+            $("#admin-confirmation-container").hide()
+        })
+    } else if(source == 'console') {
+        $("#atc-console-modal").hide( () => {
+            $("#admin-processing-screen").show()
+            $("#admin-processing-text-container").show()
+    
+            $("#admin-confirmation-check").hide()
+            $("#admin-confirmation-container").hide()
+        })
+    }
 }
 
 
