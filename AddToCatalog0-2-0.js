@@ -959,7 +959,7 @@ atcConsoleOtherUPC.addEventListener('blur', () => {
 
 
 
-function resetConsoleSpecificationFiels() {
+function resetConsoleSpecificationFields() {
     atcConsoleSpecs4K.value = ''
     atcConsoleSpecsGraphics.value = ''
     atcConsoleSpecsResolution.value = ''
