@@ -514,17 +514,15 @@ function uploadConsoleImage(e) {
 }
 
 async function handleConsoleImageUpload() {
-	const uploadTask = await storageRef.child(`testImages/${consoleID}`).put(selectedConsoleImageFile);
+	const uploadTask = await storageRef.child(`productImages/${consoleID}`).put(selectedConsoleImageFile);
 	uploadAndCreateConsoleImage()
 }
 
 //final submit button and update firebase
 async function uploadAndCreateConsoleImage() {
-	await storageRef.child('/testImages/'+consoleID)
+	await storageRef.child('/productImages/'+consoleID)
 		.getDownloadURL()
-		.then(function(url) { atcConsoleObject['productImages'] = {
-            'mainImage' : url.toString()
-        }})
+		.then(function(url) { atcConsoleObject['productImage'] = url.toString() })
 
     //Create Image
     while(atcConsoleMainImageContainer.firstChild) {
@@ -532,7 +530,7 @@ async function uploadAndCreateConsoleImage() {
     }
     var newImage = document.createElement('img')
     newImage.setAttribute('class', 'atc-main-product-image')
-    newImage.src = atcConsoleObject['productImages']['mainImage']
+    newImage.src = atcConsoleObject['productImage']
     atcConsoleMainImageContainer.appendChild(newImage)
     newImage.addEventListener('click', () => {
         hiddenConsoleMainImageUploadButton.click();
@@ -556,13 +554,13 @@ var newImageID, numImages
 async function handleConsoleAdditionalImageUpload() {
     numImages = Object.keys(atcConsoleObject['productImages']).length
     newImageID = `${consoleID}-${numImages} `
-	const uploadTask = await storageRef.child(`testImages/${newImageID}`).put(selectedConsoleAdditionalImageFile);
+	const uploadTask = await storageRef.child(`productImages/${newImageID}`).put(selectedConsoleAdditionalImageFile);
 	uploadAndCreateAdditionalConsoleImages()
 }
 
 //final submit button and update firebase
 async function uploadAndCreateAdditionalConsoleImages() {
-	await storageRef.child('/testImages/'+newImageID)
+	await storageRef.child('/productImages/'+newImageID)
 		.getDownloadURL()
 		.then(function(url) { atcConsoleObject['productImages'][numImages] = url.toString() })
 
@@ -571,12 +569,10 @@ async function uploadAndCreateAdditionalConsoleImages() {
         atcConsoleAdditionalImagesContainer.removeChild(atcConsoleAdditionalImagesContainer.firstChild)
     }
     for( key in atcConsoleObject['productImages']) {
-        if (key != 'mainImage') {
-            var newImage = document.createElement('img')
-            newImage.setAttribute('class', 'atc-additional-image')
-            newImage.src = atcConsoleObject['productImages'][key]
-            atcConsoleAdditionalImagesContainer.appendChild(newImage)
-        } 
+        var newImage = document.createElement('img')
+        newImage.setAttribute('class', 'atc-additional-image')
+        newImage.src = atcConsoleObject['productImages'][key]
+        atcConsoleAdditionalImagesContainer.appendChild(newImage)
     }
     let addAdditionalImageButton = document.createElement('div')
     addAdditionalImageButton.className = 'atc-add-product-image'
@@ -722,6 +718,7 @@ let atcConsoleAddIncludedForm = document.getElementById('atc-console-add-include
 let atcConsoleAddIncludedField = document.getElementById('atc-console-add-included-field')
 let atcConsoleAddIncludedCancel = document.getElementById('atc-console-add-included-cancel')
 let atcConsoleAddIncludedSubmit = document.getElementById('atc-console-add-included-submit')
+
 
 atcConsoleAddIncludedButton.addEventListener('click', () => {
     $('#atc-console-add-included-form').fadeIn()
@@ -1057,6 +1054,7 @@ function setATCConsoleInitialState() {
     atcConsoleObject = {
         'category' : 'console',
         'brand' : '',
+        'productImage' : '',
         'productImages' : {},
         'purchasePrices' : {
             'usedAcceptable' :  0,
@@ -1079,7 +1077,7 @@ function setATCConsoleInitialState() {
         'keySpecs' : {
             '4KPlayer' : '',
             'maxGraphics' : '',
-            'resolution' : '',
+            'maxResolution' : '',
             'HDR' : '',
             'bluetooth' : '',
             'numUSBPorts' : ''
@@ -1150,6 +1148,30 @@ function setATCConsoleInitialState() {
     consoleID = createID(8)
     console.log(`Console ID: ${consoleID}`)
 }
+
+
+
+
+
+let submitATCConsole = document.getElementById('submit-atc-console')
+submitATCConsole.addEventListener('click', () => {
+    console.log(atcConsoleObject)
+    loadATCProcessingState('console')
+
+    database.collection("catalog").doc(consoleID).set(atcConsoleObject)
+    .then(function() {
+        adminProcessingTextContainer.style.display = 'none'
+        adminConfirmationContainer.style.display = 'flex'
+        adminProductID.innerHTML = consoleID
+        adminProductTitleText.innerHTML = atcConsoleObject['general']['productName']
+
+    }).catch(function(error) {
+        $('#admin-processing-screen').hide( () => {
+            $('#atc-game-modal').fadeIn()
+        })
+        alert(error.message)
+    })
+})
 
 
 
