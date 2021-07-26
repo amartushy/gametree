@@ -513,7 +513,7 @@ async function handleConsoleImageUpload() {
 async function uploadAndCreateConsoleImage() {
 	await storageRef.child('/productImages/'+consoleID)
 		.getDownloadURL()
-		.then(function(url) { atcGameObject['productImages'] = {
+		.then(function(url) { atcConsoleObject['productImages'] = {
             'mainImage' : url.toString()
         }})
 
@@ -556,7 +556,7 @@ async function handleConsoleAdditionalImageUpload() {
 async function uploadAndCreateAdditionalConsoleImages() {
 	await storageRef.child('/testImages/'+newImageID)
 		.getDownloadURL()
-		.then(function(url) { atcGameObject['productImages'][numImages] = url.toString() })
+		.then(function(url) { atcConsoleObject['productImages'][numImages] = url.toString() })
 
     //Create Image
     while(atcConsoleAdditionalImagesContainer.firstChild) {
@@ -688,7 +688,7 @@ function buildATCConsoleFeatures() {
         atcConsoleFeaturesContainer.removeChild(atcConsoleFeaturesContainer.firstChild)
     }
 
-    let features = atcGameObject.overview.features
+    let features = atcConsoleObject.overview.features
     features.forEach((feature) => {
         let atcFeatureDiv = document.createElement('div')
         atcFeatureDiv.className = 'atc-feature-div'
@@ -1149,12 +1149,12 @@ submitATCConsole.addEventListener('click', () => {
     console.log(atcConsoleObject)
     // loadATCConsoleProcessingState()
 
-    // database.collection("catalog").doc(gameID).set(atcGameObject)
+    // database.collection("catalog").doc(gameID).set(atcConsoleObject)
     // .then(function() {
     //     adminProcessingTextContainer.style.display = 'none'
     //     adminConfirmationContainer.style.display = 'flex'
     //     adminProductID.innerHTML = gameID
-    //     adminProductTitleText.innerHTML = atcGameObject['general']['productName']
+    //     adminProductTitleText.innerHTML = atcConsoleObject['general']['productName']
 
     // }).catch(function(error) {
     //     $('#admin-processing-screen').hide( () => {
