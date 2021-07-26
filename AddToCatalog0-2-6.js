@@ -696,7 +696,7 @@ function buildATCConsoleFeatures() {
 
         let atcFeatureTitle = document.createElement('div')
         atcFeatureTitle.className = 'atc-feature-title'
-        atcFeatureTitle = feature.title 
+        atcFeatureTitle.innerHTML = feature.title 
         atcFeatureDiv.appendChild(atcFeatureTitle)
 
         let atcFeatureDescription = document.createElement('div')
