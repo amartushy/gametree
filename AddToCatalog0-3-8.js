@@ -32,7 +32,7 @@ async function uploadAndCreateGameImage() {
         atcGameImageContainer.removeChild(atcGameImageContainer.firstChild)
     }
     var newImage = document.createElement('img')
-    newImage.setAttribute('class', 'atc-game-image')
+    newImage.setAttribute('class', 'atc-main-product-image')
     newImage.src = atcGameObject['productImage']
     atcGameImageContainer.appendChild(newImage)
     newImage.addEventListener('click', () => {
@@ -332,7 +332,7 @@ function setATCGameInitialState() {
     while(atcGameImageContainer.firstChild) {
         atcGameImageContainer.removeChild(atcGameImageContainer.firstChild)
     }
-    var newImage = document.createElement('img')
+    var newImage = document.createElement('div')
     newImage.setAttribute('class', 'atc-main-product-image')
     newImage.innerHTML = ''
     atcGameImageContainer.appendChild(newImage)
