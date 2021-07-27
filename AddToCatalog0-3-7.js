@@ -328,12 +328,13 @@ function setATCGameInitialState() {
     atcGameSpecificationsLower.style.display = 'none'
     atcGameSpecificationsChevron.setAttribute('class', 'atc-game-chevron')
 
-    //Create Image
+	//Create Image
     while(atcGameImageContainer.firstChild) {
         atcGameImageContainer.removeChild(atcGameImageContainer.firstChild)
     }
     var newImage = document.createElement('img')
-    newImage.setAttribute('class', 'atc-game-image')
+    newImage.setAttribute('class', 'atc-main-product-image')
+    newImage.innerHTML = ''
     atcGameImageContainer.appendChild(newImage)
     newImage.addEventListener('click', () => {
         hiddenGameImageUploadButton.click();
