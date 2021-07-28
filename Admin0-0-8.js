@@ -20,7 +20,7 @@ window.onload = function() {
                 }
             })
         } else {
-            location.href = 'https://wwww.thegametree.io/login'
+            location.href = 'https://www.thegametree.io/login'
         }
     })
 }
