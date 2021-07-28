@@ -14,6 +14,7 @@ var processingTab = document.getElementById('purchase-filter-processing')
 var listedTab = document.getElementById('purchase-filter-listed')
 var repairsTab = document.getElementById('purchase-filter-repairs')
 var soldTab = document.getElementById('purchase-filter-sold')
+var itemizedTab = document.getElementById('purchase-filter-itemized')
 
 //Tab filter onclick listeners
 allTab.addEventListener('click', allPurchases)
@@ -22,10 +23,12 @@ processingTab.addEventListener('click', processingPurchases)
 listedTab.addEventListener('click', listedPurchases)
 repairsTab.addEventListener('click', repairsPurchases)
 soldTab.addEventListener('click', soldPurchases)
+itemizedTab.addEventListener('click', itemizedPurchases)
+
 
 //Tab filter functions
 function allPurchases() {
-	tabFilters = ["in transit", "processing", "listed", "needs repair", "sold"]
+	tabFilters = ["in transit", "processing", "listed", "needs repair", "sold", "itemized"]
 	showPurchases()
 	
 	allTab.className = 'purchase-filters-selected'
@@ -34,6 +37,7 @@ function allPurchases() {
 	listedTab.className = 'purchase-filter'
 	repairsTab.className = 'purchase-filter'
 	soldTab.className = 'purchase-filter'
+	itemizedTab.className = 'purchase-filters-filter'
 }
 
 function inTransitPurchases() {
@@ -46,6 +50,7 @@ function inTransitPurchases() {
 	listedTab.className = 'purchase-filter'
 	repairsTab.className = 'purchase-filter'
 	soldTab.className = 'purchase-filter'
+	itemizedTab.className = 'purchase-filters-filter'
 }
 
 function processingPurchases() {
@@ -58,6 +63,7 @@ function processingPurchases() {
 	listedTab.className = 'purchase-filter'
 	repairsTab.className = 'purchase-filter'
 	soldTab.className = 'purchase-filter'
+	itemizedTab.className = 'purchase-filters-filter'
 }
 
 function listedPurchases() {
@@ -70,6 +76,7 @@ function listedPurchases() {
 	listedTab.className = 'purchase-filters-selected'
 	repairsTab.className = 'purchase-filter'
 	soldTab.className = 'purchase-filter'
+	itemizedTab.className = 'purchase-filters-filter'
 }
 
 function repairsPurchases() {
@@ -82,6 +89,7 @@ function repairsPurchases() {
 	listedTab.className = 'purchase-filter'
 	repairsTab.className = 'purchase-filters-selected'
 	soldTab.className = 'purchase-filter'
+	itemizedTab.className = 'purchase-filters-filter'
 }
 
 function soldPurchases() {
@@ -94,6 +102,19 @@ function soldPurchases() {
 	listedTab.className = 'purchase-filter'
 	repairsTab.className = 'purchase-filter'
 	soldTab.className = 'purchase-filters-selected'
+	itemizedTab.className = 'purchase-filters-filter'
+}
+function itemizedPurchases() {
+	tabFilters = ["itemized"]
+	showPurchases()
+	
+	allTab.className = 'purchase-filter'
+	inTransitTab.className = 'purchase-filter'
+	processingTab.className = 'purchase-filter'
+	listedTab.className = 'purchase-filter'
+	repairsTab.className = 'purchase-filter'
+	soldTab.className = 'purchase-filters-filter'
+	itemizedTab.className = 'purchase-filters-selected'
 }
 
 
@@ -265,6 +286,12 @@ function buildPurchaseBlock(ID, index, title, buyer, date, price, status) {
 	purchaseActionSold.setAttribute('onClick', `updatePurchaseStatus("${ID}", "sold")`)
 	purchaseActionSold.innerHTML = ''
 	purchaseActions.appendChild(purchaseActionSold)
+
+	var purchaseActionItemized = document.createElement('div')
+	purchaseActionItemized.setAttribute('class', 'purchase-icon')
+	purchaseActionItemized.setAttribute('onClick', `updatePurchaseStatus("${ID}", "itemized")`)
+	purchaseActionItemized.innerHTML = ''
+	purchaseActions.appendChild(purchaseActionItemized)
 
     //Details Block
     var purchaseDetails = document.createElement('div')
