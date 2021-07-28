@@ -37,7 +37,7 @@ function allPurchases() {
 	listedTab.className = 'purchase-filter'
 	repairsTab.className = 'purchase-filter'
 	soldTab.className = 'purchase-filter'
-	itemizedTab.className = 'purchase-filters-filter'
+	itemizedTab.className = 'purchase-filter'
 }
 
 function inTransitPurchases() {
@@ -50,7 +50,7 @@ function inTransitPurchases() {
 	listedTab.className = 'purchase-filter'
 	repairsTab.className = 'purchase-filter'
 	soldTab.className = 'purchase-filter'
-	itemizedTab.className = 'purchase-filters-filter'
+	itemizedTab.className = 'purchase-filter'
 }
 
 function processingPurchases() {
@@ -63,7 +63,7 @@ function processingPurchases() {
 	listedTab.className = 'purchase-filter'
 	repairsTab.className = 'purchase-filter'
 	soldTab.className = 'purchase-filter'
-	itemizedTab.className = 'purchase-filters-filter'
+	itemizedTab.className = 'purchase-filter'
 }
 
 function listedPurchases() {
@@ -76,7 +76,7 @@ function listedPurchases() {
 	listedTab.className = 'purchase-filters-selected'
 	repairsTab.className = 'purchase-filter'
 	soldTab.className = 'purchase-filter'
-	itemizedTab.className = 'purchase-filters-filter'
+	itemizedTab.className = 'purchase-filter'
 }
 
 function repairsPurchases() {
@@ -89,7 +89,7 @@ function repairsPurchases() {
 	listedTab.className = 'purchase-filter'
 	repairsTab.className = 'purchase-filters-selected'
 	soldTab.className = 'purchase-filter'
-	itemizedTab.className = 'purchase-filters-filter'
+	itemizedTab.className = 'purchase-filter'
 }
 
 function soldPurchases() {
@@ -102,7 +102,7 @@ function soldPurchases() {
 	listedTab.className = 'purchase-filter'
 	repairsTab.className = 'purchase-filter'
 	soldTab.className = 'purchase-filters-selected'
-	itemizedTab.className = 'purchase-filters-filter'
+	itemizedTab.className = 'purchase-filter'
 }
 function itemizedPurchases() {
 	tabFilters = ["itemized"]
@@ -488,6 +488,7 @@ function buildSubPurchases(purchaseID, DOMElement) {
         })
     })
 }
+
 
 
 
