@@ -249,6 +249,9 @@ function buildPurchaseBlock(ID, index, title, buyer, date, price, status) {
 	} else if (status == "sold") {
 		purchaseStatus.setAttribute('class', 'purchase-status-sold')
 		purchaseStatus.innerHTML = "SOLD"
+	} else if (status == 'itemized') {
+		purchaseStatus.setAttribute('class', 'purchase-status-itemized')
+		purchaseStatus.innerHTML = "ITEMIZED"
 	}
 	purchaseBlock.appendChild(purchaseStatus)
 
