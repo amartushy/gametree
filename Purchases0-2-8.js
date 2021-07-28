@@ -2,7 +2,7 @@
 var database = firebase.firestore()
 
 //FILTERS
-var tabFilters = ["in transit", "processing", "listed", "needs repair", "sold"]
+var tabFilters = ["in transit", "processing", "listed", "needs repair", "sold", "itemized"]
 var purchaseFilters = "All prices"
 
 //______________________
