@@ -485,3 +485,242 @@ function buildSubPurchases(purchaseID, DOMElement) {
         })
     })
 }
+
+
+
+
+//HTML Elements
+let globalAITPID, globalPurchaseDate
+
+let aitpModal = document.getElementById('aitp-modal')
+let aitpCloseModal = document.getElementById('aitp-close-modal')
+let aitpSearchField = document.getElementById('aitp-search-field')
+let aitpSearchEnter = document.getElementById('aitp-search-enter')
+let aitpSearchResults = document.getElementById('aitp-search-results')
+
+aitpCloseModal.addEventListener('click', () => {
+    $('#aitp-modal').fadeOut()
+
+    resetAITPSearchModal()
+})
+
+aitpSearchEnter.addEventListener('click', () => {
+    // only query string
+    let queryString = aitpSearchField.value
+    
+    // index.search(queryString).then(({ hits }) => {
+    //     console.log(hits);
+    // })
+})
+
+function resetAITPSearchModal() {
+    while(aitpSearchResults.firstChild) {
+        aitpSearchResults.removeChild(aitpSearchResults.firstChild)
+    }
+
+    //Reset results?
+}
+
+resetAITPSearchModal()
+$('#dumbass-w-form').removeClass('w-form')
+$('#dumbass-w-form-2').removeClass('w-form')
+
+
+function showAITPModal(purchaseID, purchaseDate) {
+  $('#aitp-modal').fadeIn().css('display', 'flex')
+  globalAITPID = purchaseID
+  globalPurchaseDate = parseFloat(purchaseDate)
+  console.log('Global Purchase ID: ' + globalAITPID)
+  resetAITPSearchModal()
+}
+
+
+//Algolia
+const searchClient = algoliasearch('EXJJGW7VTC', '6253027161abf2af452a4c3551a7d6ab');
+  
+const search = instantsearch({
+    indexName: 'products_gametree',
+    searchClient,
+});
+
+function createProductSearchResult(results) {
+    let hitsContainer = document.createElement('div')
+    hitsContainer.className = 'aitp-SearchResults'
+    console.log(results.hits)
+
+    results.hits.forEach(function(hit, hitIndex) {
+        let aitpSearchResultDiv = document.createElement('div')
+        aitpSearchResultDiv.className = 'aitp-search-result-div'
+        hitsContainer.appendChild(aitpSearchResultDiv)
+
+        let aitpImage = document.createElement('img')
+        aitpImage.className = 'aitp-image'
+        aitpImage.src = hit.productImage
+        aitpSearchResultDiv.appendChild(aitpImage)
+
+        let aitpProductInfoDiv = document.createElement('div')
+        aitpProductInfoDiv.className = 'aitp-product-info-div'
+        aitpSearchResultDiv.appendChild(aitpProductInfoDiv)
+    
+        let aitpProductTitle = document.createElement('div')
+        aitpProductTitle.className = 'aitp-product-title'
+        aitpProductTitle.innerHTML = instantsearch.highlight({ attribute: `general.productName`, hit })
+        aitpProductInfoDiv.appendChild(aitpProductTitle)
+
+        let aitpProductPlatform = document.createElement('div')
+        aitpProductPlatform.className = 'aitp-product-subtitle'
+        aitpProductPlatform.innerHTML = 'Platform: ' + instantsearch.highlight({ attribute: `brand`, hit, highlightedTagName: 'em', })
+        aitpProductInfoDiv.appendChild(aitpProductPlatform)
+
+        let aitpActionsWrapper = document.createElement('div')
+        aitpActionsWrapper.className = 'aitp-actions-wrapper'
+        aitpSearchResultDiv.appendChild(aitpActionsWrapper)
+
+        let aitpPurchasePriceField = document.createElement('input')
+        aitpPurchasePriceField.className = 'aitp-purchase-price-field w-input'
+        aitpPurchasePriceField.id = `purchasePriceField-${hit.objectID}`
+        aitpPurchasePriceField.placeholder = '$00.00'
+        aitpActionsWrapper.appendChild(aitpPurchasePriceField)
+
+        const conditionOptions = ['Acceptable', 'Good', 'Fantastic', 'New']
+        const conditionPaths = ['usedAcceptable', 'usedGood', 'usedFantastic', 'new']
+
+        let aitpDropdown = document.createElement('select')
+        aitpDropdown.className = 'aitp-dropdown'
+        aitpDropdown.placeholder = 'Condition'
+        aitpDropdown.id = `item-condition-${hit.objectID}`
+        for (const condition of conditionOptions) {
+            var option = document.createElement('option')
+            option.value = conditionPaths[conditionOptions.indexOf(condition)]
+            option.text = condition
+            aitpDropdown.appendChild(option)
+        }
+        aitpActionsWrapper.appendChild(aitpDropdown)
+
+        let aitpButton = document.createElement('div')
+        aitpButton.className = 'aitp-button'
+        aitpButton.innerHTML = 'ADD ITEM'
+        aitpButton.setAttribute('onClick', `addItemToPurchase("${hit.objectID}", "${hit.general.productName}")`)
+        aitpActionsWrapper.appendChild(aitpButton)
+    })
+
+    return hitsContainer.outerHTML
+}
+
+// Create the render function
+const renderAutocomplete = (renderOptions, isFirstRender) => {
+  const { indices, currentRefinement, refine, widgetParams } = renderOptions;
+
+  if (isFirstRender) {
+    const input = document.querySelector('#aitp-search-field');
+
+    input.addEventListener('input', event => {
+      refine(event.currentTarget.value);
+    });
+  }
+
+  document.querySelector('#aitp-search-field').value = currentRefinement;
+  widgetParams.container.innerHTML = indices
+    .map(createProductSearchResult)
+    .join('');
+};
+
+// Create the custom widget
+const customAutocomplete = instantsearch.connectors.connectAutocomplete(
+  renderAutocomplete
+);
+
+// Instantiate the custom widget
+search.addWidgets([
+    
+  customAutocomplete({
+    container: document.querySelector('#aitp-search-results'),
+  })
+  
+]);
+
+search.start()
+
+
+function addItemToPurchase(GTIN, productTitle) {
+    console.log(GTIN)
+    let conditionDropdown = document.getElementById(`item-condition-${GTIN}`)
+    let itemCondition = conditionDropdown.options[conditionDropdown.selectedIndex].value
+    let purchasePrice = parseFloat(document.getElementById(`purchasePriceField-${GTIN}`).value)
+
+    if (isNaN(purchasePrice)) {
+      showErrorMessage('Please enter a valid purchase price.')
+
+    } else if (itemCondition == '') {
+      showErrorMessage('Please choose an item condiiton')
+      
+    } else {
+      database.collection('purchases').doc(globalAITPID).get().then(function(doc) {
+        var data = doc.data()
+        var numItems = data.numItems + 1
+        let newID = `${globalAITPID}-${numItems}`
+  
+        var promises = []
+        //Update counter
+        var numItemsUpdateDict = {}
+        numItemsUpdateDict['numItems'] = firebase.firestore.FieldValue.increment(1)
+        var numItemsPromise = database.collection('purchases').doc(globalAITPID).update(numItemsUpdateDict).then(function() {
+          console.log('Num items successfully updated')
+        }).catch(function(error) {
+          showErrorMessage(error)
+        })
+  
+        //Add to purchase sub collection
+        var subPurchaseDict = {
+          'GTIN' : GTIN,
+          'purchasePrice' : parseFloat(document.getElementById(`purchasePriceField-${GTIN}`).value),
+          'productTitle' : productTitle,
+          'condition' : itemCondition,
+          'revenue' : 0,
+          'status' : 'processing'
+        }
+        var subPurchasePromise = database.collection('purchases').doc(globalAITPID).collection('subPurchases').doc(newID).set(subPurchaseDict).then(function() {
+          console.log('Sub-Purchase successfully updated')
+        }).catch(function(error) {
+          showErrorMessage(error)
+        })
+  
+        //Add item to inventory collection with sequential globalAITPID-# identifier
+        var inventoryDict = {
+          'GTIN' : GTIN,
+          'purchasePrice' : parseFloat(document.getElementById(`purchasePriceField-${GTIN}`).value),
+          'condition': itemCondition,
+          'platformSold' : '',
+          'productTitle' : productTitle,
+          'purchaseDate' : globalPurchaseDate,
+          'sellingFees' : 0,
+          'shippingFees' : 0,
+          'sold' : 0,
+          'taxes' : 0,
+          'status' : 'processing',
+        }
+        var inventoryPromise = database.collection('inventory').doc(newID).set(inventoryDict).then(function() {
+          console.log('Inventory successfully updated')
+        }).catch(function(error) {
+          showErrorMessage(error)
+        })
+  
+        //Update catalog availability for item condition
+        let catalogUpdateDict = {}
+        catalogUpdateDict[`availability.${newID}`] = itemCondition
+        var availabilityPromise = database.collection('catalog').doc(GTIN).update(catalogUpdateDict).then(function() {
+          console.log('Availability successfully updated')
+        }).catch(function(error) {
+          showErrorMessage(error)
+        })
+  
+        promises.push(numItemsPromise, subPurchasePromise, inventoryPromise, availabilityPromise)
+  
+        Promise.all(promises).then(results => {
+          showErrorMessage(`Item successfully added to purchase: ${globalAITPID}`)
+          let subPurchasesArea = document.getElementById(`sub-purchases-area-${globalAITPID}`)
+          buildSubPurchases(globalAITPID, subPurchasesArea)
+        })
+      })
+    }
+}
