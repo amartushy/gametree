@@ -693,6 +693,7 @@ function addItemToPurchase(GTIN, productTitle) {
         var inventoryDict = {
           'GTIN' : GTIN,
           'purchasePrice' : parseFloat(document.getElementById(`purchasePriceField-${GTIN}`).value),
+		  'purchaseID' : newID,
           'condition': itemCondition,
           'platformSold' : '',
           'productTitle' : productTitle,
