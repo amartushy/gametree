@@ -604,7 +604,7 @@ function createProductSearchResult(results) {
         let aitpButton = document.createElement('div')
         aitpButton.className = 'aitp-button'
         aitpButton.innerHTML = 'ADD ITEM'
-        aitpButton.setAttribute('onClick', `addItemToPurchase("${hit.objectID}", "${hit.general.productName}")`)
+        aitpButton.setAttribute('onClick', `addItemToPurchase("${hit.objectID}", "${hit.general.productName}", "${hit.productImage}")`)
         aitpActionsWrapper.appendChild(aitpButton)
     })
 
@@ -646,7 +646,7 @@ search.addWidgets([
 search.start()
 
 
-function addItemToPurchase(GTIN, productTitle) {
+function addItemToPurchase(GTIN, productTitle, productImage) {
     console.log(GTIN)
     let conditionDropdown = document.getElementById(`item-condition-${GTIN}`)
     let itemCondition = conditionDropdown.options[conditionDropdown.selectedIndex].value
@@ -693,15 +693,17 @@ function addItemToPurchase(GTIN, productTitle) {
         var inventoryDict = {
           'GTIN' : GTIN,
           'purchasePrice' : parseFloat(document.getElementById(`purchasePriceField-${GTIN}`).value),
-		  'purchaseID' : newID,
+		      'purchaseID' : newID,
           'condition': itemCondition,
           'platformSold' : '',
           'productTitle' : productTitle,
+          'productImage' : productImage,
           'purchaseDate' : globalPurchaseDate,
           'sellingFees' : 0,
           'shippingFees' : 0,
           'sold' : 0,
           'taxes' : 0,
+          'revenue' : 0,
           'status' : 'processing',
         }
         var inventoryPromise = database.collection('inventory').doc(newID).set(inventoryDict).then(function() {
