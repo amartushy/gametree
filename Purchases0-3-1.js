@@ -712,16 +712,7 @@ function addItemToPurchase(GTIN, productTitle, productImage) {
           showErrorMessage(error)
         })
   
-        //Update catalog availability for item condition
-        let catalogUpdateDict = {}
-        catalogUpdateDict[`availability.${newID}`] = itemCondition
-        var availabilityPromise = database.collection('catalog').doc(GTIN).update(catalogUpdateDict).then(function() {
-          console.log('Availability successfully updated')
-        }).catch(function(error) {
-          showErrorMessage(error)
-        })
-  
-        promises.push(numItemsPromise, subPurchasePromise, inventoryPromise, availabilityPromise)
+        promises.push(numItemsPromise, subPurchasePromise, inventoryPromise)
   
         Promise.all(promises).then(results => {
           showErrorMessage(`Item successfully added to purchase: ${globalAITPID}`)
