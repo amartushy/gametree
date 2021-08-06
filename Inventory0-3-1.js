@@ -161,7 +161,7 @@ function createProductSearchResult(results) {
             var option = document.createElement('div')
             option.className = 'dropdown-option'
             option.innerHTML = status
-            option.setAttribute('onClick', `changeItemStatus2("${hit.GTIN}", "${hit.objectID}", ${status})`)
+            option.setAttribute('onClick', `changeItemStatus2("${hit.GTIN}", "${hit.objectID}", "${status}")`)
             statusDropdownOptionsContainer.appendChild(option)
         }
 
