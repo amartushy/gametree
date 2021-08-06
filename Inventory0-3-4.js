@@ -189,7 +189,7 @@ function createProductSearchResult(results) {
 
 
         //Platform Sold Dropdown Cell
-        const platformOptions = ['Select', 'eBay', 'Amazon', 'GAMETREE', 'Facebook', 'OfferUp']
+        const platformOptions = ['eBay', 'Amazon', 'GAMETREE', 'Facebook', 'OfferUp']
 
 
         let platformDropdownContainer = document.createElement('div')
@@ -204,6 +204,7 @@ function createProductSearchResult(results) {
 
         let platformDropdownText = document.createElement('div')
         platformDropdownText.className = 'dropdown-button-text'
+        console.log(hit.platformSold)
         if(hit.platformSold != "") {
             statusDropdownText.innerHTML = hit.platformSold
         } else {
