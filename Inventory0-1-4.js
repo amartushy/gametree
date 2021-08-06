@@ -146,6 +146,8 @@ function createProductSearchResult(results) {
         //         break;
         //     }
         // }
+	            console.log(hit.status)
+        console.log(statusDropdown.value)
         statusDropdown.value = hit.status
         statusDropdown.setAttribute('onchange', `changeItemStatus("${hit.GTIN}", "${hit.objectID}")`)
         itemGridBlock.appendChild(statusDropdown)
