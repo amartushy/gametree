@@ -140,7 +140,7 @@ function createProductSearchResult(results) {
             option.text = status
             statusDropdown.appendChild(option)
         }
-        statusDropdown.setAttribute('onchange', `changeItemStatus("${GTIN}", "${hit.objectID}")`)
+        statusDropdown.setAttribute('onchange', `changeItemStatus("${hit.GTIN}", "${hit.objectID}")`)
         itemGridBlock.appendChild(statusDropdown)
 
         //Purchase Date Cell
