@@ -145,7 +145,7 @@ function createProductSearchResult(results) {
         let statusDropdownText = document.createElement('div')
         statusDropdownText.className = 'dropdown-button-text'
         statusDropdownText.innerHTML = hit.status
-        statusDropdownText.id = `status-dropdown-text-${itemID}`
+        statusDropdownText.id = `status-dropdown-text-${hit.objectID}`
         statusDropdownButton.appendChild(statusDropdownText)
 
         let statusDropdownChevron = document.createElement('div')
@@ -163,7 +163,7 @@ function createProductSearchResult(results) {
             option.className = 'dropdown-option'
             option.innerHTML = status
             option.addEventListener('click', () => {
-                var priorStatus = document.getElementById(`status-dropdown-text-${itemID}`).innerHTML
+                var priorStatus = document.getElementById(`status-dropdown-text-${hit.objectID}`).innerHTML
                 var newStatus = status
                 changeItemStatus2(hit.GTIN, hit.objectID, priorStatus, newStatus)
                 $(`#status-dropdown-options-container-${hit.objectID}`).fadeOut()
