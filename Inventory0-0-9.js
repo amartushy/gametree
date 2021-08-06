@@ -1,4 +1,5 @@
 
+var database = firebase.firestore()
 
 window.onload = () => {
     // const inventoryItemsContainer = document.getElementById('inventory-grid-form')
