@@ -1,5 +1,7 @@
 
 
+
+
 window.onload = () => {
     // const inventoryItemsContainer = document.getElementById('inventory-grid-form')
 
@@ -87,6 +89,8 @@ function createProductSearchResult(results) {
     results.hits.forEach(function(hit, hitIndex) {
         let itemGridBlock = document.createElement('div')
         itemGridBlock.className = 'item-grid-block'
+        itemGridBlock.id = `item-grid-block-${hit.objectID}`
+        itemGridBlock.setAttribute('item-condition', hit.condition)
         inventoryGridContainer.appendChild(itemGridBlock)
 
         let itemGridPhotoContainer = document.createElement('div')
@@ -161,7 +165,7 @@ function createProductSearchResult(results) {
         itemGridBlock.appendChild(itemSoldDate)
 
         //Platform Sold Dropdown Cell
-        const platformOptions = ['Select', 'eBay', 'Amazon', 'GAMETREE', 'FB Marketplace', 'OfferUp']
+        const platformOptions = ['Select', 'eBay', 'Amazon', 'GAMETREE', 'Facebook', 'OfferUp']
 
         let platformDropdown = document.createElement('select')
         platformDropdown.className = 'item-grid-platform-dropdown'
