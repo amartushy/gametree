@@ -149,7 +149,7 @@ function createProductSearchResult(results) {
         statusDropdownButton.appendChild(statusDropdownText)
 
         let statusDropdownChevron = document.createElement('div')
-        statusDropdownChevron.className = 'status-dropdown-chevron'
+        statusDropdownChevron.className = 'dropdown-button-chevron'
         statusDropdownChevron.innerHTML = ''
         statusDropdownButton.appendChild(statusDropdownChevron)
 
@@ -168,7 +168,7 @@ function createProductSearchResult(results) {
                 changeItemStatus2(hit.GTIN, hit.objectID, priorStatus, newStatus)
                 $(`#status-dropdown-options-container-${hit.objectID}`).fadeOut()
             })
-            statusDropdownContainer.appendChild(option)
+            statusDropdownOptionsContainer.appendChild(option)
         }
 
         //Purchase Date Cell
