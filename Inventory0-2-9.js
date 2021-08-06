@@ -160,12 +160,7 @@ function createProductSearchResult(results) {
             var option = document.createElement('div')
             option.className = 'dropdown-option'
             option.innerHTML = status
-            option.addEventListener('click', () => {
-                var priorStatus = document.getElementById(`status-dropdown-text-${hit.objectID}`).innerHTML
-                var newStatus = status
-                changeItemStatus2(hit.GTIN, hit.objectID, priorStatus, newStatus)
-                $(`#status-dropdown-options-container-${hit.objectID}`).fadeOut()
-            })
+            option.setAttribute('onClick', `changeItemStatus2("${hit.GTIN}", "${hit.objectID}", ${status})`)
             statusDropdownOptionsContainer.appendChild(option)
         }
 
