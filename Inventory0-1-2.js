@@ -141,6 +141,8 @@ function createProductSearchResult(results) {
             statusDropdown.appendChild(option)
         }
         for(var i, j = 0; i = statusDropdown.options[j]; j++) {
+		            console.log(i, j)
+
             if(i.value == hit.status) {
                 statusDropdown.selectedIndex = j;
                 break;
