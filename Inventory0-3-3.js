@@ -204,7 +204,7 @@ function createProductSearchResult(results) {
 
         let platformDropdownText = document.createElement('div')
         platformDropdownText.className = 'dropdown-button-text'
-        if(hit.platformSold) {
+        if(hit.platformSold != "") {
             statusDropdownText.innerHTML = hit.platformSold
         } else {
             statusDropdownText.innerHTML = 'Select One..'
