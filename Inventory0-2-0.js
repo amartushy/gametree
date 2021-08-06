@@ -139,11 +139,9 @@ function createProductSearchResult(results) {
             option.text = status
             statusDropdown.appendChild(option)
 
-            if(hit.status == status) {
-		    console.log('yup')
-                statusDropdown.value = status
-            }
         }
+        statusDropdown.options[statusOptions.indexOf(status)].selected = true
+
         statusDropdown.setAttribute('onchange', `changeItemStatus("${hit.GTIN}", "${hit.objectID}")`)
         itemGridBlock.appendChild(statusDropdown)
 
