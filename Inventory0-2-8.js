@@ -137,11 +137,7 @@ function createProductSearchResult(results) {
                 break;
         }
         statusDropdownButton.id = `dropdown-button-${hit.objectID}`
-        statusDropdownButton.addEventListener('click', () => {
-		            console.log('clicked')
-
-            $(`#status-dropdown-options-container-${hit.objectID}`).fadeIn()
-        })
+        statusDropdownButton.setAttribute('onClick', `displayStatusDropdown("${hit.objectID}")`)
         statusDropdownContainer.appendChild(statusDropdownButton)
 
         let statusDropdownText = document.createElement('div')
