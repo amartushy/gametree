@@ -140,7 +140,7 @@ function createProductSearchResult(results) {
             statusDropdown.appendChild(option)
 
             if(hit.status == status) {
-                statusDropdown.options[statusOptions.indexOf(hit.status)].selected = true
+                statusDropdown.value = status
             }
         }
         statusDropdown.setAttribute('onchange', `changeItemStatus("${hit.GTIN}", "${hit.objectID}")`)
