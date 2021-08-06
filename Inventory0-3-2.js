@@ -137,7 +137,7 @@ function createProductSearchResult(results) {
                 break;
         }
         statusDropdownButton.id = `dropdown-button-${hit.objectID}`
-        statusDropdownButton.setAttribute('onClick', `displayStatusDropdown("${hit.objectID}")`)
+        statusDropdownButton.setAttribute('onClick', `displayDropdownOptions("status", "${hit.objectID}")`)
         statusDropdownContainer.appendChild(statusDropdownButton)
 
         let statusDropdownText = document.createElement('div')
@@ -184,23 +184,53 @@ function createProductSearchResult(results) {
         itemSoldDate.id = `item-sold-date-${hit.objectID}`
         itemGridBlock.appendChild(itemSoldDate)
 
+
+
+
+
         //Platform Sold Dropdown Cell
         const platformOptions = ['Select', 'eBay', 'Amazon', 'GAMETREE', 'Facebook', 'OfferUp']
 
-        let platformDropdown = document.createElement('select')
-        platformDropdown.className = 'item-grid-platform-dropdown'
+
+        let platformDropdownContainer = document.createElement('div')
+        platformDropdownContainer.className = 'item-dropdown-container'
+        itemGridBlock.appendChild(platformDropdownContainer)
+
+        let platformDropdownButton = document.createElement('div')
+        platformDropdownButton.className = 'dropdown-button'
+        platformDropdownButton.id = `platform-dropdown-button-${hit.objectID}`
+        platformDropdownButton.setAttribute('onClick', `displayDropdownOptions("platform", "${hit.objectID}")`)
+        platformDropdownContainer.appendChild(platformDropdownButton)
+
+        let platformDropdownText = document.createElement('div')
+        platformDropdownText.className = 'dropdown-button-text'
         if(hit.platformSold) {
-            platformDropdown.value = hit.status
+            statusDropdownText.innerHTML = hit.platformSold
+        } else {
+            statusDropdownText.innerHTML = 'Select One..'
         }
-        platformDropdown.id = `item-platform-sold-${hit.objectID}`
+        platformDropdownText.id = `platform-dropdown-text-${hit.objectID}`
+        platformDropdownButton.appendChild(platformDropdownText)
+
+        let platformDropdownChevron = document.createElement('div')
+        platformDropdownChevron.className = 'dropdown-button-chevron'
+        platformDropdownChevron.innerHTML = ''
+        platformDropdownButton.appendChild(platformDropdownChevron)
+
+        let platformDropdownOptionsContainer = document.createElement('div')
+        platformDropdownOptionsContainer.className = 'dropdown-options-container'
+        platformDropdownOptionsContainer.style.display = 'none'
+        platformDropdownOptionsContainer.id = `platform-dropdown-options-container-${hit.objectID}`
+        platformDropdownContainer.appendChild(platformDropdownOptionsContainer)
+
         for (const platform of platformOptions) {
-            var option = document.createElement('option')
-            option.value = platform
-            option.text = platform
-            platformDropdown.appendChild(option)
+            var option = document.createElement('div')
+            option.className = 'dropdown-option'
+            option.innerHTML = platform
+            option.setAttribute('onClick', `changeItemPlatform("${hit.objectID}", "${platform}")`)
+            platformDropdownOptionsContainer.appendChild(option)
         }
 
-        itemGridBlock.appendChild(platformDropdown)
 
 
         //Financial Cells
