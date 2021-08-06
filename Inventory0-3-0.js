@@ -153,6 +153,7 @@ function createProductSearchResult(results) {
 
         let statusDropdownOptionsContainer = document.createElement('div')
         statusDropdownOptionsContainer.className = 'dropdown-options-container'
+        statusDropdownOptionsContainer.style.display = 'none'
         statusDropdownOptionsContainer.id = `status-dropdown-options-container-${hit.objectID}`
         statusDropdownContainer.appendChild(statusDropdownOptionsContainer)
 
