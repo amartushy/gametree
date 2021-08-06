@@ -132,7 +132,6 @@ function createProductSearchResult(results) {
                 statusDropdown.className = 'item-grid-status-repairs'
                 break;
         }
-        //statusDropdown.value = hit.status
         statusDropdown.id = `item-status-${hit.objectID}`
         for (const status of statusOptions) {
             var option = document.createElement('option')
@@ -140,14 +139,14 @@ function createProductSearchResult(results) {
             option.text = status
             statusDropdown.appendChild(option)
         }
-        for(var i, j = 0; i = statusDropdown.options[j]; j++) {
-		            console.log(i, j)
-
-            if(i.value == hit.status) {
-                statusDropdown.selectedIndex = j;
-                break;
-            }
-        }
+        // for(var i, j = 0; i = statusDropdown.options[j]; j++) {
+        //     console.log(i, j)
+        //     if(i.value == hit.status) {
+        //         statusDropdown.selectedIndex = j;
+        //         break;
+        //     }
+        // }
+        statusDropdown.value = hit.status
         statusDropdown.setAttribute('onchange', `changeItemStatus("${hit.GTIN}", "${hit.objectID}")`)
         itemGridBlock.appendChild(statusDropdown)
 
