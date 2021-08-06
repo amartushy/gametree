@@ -138,6 +138,8 @@ function createProductSearchResult(results) {
         }
         statusDropdownButton.id = `dropdown-button-${hit.objectID}`
         statusDropdownButton.addEventListener('click', () => {
+		            console.log('clicked')
+
             $(`#status-dropdown-options-container-${hit.objectID}`).fadeIn()
         })
         statusDropdownContainer.appendChild(statusDropdownButton)
