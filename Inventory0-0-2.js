@@ -1,12 +1,13 @@
 
 
 window.onload = () => {
-    const inventoryItemsContainer = document.getElementById('inventory-grid-form')
+    // const inventoryItemsContainer = document.getElementById('inventory-grid-form')
 
-    while(inventoryItemsContainer.firstChild) {
-        inventoryItemsContainer.removeChild(inventoryItemsContainer.firstChild) 
-    }
+    // while(inventoryItemsContainer.firstChild) {
+    //     inventoryItemsContainer.removeChild(inventoryItemsContainer.firstChild) 
+    // }
 
+    buildCalendar()
 }
 
 
