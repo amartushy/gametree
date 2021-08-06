@@ -114,35 +114,62 @@ function createProductSearchResult(results) {
         //Status Dropdown Cell
         const statusOptions = ['processing', 'active', 'sold', 'repairs']
 
-        let statusDropdown = document.createElement('select')
+        let statusDropdownContainer = document.createElement('div')
+        statusDropdownContainer.className = 'item-dropdown-container'
+        itemGridBlock.appendChild(statusDropdownContainer)
+
+        let statusDropdownButton = document.createElement('div')
         switch(`${hit.status}`) {
             case 'processing' :
-                statusDropdown.className = 'item-grid-status-processing'
+                statusDropdownButton.className = 'dropdown-button-processing'
                 break;
 
             case 'active' :
-                statusDropdown.className = 'item-grid-status-active'
+                statusDropdownButton.className = 'dropdown-button-active'
                 break;
 
             case 'sold' :
-                statusDropdown.className = 'item-grid-status-sold'
+                statusDropdownButton.className = 'dropdown-button-sold'
                 break;
 
             case 'repairs' :
-                statusDropdown.className = 'item-grid-status-repairs'
+                statusDropdownButton.className = 'dropdown-button-repairs'
                 break;
         }
-        statusDropdown.id = `item-status-${hit.objectID}`
-        for (const status of statusOptions) {
-            var option = document.createElement('option')
-            option.value = status
-            option.text = status
-            statusDropdown.appendChild(option)
+        statusDropdownButton.id = `dropdown-button-${hit.objectID}`
+        statusDropdownButton.addEventListener('click', () => {
+            $(`#status-dropdown-options-container-${hit.objectID}`).fadeIn()
+        })
+        statusDropdownContainer.appendChild(statusDropdownButton)
 
+        let statusDropdownText = document.createElement('div')
+        statusDropdownText.className = 'dropdown-button-text'
+        statusDropdownText.innerHTML = hit.status
+        statusDropdownText.id = `status-dropdown-text-${itemID}`
+        statusDropdownButton.appendChild(statusDropdownText)
+
+        let statusDropdownChevron = document.createElement('div')
+        statusDropdownChevron.className = 'status-dropdown-chevron'
+        statusDropdownChevron.innerHTML = ''
+        statusDropdownButton.appendChild(statusDropdownChevron)
+
+        let statusDropdownOptionsContainer = document.createElement('div')
+        statusDropdownOptionsContainer.className = 'dropdown-options-container'
+        statusDropdownOptionsContainer.id = `status-dropdown-options-container-${hit.objectID}`
+        statusDropdownContainer.appendChild(statusDropdownOptionsContainer)
+
+        for (const status of statusOptions) {
+            var option = document.createElement('div')
+            option.className = 'dropdown-option'
+            option.innerHTML = status
+            option.addEventListener('click', () => {
+                var priorStatus = document.getElementById(`status-dropdown-text-${itemID}`).innerHTML
+                var newStatus = status
+                changeItemStatus2(hit.GTIN, hit.objectID, priorStatus, newStatus)
+                $(`#status-dropdown-options-container-${hit.objectID}`).fadeOut()
+            })
+            statusDropdownContainer.appendChild(option)
         }
-        statusDropdown.setAttribute('onchange', `changeItemStatus("${hit.GTIN}", "${hit.objectID}")`)
-        itemGridBlock.appendChild(statusDropdown)
-        statusDropdown.options[statusOptions.indexOf(hit.status)].selected = true
 
         //Purchase Date Cell
         let itemPurchaseDate = document.createElement('div')
