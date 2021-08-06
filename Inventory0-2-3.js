@@ -140,11 +140,9 @@ function createProductSearchResult(results) {
             statusDropdown.appendChild(option)
 
         }
-        statusDropdown.options[statusOptions.indexOf(hit.status)].selected = true
-        console.log(statusDropdown.selectedIndex)
-
         statusDropdown.setAttribute('onchange', `changeItemStatus("${hit.GTIN}", "${hit.objectID}")`)
         itemGridBlock.appendChild(statusDropdown)
+        statusDropdown.options[statusOptions.indexOf(hit.status)].selected = true
 
         //Purchase Date Cell
         let itemPurchaseDate = document.createElement('div')
