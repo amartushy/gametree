@@ -1,6 +1,5 @@
 
 
-
 window.onload = () => {
     // const inventoryItemsContainer = document.getElementById('inventory-grid-form')
 
@@ -185,6 +184,7 @@ function createProductSearchResult(results) {
         itemPurchasePrice.className = 'item-grid-input'
         var purchasePrice = hit.purchasePrice
         itemPurchasePrice.innerHTML = '$' + purchasePrice.toFixed(2)
+        itemPurchasePrice.id = `item-purchase-price-${hit.objectID}`
         itemGridBlock.appendChild(itemPurchasePrice)
 
         let itemSoldInput = document.createElement('input')
