@@ -266,3 +266,115 @@ search.addWidgets([
 ]);
 
 search.start()
+
+
+
+
+
+
+
+
+
+
+//Calendar Functions
+const calendarModal = document.getElementById('calendar-modal')
+const closeCalendarModal = document.getElementById('close-calendar-modal')
+closeCalendarModal.addEventListener('click', () => {
+    $('#calendar-modal').fadeOut()
+})
+
+
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+var currentDate = getCurrentMonthAndYear()
+var year = currentDate[0]
+var month = currentDate[1]
+
+
+function displayCalendarModal(itemID) {
+    $('#calendar-modal').fadeIn().css('display', 'flex')
+    document.getElementById('calendar-modal-item-id').innerHTML = itemID
+
+    buildCalendarNav()
+}
+
+function buildCalendarNav() {
+
+    var calendarBack = document.getElementById('calendar-back')
+    var calendarBackClone = calendarBack.cloneNode(true)
+    calendarBack.parentNode.replaceChild(calendarBackClone, calendarBack)
+    calendarBackClone.addEventListener('click', () => {
+        if (month==0) {
+            year--
+            month = 11
+        } else {
+            month--
+        }
+        buildCalendar()
+    })
+
+    var calendarForward = document.getElementById('calendar-forward')
+    var calendarForwardClone = calendarForward.cloneNode(true)
+    calendarForward.parentNode.replaceChild(calendarForwardClone, calendarForward)
+    calendarForwardClone.addEventListener('click', () => {
+        if (month==11) {
+            year++
+            month = 0
+        } else {
+            month++
+        }
+        buildCalendar()
+    })
+}
+
+function buildCalendar() {
+    var calendarHeader = document.getElementById('calendar-header')
+    calendarHeader.innerHTML = months[month] + " " + year
+
+    var dayRowContainer = document.getElementById('day-row-container')
+    while(dayRowContainer.firstChild) {
+        dayRowContainer.removeChild(dayRowContainer.firstChild)
+    }
+    var daysInMonth = getDaysInMonth(year, month+1)
+    var firstDay = firstDayOfMonth(year, month)
+    var counter = 0
+    var dayCounter = 1
+    for(i=0; i<6; i++) {
+        var dayRow = document.createElement('div')
+        dayRow.setAttribute('class', 'day-row')
+        dayRowContainer.appendChild(dayRow)
+
+        for(j=0; j<7; j++) {
+            var dayDiv = document.createElement('div')
+            if( counter >= firstDay && dayCounter <= daysInMonth){
+                dayDiv.setAttribute('class', 'day-div')
+                dayDiv.setAttribute('id', 'dayDiv-' + dayCounter)
+                dayRow.appendChild(dayDiv)
+
+                var dayNumber = document.createElement('div')
+                dayNumber.setAttribute('class', 'day-number')
+                dayNumber.innerHTML = dayCounter
+                dayDiv.appendChild(dayNumber)
+                dayDiv.setAttribute('onClick', `daySelected("${dayCounter}", "${month}", "${year}")`)
+
+                dayCounter++
+            } else {
+                dayDiv.setAttribute('class', 'day-div-empty')
+                dayRow.appendChild(dayDiv)
+            }
+
+            counter++
+        }
+    }
+}
+
+
+function daySelected(dayVal, monthVal, yearVal) {
+    var dateObject = new Date(yearVal, monthVal, dayVal)
+    var epochDate = dateObject.getTime() / 1000
+    var formattedDate = getFormattedDate(epochDate)
+    var itemID = document.getElementById('calendar-modal-item-id').innerHTML
+    let soldDateElement = document.getElementById(`item-sold-date-${itemID}`)
+    soldDateElement.innerHTML = formattedDate
+    soldDateElement.setAttribute('epochDate', epochDate)
+    $('#calendar-modal').fadeOut()
+}
