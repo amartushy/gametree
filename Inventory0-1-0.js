@@ -1,4 +1,3 @@
-
 var database = firebase.firestore()
 
 window.onload = () => {
@@ -132,6 +131,12 @@ function createProductSearchResult(results) {
             case 'repairs' :
                 statusDropdown.className = 'item-grid-status-repairs'
                 break;
+        }
+        for(var i, j = 0; i = statusDropdown.options[j]; j++) {
+            if(i.value == hit.status) {
+                mySelect.selectedIndex = j;
+                break;
+            }
         }
         statusDropdown.value = hit.status
         statusDropdown.id = `item-status-${hit.objectID}`
