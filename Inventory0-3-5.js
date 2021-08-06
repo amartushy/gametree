@@ -204,11 +204,10 @@ function createProductSearchResult(results) {
 
         let platformDropdownText = document.createElement('div')
         platformDropdownText.className = 'dropdown-button-text'
-        console.log(hit.platformSold)
         if(hit.platformSold != "") {
-            statusDropdownText.innerHTML = hit.platformSold
+            platformDropdownText.innerHTML = hit.platformSold
         } else {
-            statusDropdownText.innerHTML = 'Select One..'
+            platformDropdownText.innerHTML = 'Select One..'
         }
         platformDropdownText.id = `platform-dropdown-text-${hit.objectID}`
         platformDropdownButton.appendChild(platformDropdownText)
