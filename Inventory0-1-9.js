@@ -140,6 +140,7 @@ function createProductSearchResult(results) {
             statusDropdown.appendChild(option)
 
             if(hit.status == status) {
+		    console.log('yup')
                 statusDropdown.value = status
             }
         }
