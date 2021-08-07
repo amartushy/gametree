@@ -612,7 +612,7 @@ function changeItemStatus(GTIN, itemID, newStatus) {
     if(updateInventory) {
 
         //Inventory Update
-        database.collection('inventory').doc(itemID).update(inventoryUpdateDict).then(function() {
+        database.collection('inventory').doc(GTIN).update(inventoryUpdateDict).then(function() {
             console.log('Updated catalog')
             if(newStatus == 'sold') {
                 var revenueField = document.getElementById(`item-revenue-${hit.objectID}`)
@@ -636,7 +636,7 @@ function changeItemStatus(GTIN, itemID, newStatus) {
 
     if(updateCatalog) {
         //Catalog Update
-        database.collection('catalog').doc(itemID).update(catalogUpdateDict).then(function() {
+        database.collection('catalog').doc(GTIN).update(catalogUpdateDict).then(function() {
             console.log('Updated catalog')
         }).catch(function(error) {
             showErrorMessage(error)
