@@ -470,7 +470,7 @@ function changeItemStatus(GTIN, itemID, newStatus) {
                 case 'active' :
                     //active -> processing: Remove availability
                     updateCatalog = true
-                    catalogUpdateDict[itemID] = firebase.firestore.FieldValue.delete()
+                    catalogUpdateDict['availability'][itemID] = firebase.firestore.FieldValue.delete()
                     break;
 
                 case 'sold' : 
@@ -497,7 +497,7 @@ function changeItemStatus(GTIN, itemID, newStatus) {
                 case 'processing' :
                     //processing -> active: Update Availability
                     updateCatalog = true
-                    catalogUpdateDict[itemID] = itemCondition
+                    catalogUpdateDict['availability'][itemID] = itemCondition
                     break;
 
                 case 'active' :
@@ -509,13 +509,13 @@ function changeItemStatus(GTIN, itemID, newStatus) {
                 case 'sold' : 
                     //sold -> active: Update Availability
                     updateCatalog = true
-                    catalogUpdateDict[itemID] = itemCondition
+                    catalogUpdateDict['availability'][itemID] = itemCondition
                     break;
 
                 case 'repairs' :
                     //repairs -> active: Update Availability
                     updateCatalog = true
-                    catalogUpdateDict[itemID] = itemCondition
+                    catalogUpdateDict['availability'][itemID] = itemCondition
                     break;
             }
             break;
@@ -561,7 +561,7 @@ function changeItemStatus(GTIN, itemID, newStatus) {
                     case 'active' :
                         //active -> sold: Remove availability
                         updateCatalog = true
-                        catalogUpdateDict[itemID] = firebase.firestore.FieldValue.delete()
+                        catalogUpdateDict['availability'][itemID] = firebase.firestore.FieldValue.delete()
                         break;
 
                     case 'sold' : 
@@ -593,7 +593,7 @@ function changeItemStatus(GTIN, itemID, newStatus) {
                 case 'active' :
                     //active -> repairs: Remove availability
                     updateCatalog = true
-                    catalogUpdateDict[itemID] = firebase.firestore.FieldValue.delete()
+                    catalogUpdateDict['availability'][itemID] = firebase.firestore.FieldValue.delete()
                     break;
 
                 case 'sold' : 
@@ -627,6 +627,7 @@ function changeItemStatus(GTIN, itemID, newStatus) {
             }
         }).catch(function(error) {
             showErrorMessage(error)
+            console.log(error)
         })
         dropdownTextElement.innerHTML = newStatus
 
@@ -640,6 +641,7 @@ function changeItemStatus(GTIN, itemID, newStatus) {
             console.log('Updated catalog')
         }).catch(function(error) {
             showErrorMessage(error)
+            console.log(error)
         })
 
         console.log(`Updating catalog: ${priorStatus} -> ${newStatus}`)
@@ -710,3 +712,4 @@ function changeItemPlatform(itemID, platform) {
     document.getElementById(`platform-dropdown-text-${itemID}`).innerHTML = platform
     $(`#platform-dropdown-options-container-${itemID}`).fadeOut()
 }
+
