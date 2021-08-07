@@ -423,7 +423,7 @@ function buildCalendar() {
 function daySelected(dayVal, monthVal, yearVal) {
     var dateObject = new Date(yearVal, monthVal, dayVal)
     var epochDate = dateObject.getTime() / 1000
-    var formattedDate = getFormattedDate(epochDate)
+    var formattedDate = getFormattedDate(epochDate * 1000)
     var itemID = document.getElementById('calendar-modal-item-id').innerHTML
     let soldDateElement = document.getElementById(`item-sold-date-${itemID}`)
     soldDateElement.innerHTML = formattedDate
