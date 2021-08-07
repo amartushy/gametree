@@ -53,8 +53,6 @@ function updateFilters(status) {
     if(status != 'all') {
         tabFilters = [`${status}`]
     }
-	
-	console.log(tabFilters)
 }
 
 function resetTabFilterClasses() {
