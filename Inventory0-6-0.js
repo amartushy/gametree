@@ -172,11 +172,12 @@ function createProductSearchResult(results) {
 
         //Sold Date Cell
         let itemSoldDate = document.createElement('div')
+        itemSoldDate.className = 'item-sold-date-button'
         if(hit.soldDate) {
-            itemSoldDate.className = 'item-grid-header'
-            itemSoldDate.innerHTML = getFormattedDate(hit.soldDate)
+            itemSoldDate.innerHTML = getFormattedDate(hit.soldDate * 1000)
+            itemSoldDate.setAttribute('onClick', `displayCalendarModal("${hit.objectID}")`)
+
         } else {
-            itemSoldDate.className = 'item-sold-date-button'
             itemSoldDate.innerHTML = 'Select Date'
             itemSoldDate.setAttribute('onClick', `displayCalendarModal("${hit.objectID}")`)
         }
