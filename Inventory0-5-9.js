@@ -543,12 +543,12 @@ function changeItemStatus(GTIN, itemID, newStatus) {
 
                 var inventoryUpdateDict = {
                     'status' : 'sold',
-                    'soldDate' : soldDate,
+                    'soldDate' : parseFloat(soldDate),
                     'platformSold' : platformSoldText,
-                    'sold' : document.getElementById(`item-input-sold-${itemID}`).value,
-                    'sellingFees' : document.getElementById(`item-input-fees-${itemID}`).value,
-                    'shippingFees' : document.getElementById(`item-input-shipping-${itemID}`).value,
-                    'taxes' : document.getElementById(`item-input-taxes-${itemID}`).value,
+                    'sold' : parseFloat(document.getElementById(`item-input-sold-${itemID}`).value),
+                    'sellingFees' : parseFloat(document.getElementById(`item-input-fees-${itemID}`).value),
+                    'shippingFees' : parseFloat(document.getElementById(`item-input-shipping-${itemID}`).value),
+                    'taxes' : parseFloat(document.getElementById(`item-input-taxes-${itemID}`).value),
                     'revenue' : revenue
                 }
                 //Update Catalog
