@@ -57,8 +57,7 @@ function updateFilters(status) {
     if(status != 'all') {
         tabFilters = [`${status}`]
     }
-
-    renderAutocomplete
+	console.log(tabFilters)
 }
 
 function resetTabFilterClasses() {
