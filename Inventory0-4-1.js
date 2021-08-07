@@ -429,3 +429,61 @@ function daySelected(dayVal, monthVal, yearVal) {
     soldDateElement.setAttribute('epochDate', epochDate)
     $('#calendar-modal').fadeOut()
 }
+
+
+
+
+
+
+
+
+//Helper Functions
+
+function getFormattedDate(epochDate) {
+	var date = new Date(epochDate)
+	var formattedDate = date.toLocaleDateString("en-US", {month:'long', day: 'numeric', year:'numeric'})
+	return formattedDate
+}
+
+function calculateRevenue(itemID) {
+    var purchasePrice = document.getElementById(`item-purchase-price-${itemID}`).innerHTML
+    var soldPrice = document.getElementById(`item-input-sold-${itemID}`).value
+    var sellingFees = document.getElementById(`item-input-fees-${itemID}`).value
+    var shippingFees = document.getElementById(`item-input-shipping-${itemID}`).value
+    var taxes = document.getElementById(`item-input-taxes-${itemID}`).value
+
+    if(isNaN(parseFloat(soldPrice))) {
+        showErrorMessage('Please enter a valid sale value')
+        return
+    } else if(isNaN(parseFloat(sellingFees))) {
+        showErrorMessage('Please enter a valid fees value')
+        return
+    } else if(isNaN(parseFloat(shippingFees))) {
+        showErrorMessage('Please enter a valid shipping fees value')
+        return
+    } else if(isNaN(parseFloat(taxes))) {
+        showErrorMessage('Please enter a valid taxes value')
+        return
+    } else {
+        var revenue = parseFloat(soldPrice) - parseFloat(purchasePrice.substring(1)) - parseFloat(sellingFees) - parseFloat(shippingFees) - parseFloat(taxes)
+        return revenue
+    }
+}
+
+function displayDropdownOptions(element, itemID) {
+    var dropdownOptions = document.getElementById(`${element}-dropdown-options-container-${itemID}`)
+    if (dropdownOptions.style.display != 'none') {
+        $(`#${element}-dropdown-options-container-${itemID}`).fadeOut(400, function() {
+            dropdownOptions.style.display = 'none'
+        })
+    } else {
+        $(`#${element}-dropdown-options-container-${itemID}`).fadeIn()
+    }
+}
+
+
+function changeItemPlatform(itemID, platform) {
+    document.getElementById(`platform-dropdown-text-${itemID}`).innerHTML = platform
+    $(`#platform-dropdown-options-container-${itemID}`).fadeOut()
+}
+
