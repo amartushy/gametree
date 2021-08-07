@@ -54,7 +54,11 @@ function updateFilters(status) {
 
     tabFilters = [`${status}`]
 
-    document.querySelector('#inventory-search-field').value = ""
+    if(status != 'all') {
+        tabFilters = [`${status}`]
+    }
+
+    renderAutocomplete
 }
 
 function resetTabFilterClasses() {
