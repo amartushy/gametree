@@ -50,9 +50,7 @@ function updateFilters(status) {
 
     tabs[tabFilters.indexOf(status)].className = 'inventory-tab-selected'
 
-    tabFilters = [`${status}`]
-
-    if(!(status == 'all')) {
+    if(status != 'all') {
         tabFilters = [`${status}`]
     }
 	
