@@ -47,17 +47,14 @@ function updateFilters(status) {
     var tabs = [inventoryAllTab, inventoryProcessingTab, inventoryActiveTab, inventoryRepairsTab, inventorySoldTab]
 
     resetTabFilterClasses()
-    console.log(status)
-    console.log(tabs[tabFilters.indexOf(status)])
 
     tabs[tabFilters.indexOf(status)].className = 'inventory-tab-selected'
 
     tabFilters = [`${status}`]
 
-    if(status != 'all') {
+    if(status !== 'all') {
         tabFilters = [`${status}`]
     }
-	console.log(status)
 }
 
 function resetTabFilterClasses() {
