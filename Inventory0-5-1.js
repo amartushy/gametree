@@ -47,13 +47,16 @@ function updateFilters(status) {
     var tabs = [inventoryAllTab, inventoryProcessingTab, inventoryActiveTab, inventoryRepairsTab, inventorySoldTab]
 
     resetTabFilterClasses()
+    console.log(status)
+    console.log(tabs[tabFilters.indexOf(status)])
 
     tabs[tabFilters.indexOf(status)].className = 'inventory-tab-selected'
 
-    if(status != 'all') {
+    if(status !== 'all') {
         tabFilters = [`${status}`]
     }
 }
+
 
 function resetTabFilterClasses() {
     inventoryAllTab.className = 'inventory-tab'
@@ -427,6 +430,224 @@ function daySelected(dayVal, monthVal, yearVal) {
     soldDateElement.setAttribute('epochDate', epochDate)
     $('#calendar-modal').fadeOut()
 }
+
+
+
+
+
+
+//Status and Update Functions
+function changeItemStatus(GTIN, itemID, newStatus) {
+    var dropdownTextElement = document.getElementById(`status-dropdown-text-${itemID}`)
+    var priorStatus = dropdownTextElement.innerHTML
+
+    var dropdownContainer = document.getElementById(`dropdown-button-${itemID}`)
+
+
+    var itemBlock = document.getElementById(`item-grid-block-${itemID}`)
+    var itemCondition = itemBlock.getAttribute('item-condition')
+
+    var inventoryUpdateDict = {}
+    var catalogUpdateDict = {}
+
+    var updateInventory = false
+    var updateCatalog = false
+
+    switch(`${newStatus}`) {
+
+        case 'processing' :
+            dropdownContainer.className = 'dropdown-button-processing'
+            inventoryUpdateDict = {'status' : 'processing'}
+            updateInventory = true
+
+            //Update Catalog
+            switch(priorStatus) {
+                case 'processing' :
+                    //processing -> processing: No change to catalog
+                    updateCatalog = false
+                    break;
+
+                case 'active' :
+                    //active -> processing: Remove availability
+                    updateCatalog = true
+                    catalogUpdateDict[itemID] = firebase.firestore.FieldValue.delete()
+                    break;
+
+                case 'sold' : 
+                    //sold -> processing: No change to catalog
+                    updateCatalog = false
+                    break;
+
+                case 'repairs' :
+                    //repairs -> processing: No change to catalog
+                    updateCatalog = false
+                    break;
+            }
+
+            break;
+
+
+        case 'active' :
+            dropdownContainer.className = 'dropdown-button-active'
+            inventoryUpdateDict = {'status' : 'active'}
+            updateInventory = true
+
+            //Update Catalog
+            switch(priorStatus) {
+                case 'processing' :
+                    //processing -> active: Update Availability
+                    updateCatalog = true
+                    catalogUpdateDict[itemID] = itemCondition
+                    break;
+
+                case 'active' :
+                    //active -> active: No change to catalog
+                    updateCatalog = false
+                    updateInventory = false
+                    break;
+
+                case 'sold' : 
+                    //sold -> active: Update Availability
+                    updateCatalog = true
+                    catalogUpdateDict[itemID] = itemCondition
+                    break;
+
+                case 'repairs' :
+                    //repairs -> active: Update Availability
+                    updateCatalog = true
+                    catalogUpdateDict[itemID] = itemCondition
+                    break;
+            }
+            break;
+
+        case 'sold' :
+            var updateInventory = false
+
+            var soldDate = document.getElementById(`item-sold-date-${itemID}`).getAttribute('epochDate')
+            var platformSoldText = document.getElementById(`platform-dropdown-text-${itemID}`).innerHTML
+            var revenue
+
+            if (!soldDate){
+                showErrorMessage('Sold date is invalid')
+            } else if(platformSoldText == 'Select One..') {
+                showErrorMessage('Please select a platform sold')
+            } else {
+                revenue = calculateRevenue(itemID)
+                if(revenue) {
+                    updateInventory = true
+                    dropdownContainer.className = 'dropdown-button-sold'
+                }
+            }
+
+            if (updateInventory) {
+
+                var inventoryUpdateDict = {
+                    'status' : 'sold',
+                    'soldDate' : soldDate,
+                    'platformSold' : platformSoldText,
+                    'sold' : document.getElementById(`item-input-sold-${itemID}`).value,
+                    'sellingFees' : document.getElementById(`item-input-fees-${itemID}`).value,
+                    'shippingFees' : document.getElementById(`item-input-shipping-${itemID}`).value,
+                    'taxes' : document.getElementById(`item-input-taxes-${itemID}`).value,
+                    'revenue' : revenue
+                }
+                //Update Catalog
+                switch(priorStatus) {
+                    case 'processing' :
+                        //processing -> sold: No change to catalog
+                        updateCatalog = false
+                        break;
+
+                    case 'active' :
+                        //active -> sold: Remove availability
+                        updateCatalog = true
+                        catalogUpdateDict[itemID] = firebase.firestore.FieldValue.delete()
+                        break;
+
+                    case 'sold' : 
+                        //sold -> sold: No change to catalog
+                        updateCatalog = false
+                        //Note : No change to updateInventory in case of errors in initial sale values
+                        break;
+
+                    case 'repairs' :
+                        //repairs -> sold: No change to catalog
+                        updateCatalog = false
+                        break;
+                }
+            }
+            break;
+
+        case 'repairs' :
+            dropdownContainer.className = 'dropdown-button-repairs'
+            inventoryUpdateDict = {'status' : 'repairs'}
+            updateInventory = true
+
+            //Update Catalog
+            switch(priorStatus) {
+                case 'processing' :
+                    //processing -> repairs: No change to catalog
+                    updateCatalog = false
+                    break;
+
+                case 'active' :
+                    //active -> repairs: Remove availability
+                    updateCatalog = true
+                    catalogUpdateDict[itemID] = firebase.firestore.FieldValue.delete()
+                    break;
+
+                case 'sold' : 
+                    //sold -> repairs: No change to catalog
+                    updateCatalog = false
+                    break;
+
+                case 'repairs' :
+                    //repairs -> repairs: No change to catalog
+                    updateCatalog = false
+                    updateInventory = false
+                    break;
+            }
+            break;
+    }
+    if(updateInventory) {
+
+        //Inventory Update
+        database.collection('inventory').doc(itemID).update(inventoryUpdateDict).then(function() {
+            statusDropdown.className = 'item-grid-status-processing'
+            displayUpdateCatalogModal(GTIN, itemID)
+        }).catch(function(error) {
+            showErrorMessage(error)
+        })
+        dropdownTextElement.innerHTML = newStatus
+
+        console.log(`Updating inventory: ${priorStatus} -> ${newStatus}`)
+        console.log(inventoryUpdateDict)
+    }
+
+    if(updateCatalog) {
+        //Catalog Update
+        database.collection('catalog').doc(itemID).update(catalogUpdateDict).then(function() {
+            statusDropdown.className = 'item-grid-status-processing'
+        }).catch(function(error) {
+            showErrorMessage(error)
+        })
+
+        console.log(`Updating catalog: ${priorStatus} -> ${newStatus}`)
+        console.log(catalogUpdateDict)
+    }
+
+    $(`#status-dropdown-options-container-${itemID}`).fadeOut()
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
