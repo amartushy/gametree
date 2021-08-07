@@ -614,7 +614,7 @@ function changeItemStatus(GTIN, itemID, newStatus) {
 
         //Inventory Update
         database.collection('inventory').doc(itemID).update(inventoryUpdateDict).then(function() {
-            console.log('Updated catalog')
+            console.log('Updated inventory')
             if(newStatus == 'sold') {
                 var revenueField = document.getElementById(`item-revenue-${itemID}`)
                 var revenueText = inventoryUpdateDict['revenue']
