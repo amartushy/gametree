@@ -81,7 +81,7 @@ function createProductSearchResult(results) {
 
     results.hits.forEach(function(hit, hitIndex) {
         if(!tabFilters.includes(hit.status)) {
-            continue
+            return
         }
         let itemGridBlock = document.createElement('div')
         itemGridBlock.className = 'item-grid-block'
