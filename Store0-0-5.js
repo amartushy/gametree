@@ -267,12 +267,12 @@ function loadProductMainInfo(productTitle, description, keySpecs) {
   
   
         let keySpecTitle = document.createElement('div')
-        keySpecTitle.className = 'pp-subsection-title'
+        keySpecTitle.className = 'pp-specs-title'
         keySpecTitle.innerHTML = globalKeyDict[spec]
         keySpecContainer.appendChild(keySpecTitle)
   
         let keySpecDescription = document.createElement('div')
-        keySpecDescription.className = 'pp-subsection-text'
+        keySpecDescription.className = 'pp-specs-text'
         keySpecDescription.innerHTML = keySpecs[spec]
         keySpecContainer.appendChild(keySpecDescription)
       }
