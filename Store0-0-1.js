@@ -103,6 +103,8 @@ search.start()
 
 //__________________________________________________________________Product Page__________________________________________________________________
 var database = firebase.firestore()
+var globalProductData
+
 var productPageBack = document.getElementById('product-page-back')
 productPageBack.addEventListener('click', () => {
   $('#product-page').fadeOut()
@@ -127,7 +129,8 @@ function loadProductPage(GTIN) {
   console.log('Loading product: ' + GTIN)
   database.collection('catalog').doc(GTIN).onSnapshot(function(product) {
     var data = product.data()
-    
+    globalProductData = data
+
     $('#product-page').fadeIn()
     $('#store-page').fadeOut()
     window.scrollTo(0, 0);
