@@ -118,11 +118,25 @@ var globalKeyDict = {
   'maxGraphics' : 'Maximum Graphic Quality',
   'bluetooth' : 'Bluetooth Enabled',
   'numUSBPorts' : 'Number of USB Ports',
+
   'ESRBDescriptors' : 'ESRB Descriptors',
   'ESRBRating' : 'ESRB Rating',
   'compatiblePlatforms' : 'Compatible Platform(s)',
   'edition' : 'Edition',
-  'softwareFormat' : 'Software Format'
+  'softwareFormat' : 'Software Format',
+
+  'brand' : 'Brand',
+  'developer' : 'Developer',
+  'modelNumber' : 'Model Number',
+  'productName' : 'Product Name',
+  'publisher' : 'Publisher',
+  'releaseDate' : 'Release Date',
+
+  'enhancedFor' : 'Enhanced For',
+  'gameFranchise' : 'Game Franchise',
+  'gameSeries' : 'Game Series',
+  'genre' : 'Genre',
+  'multiplayer' : 'Multiplayer'
 }
 
 function loadProductPage(GTIN) {
