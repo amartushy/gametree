@@ -112,13 +112,7 @@ productPageBack.addEventListener('click', () => {
 })
 
 var globalKeyDict = {
-  '4KPlayer' : 'Ultra HD Compatible 4K Player',
-  'HDR' : 'High Dynamic Range (HDR)',
-  'resolution' : 'Maximum Video Resolution (Streaming)',
-  'maxGraphics' : 'Maximum Graphic Quality',
-  'bluetooth' : 'Bluetooth Enabled',
-  'numUSBPorts' : 'Number of USB Ports',
-
+  //Games
   'ESRBDescriptors' : 'ESRB Descriptors',
   'ESRBRating' : 'ESRB Rating',
   'compatiblePlatforms' : 'Compatible Platform(s)',
@@ -136,7 +130,49 @@ var globalKeyDict = {
   'gameFranchise' : 'Game Franchise',
   'gameSeries' : 'Game Series',
   'genre' : 'Genre',
-  'multiplayer' : 'Multiplayer'
+  'multiplayer' : 'Multiplayer',
+
+  //Consoles
+  '4KPlayer' : 'Ultra HD Compatible 4K Player',
+  'HDR' : 'High Dynamic Range (HDR)',
+  'bluetooth' : 'Bluetooth Enabled',
+  'maxGraphics' : 'Maximum Graphic Quality',
+  'numUSBPorts' : 'Number of USB Ports',
+  'resolution' : 'Maximum Video Resolution (Streaming)',
+
+  'additionalAccessories' : 'Additional Accessories Included',
+  'color' : 'Color',
+  'consoleType' : 'Console Type',
+  'parentalControl' : 'Parental Control Capability',
+
+  'HDStreaming' : 'HD Streaming',
+  'blurayPlayer' : 'Blu-Ray Player',
+  'onlineFeatures' : 'Online Features',
+
+  'maxResolution' : 'Maximum Video Resolution (Streaming)',
+
+  'storage' : 'Internal Storage',
+  'type' : 'storageType',
+  'capacity' : 'Storage Capacity',
+  'memoryCards' : 'Memory Card Support',
+  'numMemoryCards' : 'Number of Memory Card Slots',
+
+  'height' : 'Product Height',
+  'length' : 'Product Length',
+  'width' : 'Product Width',
+  'weight' : 'Product Weight',
+
+  'internet' : 'Internet Connectable',
+  'smartCapable' : 'Smart Capable',
+  'usbPorts' : 'Number of USB Ports',
+  'wifi' : 'Wi-Fi Compatible',
+
+  'maxPlayers' : 'Maximum Number of Players',
+  'motionSensing' : 'Motion-Sensing Technology',
+
+  'cables' : 'Cable(s) Included',
+  'controllers' : 'Number of Controllers Included',
+  'games' : 'Number of Games Included'
 }
 
 function loadProductPage(GTIN) {
