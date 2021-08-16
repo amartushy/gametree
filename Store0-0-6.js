@@ -154,9 +154,7 @@ function loadProductPage(GTIN) {
     loadPricesAndAvailability(data.salePrices, data.availability)
 
     loadProductMainInfo(data.general.productName, data.overview.description, data.keySpecs)
-    if(data.category == 'game') {
-      loadGamesTabs()
-    }
+    loadProductPageTabs()
   })
 }
 
