@@ -1,6 +1,4 @@
 
-
-
 const backToCartButton = document.getElementById('back-to-cart-button')
 
 
@@ -37,6 +35,7 @@ const shippingCityError = document.getElementById('shipping-city-error')
 const shippingStateDropdown = document.getElementById('shipping-state-dropdown')
 const shippingStateDropdownText = document.getElementById('shipping-state-dropdown-text')
 const shippingStateDropdownChevron = document.getElementById('shipping-state-dropdown-chevron')
+const shippingStateDropdownOptions = document.getElementById('shipping-state-dropdown-options')
 const shippingStateError = document.getElementById('shipping-state-error')
 const shippingZipField = document.getElementById('shipping-zip-field')
 const shippingZipError = document.getElementById('shipping-zip-error')
@@ -56,10 +55,12 @@ const creditCardFieldError = document.getElementById('credit-card-field-error')
 const expirationMonthDropdown = document.getElementById('expiration-month-dropdown')
 const expirationMonthDropdownText = document.getElementById('expiration-month-dropdown-text')
 const expirationMonthDropdownChevron = document.getElementById('expiration-month-chevron')
+const expirationMonthDropdownOptions = document.getElementById('expiration-month-dropdown-options')
 const expirationMonthError = document.getElementById('expiration-month-error')
 const expirationYearDropdown = document.getElementById('expiration-year-dropdown')
 const expirationYearDropdownText = document.getElementById('expiration-year-dropdown-text')
 const expirationYearDropdownChevron = document.getElementById('expiration-year-chevron')
+const expirationYearDropdownOptions = document.getElementById('expiration-year-dropdown-options')
 const expirationYearError = document.getElementById('expiration-year-error')
 const cvcField = document.getElementById('cvc-field')
 const cvcFieldError = document.getElementById('cvc-field-error')
@@ -87,7 +88,9 @@ const billingCityError = document.getElementById('billing-city-error')
 const billingStateDropdown = document.getElementById('billing-state-dropdown')
 const billingStateText = document.getElementById('billing-state-text')
 const billingStateChevron = document.getElementById('billing-state-chevron')
+const billingStateDropdownOptions = document.getElementById('billing-state-dropdown-options')
 const billingStateError = document.getElementById('billing-state-error')
 const billingZipField = document.getElementById('billing-zip-field')
 const billingZipError = document.getElementById('billing-zip-error')
 const placeOrderButton = document.getElementById('place-order-button')
+
