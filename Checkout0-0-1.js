@@ -49,7 +49,7 @@ const textUpdatesCheckbox = document.getElementById('text-updates-checkbox')
 const continueToPaymentButton = document.getElementById('continue-to-payment-button')
 
 //Payment Screen
-const orderPaymentFormBlock = document.getElementById('order-delivery-form-block')
+const orderPaymentFormBlock = document.getElementById('order-payment-form-block')
 const orderPaymentBack = document.getElementById('order-payment-back')
 const creditCardField = document.getElementById('credit-card-field')
 const creditCardFieldError = document.getElementById('credit-card-field-error')
