@@ -1,4 +1,3 @@
-
 const backToCartButton = document.getElementById('back-to-cart-button')
 
 
@@ -86,7 +85,7 @@ const biillingAddressSecond = document.getElementById('billing-address-second')
 const billingCityField = document.getElementById('billing-city-field')
 const billingCityError = document.getElementById('billing-city-error')
 const billingStateDropdown = document.getElementById('billing-state-dropdown')
-const billingStateText = document.getElementById('billing-state-text')
+const billingStateDropdownText = document.getElementById('billing-state-text')
 const billingStateChevron = document.getElementById('billing-state-chevron')
 const billingStateDropdownOptions = document.getElementById('billing-state-dropdown-options')
 const billingStateError = document.getElementById('billing-state-error')
