@@ -1,3 +1,6 @@
+
+
+
 const backToCartButton = document.getElementById('back-to-cart-button')
 
 
@@ -68,6 +71,7 @@ const paymentOptionsContainer = document.getElementById('payment-options-contain
 const paypalButton = document.getElementById('paypal-button')
 const venmoButton = document.getElementById('venmo-button')
 const applePayButton = document.getElementById('apple-pay-button')
+const prefilledBillingAddressContainer = document.getElementById('prefilled-billing-address-container')
 const billingPrefilledName = document.getElementById('billing-prefilled-name')
 const billingPrefilledAddress = document.getElementById('billing-prefilled-address')
 const billingPrefilledAddress2 = document.getElementById('billing-prefilled-address-2')
@@ -94,6 +98,43 @@ const billingZipError = document.getElementById('billing-zip-error')
 const placeOrderButton = document.getElementById('place-order-button')
 
 
+//Global Variables
+var useShippingAddressForBilling = false
+
+var checkoutDict = {
+        'shippingAddress' : {
+            'firstName' : '',
+            'lastName' : '',
+            'address1' : '',
+            'address2' : '',
+            'city' : '',
+            'state' : '',
+            'zipCode' : '',
+        },
+        'deliveryUpdates' : false,
+        'emailAddress' : '',
+        'phoneNumber' : '',
+        'billingAddress' : {
+            'firstName' : '',
+            'lastName' : '',
+            'address1' : '',
+            'address2' : '',
+            'city' : '',
+            'state' : '',
+            'zipCode' : ''
+        },
+
+        'checkoutItems' : {},
+        'itemSubtotal' : 0.0,
+        'shippingFees' : 0.0,
+        'tax' : 0.0,
+        'checkoutTotal' : 0.0,
+        'paymentMethod' : ''
+}
+
+
+
+
 
 window.onload = () => {
 
@@ -111,7 +152,7 @@ function loadGuestCheckoutInitialState() {
     loadDropdownInitialStates()
     resetDeliveryInfoErrorFields()
     resetBillingInfoErrorFields()
-    
+
     //TODO: Load order summary from cart
 
     $('#checkout-login-screen').fadeOut(200, () => {
@@ -136,11 +177,14 @@ function loadGuestCheckoutInitialState() {
     })
 
     shippingAddressCheckbox.addEventListener('click', () => {
-        //TODO: duplicate into billing on click
+
         if(shippingAddressCheckbox.innerHTML == '') {
             shippingAddressCheckbox.innerHTML = ''
+            useShippingAddressForBilling = false
+
         } else {
             shippingAddressCheckbox.innerHTML = ''
+            useShippingAddressForBilling = true
         }
     })
 
@@ -154,11 +198,24 @@ function loadGuestCheckoutInitialState() {
     })
 
     continueToPaymentButton.addEventListener('click', () => {
-        //TODO: Check for errors
+
         if (checkForDeliveryInfoErrors()) {
-            $('#order-delivery-form-block').fadeOut(200, () =>{
+            checkoutDict.shippingAddress.firstName = shippingFirstNameField.value
+            checkoutDict.shippingAddress.lastName = shippingLastNameField.value
+            checkoutDict.shippingAddress.address1 = shippingAddressField.value
+            checkoutDict.shippingAddress.address2 = shippingAddressSecondField.value
+            checkoutDict.shippingAddress.city = shippingCityField.value
+            checkoutDict.shippingAddress.state = shippingStateDropdownText.innerHTML
+            checkoutDict.shippingAddress.zipCode = shippingZipField.value
+            checkoutDict.emailAddress = contactEmailField.value
+            checkoutDict.phoneNumber = contactPhoneField.value
+
+            displayAndUpdateBillingAddress()
+
+            $('#order-delivery-form-block').fadeOut(200, () => {
                 $('#order-payment-form-block').fadeIn()
             })
+
         } else {
             showErrorMessage('Error with delivery information')
         }
