@@ -237,17 +237,11 @@ function loadGuestCheckoutInitialState() {
     })
 
     billingPrefilledChange.addEventListener('click', () => {
-        if (billingAddressContainer.style.display == 'none') {
-            $('#billing-address-container').fadeIn()
-        } else {
-            $('#billing-address-container').fadeOut()
-        }
+        useShippingAddressForBilling = false
+        prefilledBillingAddressContainer.style.display = 'none'
     })
 
     billingAddressAddSecond.addEventListener('click', () => {
-        useShippingAddressForBilling = false
-        prefilledBillingAddressContainer.style.display = 'none'
-
         $('#billing-address-add-second').fadeOut(200, () => {
             $('#billing-address-second').fadeIn()
         })
