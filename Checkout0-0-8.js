@@ -215,7 +215,7 @@ function loadGuestCheckoutInitialState() {
             })
 
         } else {
-            showErrorMessage('Error with delivery information')
+            showErrorMessage("There's an issue with your delivery info")
         }
     })
 
@@ -246,7 +246,20 @@ function loadGuestCheckoutInitialState() {
             $('#billing-address-second').fadeIn()
         })
     })
+
+    placeOrderButton.addEventListener('click', () => {
+        //TODO: Check for payment issues
+
+        if(checkForBillingInfoErrors()) {
+            //TODO: Process payment
+            //TODO: Show processing and confirmation screen
+
+        } else {
+            showErrorMessage("There's an issue with your billing information")
+        }
+    })
 }
+
 
 
 function loadDropdownInitialStates() {
