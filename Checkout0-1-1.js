@@ -237,6 +237,7 @@ function loadGuestCheckoutInitialState() {
     })
 
     billingPrefilledChange.addEventListener('click', () => {
+        $('#billing-address-container').fadeIn()
         useShippingAddressForBilling = false
         prefilledBillingAddressContainer.style.display = 'none'
     })
