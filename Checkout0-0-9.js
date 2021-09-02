@@ -1,6 +1,3 @@
-
-
-
 const backToCartButton = document.getElementById('back-to-cart-button')
 
 
@@ -220,6 +217,12 @@ function loadGuestCheckoutInitialState() {
     })
 
     orderPaymentBack.addEventListener('click', () => {
+        if(shippingAddressCheckbox.innerHTML == '') {
+            useShippingAddressForBilling = true
+        } else {
+            useShippingAddressForBilling = false
+        }
+
         $('#order-payment-form-block').fadeOut(200, () =>{
             $('#order-delivery-form-block').fadeIn()
         })
@@ -242,6 +245,9 @@ function loadGuestCheckoutInitialState() {
     })
 
     billingAddressAddSecond.addEventListener('click', () => {
+        useShippingAddressForBilling = false
+        prefilledBillingAddressContainer.style.display = 'none'
+
         $('#billing-address-add-second').fadeOut(200, () => {
             $('#billing-address-second').fadeIn()
         })
@@ -341,4 +347,3 @@ function loadDropdownInitialStates() {
         expirationYearDropdownOptions.appendChild(yearOption)
     })
 }
-
