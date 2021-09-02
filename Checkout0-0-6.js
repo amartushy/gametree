@@ -1,6 +1,3 @@
-
-
-
 const backToCartButton = document.getElementById('back-to-cart-button')
 
 
@@ -99,7 +96,7 @@ const placeOrderButton = document.getElementById('place-order-button')
 
 
 //Global Variables
-var useShippingAddressForBilling = false
+var useShippingAddressForBilling = true
 
 var checkoutDict = {
         'shippingAddress' : {
@@ -330,3 +327,4 @@ function loadDropdownInitialStates() {
         expirationYearDropdownOptions.appendChild(yearOption)
     })
 }
+
