@@ -249,6 +249,8 @@ function loadGuestCheckoutInitialState() {
     })
 
     placeOrderButton.addEventListener('click', () => {
+        console.log(checkoutDict)
+
         //TODO: Check for payment issues
 
         if(checkForBillingInfoErrors()) {
