@@ -1,3 +1,6 @@
+
+
+
 const backToCartButton = document.getElementById('back-to-cart-button')
 
 
@@ -159,12 +162,10 @@ function loadGuestCheckoutInitialState() {
     orderDeliveryFormBlock.style.display = 'block'
     orderPaymentFormBlock.style.display = 'none'
     
-
     paymentOptionsContainer.style.display = 'none'
     shippingAddressSecondField.style.display = 'none'
     biillingAddressSecond.style.display = 'none'
 
-    billingAddressContainer.style.display = 'none'
 
     //Navigation and onClicks
     shippingAddressAddSecond.addEventListener('click', () => {
