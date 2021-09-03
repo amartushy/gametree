@@ -261,25 +261,25 @@ function loadPricesAndAvailability(GTIN, saleData, availability) {
         case 'new' : 
           ppNewButton.className = 'pp-add-to-cart'
           ppNewButton.innerHTML = 'Add to Cart'
-          ppNewButton.setAttribute('onClick', `addItemToCart("${GTIN}", "${item}}")`)
+          ppNewButton.setAttribute('onClick', `addItemToCart("${GTIN}", "${item}")`)
           break
 
         case 'usedFantastic' : 
           ppExcellentButton.className = 'pp-add-to-cart'
           ppExcellentButton.innerHTML = 'Add to Cart'
-          ppExcellentButton.setAttribute('onClick', `addItemToCart("${GTIN}", "${item}}")`)
+          ppExcellentButton.setAttribute('onClick', `addItemToCart("${GTIN}", "${item}")`)
           break
 
         case 'usedGood' : 
           ppGoodButton.className = 'pp-add-to-cart'
           ppGoodButton.innerHTML = 'Add to Cart'
-          ppGoodButton.setAttribute('onClick', `addItemToCart("${GTIN}", "${item}}")`)
+          ppGoodButton.setAttribute('onClick', `addItemToCart("${GTIN}", "${item}")`)
           break
 
         case 'usedAcceptable' : 
           ppAcceptableButton.className = 'pp-add-to-cart'
           ppAcceptableButton.innerHTML = 'Add to Cart'
-          ppAcceptableButton.setAttribute('onClick', `addItemToCart("${GTIN}", "${item}}")`)
+          ppAcceptableButton.setAttribute('onClick', `addItemToCart("${GTIN}", "${item}")`)
           break
       }
     }
