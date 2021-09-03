@@ -187,7 +187,7 @@ function loadProductPage(GTIN) {
 
     loadMainImage(data.productImage)
     loadAlternateImages(data.productImage, data.productImages)
-    loadPricesAndAvailability(data.salePrices, data.availability)
+    loadPricesAndAvailability(GTIN, data.salePrices, data.availability)
 
     loadProductMainInfo(data.general.productName, data.overview.description, data.keySpecs)
     loadProductPageTabs()
@@ -234,7 +234,7 @@ function loadAlternateImages(mainImage, images) {
 }
 
 
-function loadPricesAndAvailability(saleData, availability) {
+function loadPricesAndAvailability(GTIN, saleData, availability) {
   document.getElementById('pp-new-price').innerHTML = '$' + parseFloat(saleData.new).toFixed(2)
   document.getElementById('pp-excellent-price').innerHTML = '$' + parseFloat(saleData.usedFantastic).toFixed(2)
   document.getElementById('pp-good-price').innerHTML = '$' + parseFloat(saleData.usedGood).toFixed(2)
@@ -261,25 +261,25 @@ function loadPricesAndAvailability(saleData, availability) {
         case 'new' : 
           ppNewButton.className = 'pp-add-to-cart'
           ppNewButton.innerHTML = 'Add to Cart'
-          ppNewButton.setAttribute('onClick', `addItemToCart("${item}}")`)
+          ppNewButton.setAttribute('onClick', `addItemToCart("${GTIN}", "${item}}")`)
           break
 
         case 'usedFantastic' : 
           ppExcellentButton.className = 'pp-add-to-cart'
           ppExcellentButton.innerHTML = 'Add to Cart'
-          ppExcellentButton.setAttribute('onClick', `addItemToCart("${item}}")`)
+          ppExcellentButton.setAttribute('onClick', `addItemToCart("${GTIN}", "${item}}")`)
           break
 
         case 'usedGood' : 
           ppGoodButton.className = 'pp-add-to-cart'
           ppGoodButton.innerHTML = 'Add to Cart'
-          ppGoodButton.setAttribute('onClick', `addItemToCart("${item}}")`)
+          ppGoodButton.setAttribute('onClick', `addItemToCart("${GTIN}", "${item}}")`)
           break
 
         case 'usedAcceptable' : 
           ppAcceptableButton.className = 'pp-add-to-cart'
           ppAcceptableButton.innerHTML = 'Add to Cart'
-          ppAcceptableButton.setAttribute('onClick', `addItemToCart("${item}}")`)
+          ppAcceptableButton.setAttribute('onClick', `addItemToCart("${GTIN}", "${item}}")`)
           break
       }
     }
