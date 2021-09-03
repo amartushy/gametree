@@ -1,11 +1,15 @@
 
 window.onload = function() {
 	document.getElementById('pop-nav').addEventListener('click', () => {
-        location.href = 'https://thegametree.io/proof-of-purchase'
+        location.href = 'https://thegametree.io/admin/proof-of-purchase'
     })
 
     document.getElementById('purchases-nav').addEventListener('click', () => {
-        location.href = 'https://thegametree.io/purchases'
+        location.href = 'https://thegametree.io/admin/purchases'
+    })
+	
+    document.getElementById('inventory-management').addEventListener('click', () => {
+        location.href = 'https://thegametree.io/admin/inventory'
     })
 	
 	firebase.auth().onAuthStateChanged(function(user) {
