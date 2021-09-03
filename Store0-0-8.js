@@ -261,21 +261,25 @@ function loadPricesAndAvailability(saleData, availability) {
         case 'new' : 
           ppNewButton.className = 'pp-add-to-cart'
           ppNewButton.innerHTML = 'Add to Cart'
+          ppNewButton.setAttribute('onClick', `addItemToCart("${item}}")`)
           break
 
         case 'usedFantastic' : 
           ppExcellentButton.className = 'pp-add-to-cart'
           ppExcellentButton.innerHTML = 'Add to Cart'
+          ppExcellentButton.setAttribute('onClick', `addItemToCart("${item}}")`)
           break
 
         case 'usedGood' : 
           ppGoodButton.className = 'pp-add-to-cart'
           ppGoodButton.innerHTML = 'Add to Cart'
+          ppGoodButton.setAttribute('onClick', `addItemToCart("${item}}")`)
           break
 
         case 'usedAcceptable' : 
           ppAcceptableButton.className = 'pp-add-to-cart'
           ppAcceptableButton.innerHTML = 'Add to Cart'
+          ppAcceptableButton.setAttribute('onClick', `addItemToCart("${item}}")`)
           break
       }
     }
