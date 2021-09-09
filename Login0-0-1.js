@@ -1,4 +1,3 @@
-
 signInButton = document.getElementById("login");
 signInButton.addEventListener("click", signIn);
 
@@ -28,8 +27,14 @@ function signIn(){
 			if (user) {
 				userDB = firebase.firestore()
 				var userID = user.uid
-        
-				location.href = 'https://thegametree.io/proof-of-purchase'
+                
+                userDB.collection('users').doc(userID).get().then(function(doc) {
+                    let data = doc.data()
+
+                    if (data.isAdmin) {
+                        location.href = 'https://thegametree.io/admin/admin-nav'
+                    }
+                })
 			} else {
 				console.log("no user logged in")
 			}
