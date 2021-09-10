@@ -11,8 +11,8 @@ const loginAppleButton = document.getElementById('login-apple-button')
 const loginGoogleButton = document.getElementById('login-google-button')
 const guestLoginButton = document.getElementById('guest-login-button')
 
-//___________________________________Guest Checkout__________________________________________
-const guestCheckoutScreen = document.getElementById('guest-checkout-screen')
+//___________________________________Checkout Screen__________________________________________
+const checkoutScreen = document.getElementById('checkout-screen')
 const orderSummaryItemsContainer = document.getElementById('order-summary-items-container')
 const orderSubtotal = document.getElementById('order-subtotal')
 const orderShippingPrice = document.getElementById('order-shipping-price')
@@ -21,6 +21,13 @@ const orderTotal = document.getElementById('order-total')
 
 //Delivery Screen
 const orderDeliveryFormBlock = document.getElementById('order-delivery-form-block')
+const shippingPrefilledAddressContainer = document.getElementById('shipping-billing-address-container')
+const shippingPrefilledName = document.getElementById('shipping-prefilled-name')
+const shippingPrefilledAddress = document.getElementById('shipping-prefilled-address')
+const shippingPrefilledAddress2 = document.getElementById('shipping-prefilled-address-2')
+const shippingPrefilledCity = document.getElementById('shipping-prefilled-city')
+const shippingPrefilledChange = document.getElementById('shipping-prefilled-change')
+const shippingAddressFormBlock = document.getElementById('shipping-address-form-block')
 const shippingFirstNameField = document.getElementById('shipping-first-name-field')
 const shippingFirstNameError = document.getElementById('shipping-first-name-error')
 const shippingLastNameField = document.getElementById('shipping-last-name-field')
@@ -96,6 +103,7 @@ const placeOrderButton = document.getElementById('place-order-button')
 
 
 //Global Variables
+var userHasShippingAddress = false
 var useShippingAddressForBilling = true
 
 var checkoutDict = {
@@ -134,29 +142,66 @@ var checkoutDict = {
 
 
 window.onload = () => {
+    loadInitialCheckoutState()
 
     //TODO: Check if user is logged in
-    checkoutLoginScreen.style.display = 'flex'
-    guestCheckoutScreen.style.display = 'none'
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            firebase.firestore().collection('users').doc(user.uid).get().then(function(doc) {
+                let data = doc.data()
 
-    guestLoginButton.addEventListener('click', () => {
-        console.log('called')
-        loadGuestCheckoutInitialState()
+                //Prefill shipping address if applicable
+                if(data.shippingAddress.primary) {
+                    userHasShippingAddress = true
+
+                    let primaryAddress = data.shippingAddress.primary
+
+                    shippingPrefilledAddressContainer.style.display = 'block'
+                    shippingAddressFormBlock.style.display = 'none'
+
+                    shippingPrefilledName = primaryAddress.firstName + primaryAddress.lastName
+                    shippingPrefilledAddress = primaryAddress.address1
+                    if(primaryAddress.address2) {
+                        shippingPrefilledAddress2.innerHTML = primaryAddress.address2
+                        shippingPrefilledAddress2.style.display = 'block'
+                    } else {
+                        shippingPrefilledAddress2.style.display = 'none'
+                    }
+                    shippingPrefilledCity.innerHTML = primaryAddress.city + ',' + primaryAddress.state + ' ' + primaryAddress.zipCode
+                }
+
+                //Prefill email and phone number
+                contactEmailField.innerHTML = data.email
+                contactPhoneField.innerHTML = data.phoneNumber
+
+            })
+        } else {
+            //TODO: Sign in and guest checkout workflow
+
+            checkoutLoginScreen.style.display = 'flex'
+            checkoutScreen.style.display = 'none'
+        
+            guestLoginButton.addEventListener('click', () => {
+                loadGuestCheckoutInitialState()
+            })
+        }
     })
 }
 
-function loadGuestCheckoutInitialState() {
+
+function loadInitialCheckoutState() {
+
     loadDropdownInitialStates()
     resetDeliveryInfoErrorFields()
     resetBillingInfoErrorFields()
-
     //TODO: Load order summary from cart
 
     $('#checkout-login-screen').fadeOut(200, () => {
-        $('#guest-checkout-screen').fadeIn()
+        $('#checkout-screen').fadeIn()
     })
 
     orderDeliveryFormBlock.style.display = 'block'
+    shippingPrefilledAddressContainer.style.display = 'none'
     orderPaymentFormBlock.style.display = 'none'
     
     paymentOptionsContainer.style.display = 'none'
@@ -165,6 +210,12 @@ function loadGuestCheckoutInitialState() {
 
 
     //Navigation and onClicks
+    shippingPrefilledChange.addEventListener('click', () => {
+        $('#shipping-address-form-block').fadeIn()
+        userHasShippingAddress = false
+        shippingPrefilledAddressContainer.style.display = 'none'
+    })
+
     shippingAddressAddSecond.addEventListener('click', () => {
         $('#shipping-address-add-second').fadeOut(200, () => {
             $('#shipping-address-second-field').fadeIn()
@@ -263,6 +314,10 @@ function loadGuestCheckoutInitialState() {
     })
 }
 
+function loadGuestCheckoutInitialState() {
+
+}
+
 
 
 function loadDropdownInitialStates() {
@@ -343,206 +398,4 @@ function loadDropdownInitialStates() {
         })
         expirationYearDropdownOptions.appendChild(yearOption)
     })
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function checkForDeliveryInfoErrors() {
-    resetDeliveryInfoErrorFields()
-
-    shippingStateDropdown.className = 'checkout-state-dropdown'
-    shippingStateError.style.display = 'none'
-
-    if (shippingFirstNameField.value == '') {
-        shippingFirstNameField.className = 'checkout-input-field-error w-input'
-        shippingFirstNameError.style.display = 'flex'
-        return false
-
-    } else if (shippingLastNameField.value == '') {
-        shippingLastNameField.className = 'checkout-input-field-error w-input'
-        shippingLastNameError.style.display = 'flex'
-        return false
-
-    } else if (shippingAddressField.value == '') {
-        shippingAddressField.className = 'checkout-input-field-error w-input'
-        shippingAddressError.style.display = 'flex'
-        return false
-
-    } else if (shippingCityField.value == '') {
-        shippingCityField.className = 'checkout-input-field-error w-input'
-        shippingCityError.style.display = 'flex'
-        return false
-
-    } else if (shippingStateDropdownText.innerHTML == '--') {
-        shippingStateDropdown.className = 'checkout-state-dropdown-error'
-        shippingStateError.style.display = 'flex'
-        return false
-
-    } else if (shippingZipField.value == '') {
-        shippingZipField.className = 'checkout-input-field-error w-input'
-        shippingZipError.style.display = 'flex'
-        return false
-
-    } else if (!checkValidEmail(contactEmailField.value)) {
-        console.log(checkValidEmail(contactEmailField.value))
-        contactEmailField.className = 'checkout-input-field-error w-input'
-        contactEmailError.style.display = 'flex'
-        return false
-
-    } else if (!checkValidPhone(contactPhoneField.value)) {
-        contactPhoneField.className = 'checkout-input-field-error w-input'
-        contactPhoneError.style.display = 'flex'
-        return false
-
-    } else {
-        return true
-    }
-}
-
-function checkForBillingInfoErrors() {
-
-    if(!useShippingAddressForBilling) {
-        resetBillingInfoErrorFields()
-
-        billingStateDropdown.className = 'checkout-state-dropdown'
-        billingStateError.style.display = 'none'
-
-        if (billingFirstField.value == '') {
-            billingFirstField.className = 'checkout-input-field-error w-input'
-            billingFirstError.style.display = 'flex'
-            return false
-    
-        } else if (billingLastField.value == '') {
-            billingLastField.className = 'checkout-input-field-error w-input'
-            billingLastError.style.display = 'flex'
-            return false
-    
-        } else if (billingAddressField.value == '') {
-            billingAddressField.className = 'checkout-input-field-error w-input'
-            billingAddressError.style.display = 'flex'
-            return false
-    
-        } else if (billingCityField.value == '') {
-            billingCityField.className = 'checkout-input-field-error w-input'
-            billingCityError.style.display = 'flex'
-            return false
-    
-        } else if (billingStateDropdownText.innerHTML == '--') {
-            billingStateDropdown.className = 'checkout-state-dropdown-error'
-            billingStateError.style.display = 'flex'
-            return false
-    
-        } else if (billingZipField.value == '') {
-            billingZipField.className = 'checkout-input-field-error w-input'
-            billingZipError.style.display = 'flex'
-            return false
-
-        } else {
-            checkoutDict.billingAddress.firstName = billingFirstField.value
-            checkoutDict.billingAddress.lastName = billingLastField.value
-            checkoutDict.billingAddress.address1 = billingAddressField.value
-            checkoutDict.billingAddress.address2 = biillingAddressSecond.value
-            checkoutDict.billingAddress.city = billingCityField.value
-            checkoutDict.billingAddress.state = billingStateDropdownText.value
-            checkoutDict.billingAddress.zipCode = billingZipField.value
-
-            return true
-        }
-    } else {
-        return true
-    }
-}
-
-
-
-
-
-//Helper Functions
-function checkValidEmail(emailStr) {
-    console.log(emailStr)
-    if( emailStr.includes("@") && emailStr.includes(".")) {
-        return true
-    } else { 
-        return false
-    }
-}
-
-function checkValidPhone(phoneStr) {
-    var strippedStr = phoneStr.replace(/\D/g, '')
-    console.log(strippedStr)
-    console.log(strippedStr.length)
-    if (strippedStr.length == 10 || strippedStr.length == 11) {
-        return true
-    } else {
-        return false
-    }
-}
-
-
-function resetDeliveryInfoErrorFields() {
-    let errorMessagesArray = [shippingFirstNameError, shippingLastNameError, shippingAddressError, shippingCityError, shippingStateError, shippingZipError, contactEmailError, contactPhoneError,]
-    let inputFieldsArray = [shippingFirstNameField, shippingLastNameField, shippingAddressField, shippingCityField, shippingZipField, contactEmailField, contactPhoneField]
-
-    errorMessagesArray.forEach( (errorElement) => {
-        errorElement.style.display = 'none'
-    })
-
-    inputFieldsArray.forEach( (inputElement) => { 
-        inputElement.className = 'checkout-input-field w-input'
-    })
-}
-
-
-function resetBillingInfoErrorFields() {
-    let errorMessagesArray = [creditCardFieldError, expirationMonthError, expirationYearError, cvcFieldError, billingFirstError, billingLastError, billingAddressError, billingCityError, billingStateError, billingZipError]
-    let inputFieldsArray = [creditCardField, cvcField, billingFirstField, billingLastField, billingAddressField, billingCityField, billingZipField]
-
-    errorMessagesArray.forEach( (errorElement) => {
-        errorElement.style.display = 'none'
-    })
-
-    inputFieldsArray.forEach( (inputElement) => { 
-        inputElement.className = 'checkout-input-field w-input'
-    })
-}
-
-
-function displayAndUpdateBillingAddress() {
-
-    if(useShippingAddressForBilling) {
-        checkoutDict.billingAddress.firstName = checkoutDict.shippingAddress.firstName
-        checkoutDict.billingAddress.lastName = checkoutDict.shippingAddress.lastName
-        checkoutDict.billingAddress.address1 = checkoutDict.shippingAddress.address1
-        checkoutDict.billingAddress.address2 = checkoutDict.shippingAddress.address2
-        checkoutDict.billingAddress.city = checkoutDict.shippingAddress.city
-        checkoutDict.billingAddress.state = checkoutDict.shippingAddress.state
-        checkoutDict.billingAddress.zipCode = checkoutDict.shippingAddress.zipCode
-
-        billingPrefilledName.innerHTML = checkoutDict.billingAddress.firstName + ' ' + checkoutDict.billingAddress.lastName
-        billingPrefilledAddress.innerHTML = checkoutDict.billingAddress.address1
-        if(checkoutDict.billingAddress.address2 != '' ) {
-            billingPrefilledAddress2.innerHTML = checkoutDict.billingAddress.address2
-        } else {
-            billingPrefilledAddress2.style.display = 'none'
-        }
-        billingPrefilledCity.innerHTML = `${checkoutDict.billingAddress.city}, ${checkoutDict.billingAddress.state} ${checkoutDict.billingAddress.zipCode}`
-
-        prefilledBillingAddressContainer.style.display = 'block'
-        billingAddressContainer.style.display = 'none'
-
-    } else {
-        prefilledBillingAddressContainer.style.display = 'none'
-        billingAddressContainer.style.display = 'block'
-    }
 }
