@@ -159,8 +159,8 @@ window.onload = () => {
                     shippingPrefilledAddressContainer.style.display = 'block'
                     shippingAddressFormBlock.style.display = 'none'
 
-                    shippingPrefilledName = primaryAddress.firstName + primaryAddress.lastName
-                    shippingPrefilledAddress = primaryAddress.address1
+                    shippingPrefilledName.innerHTML = primaryAddress.firstName + primaryAddress.lastName
+                    shippingPrefilledAddress.innerHTML = primaryAddress.address1
                     if(primaryAddress.address2) {
                         shippingPrefilledAddress2.innerHTML = primaryAddress.address2
                         shippingPrefilledAddress2.style.display = 'block'
