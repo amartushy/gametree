@@ -399,3 +399,221 @@ function loadDropdownInitialStates() {
         expirationYearDropdownOptions.appendChild(yearOption)
     })
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function checkForDeliveryInfoErrors() {
+    resetDeliveryInfoErrorFields()
+
+    shippingStateDropdown.className = 'checkout-state-dropdown'
+    shippingStateError.style.display = 'none'
+
+    if(userHasShippingAddress) {
+        if (!checkValidEmail(contactEmailField.value)) {
+            console.log(checkValidEmail(contactEmailField.value))
+            contactEmailField.className = 'checkout-input-field-error w-input'
+            contactEmailError.style.display = 'flex'
+            return false
+    
+        } else if (!checkValidPhone(contactPhoneField.value)) {
+            contactPhoneField.className = 'checkout-input-field-error w-input'
+            contactPhoneError.style.display = 'flex'
+            return false
+    
+        } else {
+            return true
+        }
+
+    } else if (shippingFirstNameField.value == '') {
+        shippingFirstNameField.className = 'checkout-input-field-error w-input'
+        shippingFirstNameError.style.display = 'flex'
+        return false
+
+    } else if (shippingLastNameField.value == '') {
+        shippingLastNameField.className = 'checkout-input-field-error w-input'
+        shippingLastNameError.style.display = 'flex'
+        return false
+
+    } else if (shippingAddressField.value == '') {
+        shippingAddressField.className = 'checkout-input-field-error w-input'
+        shippingAddressError.style.display = 'flex'
+        return false
+
+    } else if (shippingCityField.value == '') {
+        shippingCityField.className = 'checkout-input-field-error w-input'
+        shippingCityError.style.display = 'flex'
+        return false
+
+    } else if (shippingStateDropdownText.innerHTML == '--') {
+        shippingStateDropdown.className = 'checkout-state-dropdown-error'
+        shippingStateError.style.display = 'flex'
+        return false
+
+    } else if (shippingZipField.value == '') {
+        shippingZipField.className = 'checkout-input-field-error w-input'
+        shippingZipError.style.display = 'flex'
+        return false
+
+    } else if (!checkValidEmail(contactEmailField.value)) {
+        console.log(checkValidEmail(contactEmailField.value))
+        contactEmailField.className = 'checkout-input-field-error w-input'
+        contactEmailError.style.display = 'flex'
+        return false
+
+    } else if (!checkValidPhone(contactPhoneField.value)) {
+        contactPhoneField.className = 'checkout-input-field-error w-input'
+        contactPhoneError.style.display = 'flex'
+        return false
+
+    } else {
+        return true
+    }
+}
+
+function checkForBillingInfoErrors() {
+
+    if(!useShippingAddressForBilling) {
+        resetBillingInfoErrorFields()
+
+        billingStateDropdown.className = 'checkout-state-dropdown'
+        billingStateError.style.display = 'none'
+
+        if (billingFirstField.value == '') {
+            billingFirstField.className = 'checkout-input-field-error w-input'
+            billingFirstError.style.display = 'flex'
+            return false
+    
+        } else if (billingLastField.value == '') {
+            billingLastField.className = 'checkout-input-field-error w-input'
+            billingLastError.style.display = 'flex'
+            return false
+    
+        } else if (billingAddressField.value == '') {
+            billingAddressField.className = 'checkout-input-field-error w-input'
+            billingAddressError.style.display = 'flex'
+            return false
+    
+        } else if (billingCityField.value == '') {
+            billingCityField.className = 'checkout-input-field-error w-input'
+            billingCityError.style.display = 'flex'
+            return false
+    
+        } else if (billingStateDropdownText.innerHTML == '--') {
+            billingStateDropdown.className = 'checkout-state-dropdown-error'
+            billingStateError.style.display = 'flex'
+            return false
+    
+        } else if (billingZipField.value == '') {
+            billingZipField.className = 'checkout-input-field-error w-input'
+            billingZipError.style.display = 'flex'
+            return false
+
+        } else {
+            checkoutDict.billingAddress.firstName = billingFirstField.value
+            checkoutDict.billingAddress.lastName = billingLastField.value
+            checkoutDict.billingAddress.address1 = billingAddressField.value
+            checkoutDict.billingAddress.address2 = biillingAddressSecond.value
+            checkoutDict.billingAddress.city = billingCityField.value
+            checkoutDict.billingAddress.state = billingStateDropdownText.value
+            checkoutDict.billingAddress.zipCode = billingZipField.value
+
+            return true
+        }
+    } else {
+        return true
+    }
+}
+
+
+
+
+
+//Helper Functions
+function checkValidEmail(emailStr) {
+    console.log(emailStr)
+    if( emailStr.includes("@") && emailStr.includes(".")) {
+        return true
+    } else { 
+        return false
+    }
+}
+
+function checkValidPhone(phoneStr) {
+    var strippedStr = phoneStr.replace(/\D/g, '')
+    console.log(strippedStr)
+    console.log(strippedStr.length)
+    if (strippedStr.length == 10 || strippedStr.length == 11) {
+        return true
+    } else {
+        return false
+    }
+}
+
+
+function resetDeliveryInfoErrorFields() {
+    let errorMessagesArray = [shippingFirstNameError, shippingLastNameError, shippingAddressError, shippingCityError, shippingStateError, shippingZipError, contactEmailError, contactPhoneError,]
+    let inputFieldsArray = [shippingFirstNameField, shippingLastNameField, shippingAddressField, shippingCityField, shippingZipField, contactEmailField, contactPhoneField]
+
+    errorMessagesArray.forEach( (errorElement) => {
+        errorElement.style.display = 'none'
+    })
+
+    inputFieldsArray.forEach( (inputElement) => { 
+        inputElement.className = 'checkout-input-field w-input'
+    })
+}
+
+
+function resetBillingInfoErrorFields() {
+    let errorMessagesArray = [creditCardFieldError, expirationMonthError, expirationYearError, cvcFieldError, billingFirstError, billingLastError, billingAddressError, billingCityError, billingStateError, billingZipError]
+    let inputFieldsArray = [creditCardField, cvcField, billingFirstField, billingLastField, billingAddressField, billingCityField, billingZipField]
+
+    errorMessagesArray.forEach( (errorElement) => {
+        errorElement.style.display = 'none'
+    })
+
+    inputFieldsArray.forEach( (inputElement) => { 
+        inputElement.className = 'checkout-input-field w-input'
+    })
+}
+
+
+function displayAndUpdateBillingAddress() {
+
+    if(useShippingAddressForBilling) {
+        checkoutDict.billingAddress.firstName = checkoutDict.shippingAddress.firstName
+        checkoutDict.billingAddress.lastName = checkoutDict.shippingAddress.lastName
+        checkoutDict.billingAddress.address1 = checkoutDict.shippingAddress.address1
+        checkoutDict.billingAddress.address2 = checkoutDict.shippingAddress.address2
+        checkoutDict.billingAddress.city = checkoutDict.shippingAddress.city
+        checkoutDict.billingAddress.state = checkoutDict.shippingAddress.state
+        checkoutDict.billingAddress.zipCode = checkoutDict.shippingAddress.zipCode
+
+        billingPrefilledName.innerHTML = checkoutDict.billingAddress.firstName + ' ' + checkoutDict.billingAddress.lastName
+        billingPrefilledAddress.innerHTML = checkoutDict.billingAddress.address1
+        if(checkoutDict.billingAddress.address2 != '' ) {
+            billingPrefilledAddress2.innerHTML = checkoutDict.billingAddress.address2
+        } else {
+            billingPrefilledAddress2.style.display = 'none'
+        }
+        billingPrefilledCity.innerHTML = `${checkoutDict.billingAddress.city}, ${checkoutDict.billingAddress.state} ${checkoutDict.billingAddress.zipCode}`
+
+        prefilledBillingAddressContainer.style.display = 'block'
+        billingAddressContainer.style.display = 'none'
+
+    } else {
+        prefilledBillingAddressContainer.style.display = 'none'
+        billingAddressContainer.style.display = 'block'
+    }
+}
