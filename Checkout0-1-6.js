@@ -21,7 +21,7 @@ const orderTotal = document.getElementById('order-total')
 
 //Delivery Screen
 const orderDeliveryFormBlock = document.getElementById('order-delivery-form-block')
-const shippingPrefilledAddressContainer = document.getElementById('shipping-billing-address-container')
+const shippingPrefilledAddressContainer = document.getElementById('shipping-prefilled-address-container')
 const shippingPrefilledName = document.getElementById('shipping-prefilled-name')
 const shippingPrefilledAddress = document.getElementById('shipping-prefilled-address')
 const shippingPrefilledAddress2 = document.getElementById('shipping-prefilled-address-2')
