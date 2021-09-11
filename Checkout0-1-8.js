@@ -170,8 +170,8 @@ window.onload = () => {
                 }
 
                 //Prefill email and phone number
-                contactEmailField.innerHTML = data.email
-                contactPhoneField.innerHTML = data.phoneNumber
+                contactEmailField.value = data.email
+                contactPhoneField.value = data.phoneNumber
 
             })
         } else {
