@@ -140,7 +140,6 @@ var checkoutDict = {
 
 
 
-
 window.onload = () => {
     loadInitialCheckoutState()
 
@@ -159,15 +158,15 @@ window.onload = () => {
                     shippingPrefilledAddressContainer.style.display = 'block'
                     shippingAddressFormBlock.style.display = 'none'
 
-                    shippingPrefilledName.innerHTML = primaryAddress.firstName + primaryAddress.lastName
+                    shippingPrefilledName.innerHTML = primaryAddress.firstName + ' ' + primaryAddress.lastName
                     shippingPrefilledAddress.innerHTML = primaryAddress.address1
-                    if(primaryAddress.address2) {
+                    if(primaryAddress.address2 && primaryAddress.address2 != "") {
                         shippingPrefilledAddress2.innerHTML = primaryAddress.address2
                         shippingPrefilledAddress2.style.display = 'block'
                     } else {
                         shippingPrefilledAddress2.style.display = 'none'
                     }
-                    shippingPrefilledCity.innerHTML = primaryAddress.city + ',' + primaryAddress.state + ' ' + primaryAddress.zipCode
+                    shippingPrefilledCity.innerHTML = primaryAddress.city + ', ' + primaryAddress.state + ' ' + primaryAddress.zipCode
                 }
 
                 //Prefill email and phone number
