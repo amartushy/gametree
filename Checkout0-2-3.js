@@ -105,6 +105,7 @@ const placeOrderButton = document.getElementById('place-order-button')
 //Global Variables
 var userHasShippingAddress = false
 var useShippingAddressForBilling = true
+var database = firebase.firestore()
 
 var checkoutDict = {
         'shippingAddress' : {
