@@ -139,7 +139,6 @@ var checkoutDict = {
 
 
 
-
 window.onload = () => {
     loadInitialCheckoutState()
 
@@ -170,9 +169,12 @@ window.onload = () => {
                 }
 
                 //Prefill email and phone number
-                contactEmailField.value = data.email
-                contactPhoneField.value = data.phoneNumber
-
+                if(data.email) {
+                    contactEmailField.value = data.email
+                }
+                if(data.phoneNumber) {
+                    contactPhoneField.value = data.phoneNumber
+                }
             })
         } else {
             //TODO: Sign in and guest checkout workflow
