@@ -139,6 +139,8 @@ var checkoutDict = {
 
 
 
+
+
 window.onload = () => {
     loadInitialCheckoutState()
 
@@ -191,6 +193,9 @@ window.onload = () => {
 
 
 function loadInitialCheckoutState() {
+    backToCartButton.addEventListener('click', () => {
+        location.href = 'https://www.thegametree.io/shop/cart'
+    })
 
     loadDropdownInitialStates()
     resetDeliveryInfoErrorFields()
