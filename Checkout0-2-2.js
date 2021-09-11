@@ -202,7 +202,7 @@ function loadInitialCheckoutState() {
     loadDropdownInitialStates()
     resetDeliveryInfoErrorFields()
     resetBillingInfoErrorFields()
-    //TODO: Load order summary from cart
+    loadOrderSummary()
 
     $('#checkout-login-screen').fadeOut(200, () => {
         $('#checkout-screen').fadeIn()
@@ -414,15 +414,6 @@ function loadDropdownInitialStates() {
 
 
 
-
-
-
-
-
-
-
-
-
 function checkForDeliveryInfoErrors() {
     resetDeliveryInfoErrorFields()
 
@@ -596,6 +587,21 @@ function resetBillingInfoErrorFields() {
     inputFieldsArray.forEach( (inputElement) => { 
         inputElement.className = 'checkout-input-field w-input'
     })
+}
+
+function createDOMElement(type, classStr, text, parentElement) {
+    let DOMElement = document.createElement(`${type}`)
+    DOMElement.className = classStr
+  
+    if(text != 'none') {
+      DOMElement.innerHTML = text
+    }
+  
+    if(parentElement != 'none') {
+      parentElement.appendChild(DOMElement)
+    }
+  
+    return(DOMElement)
 }
 
 
