@@ -168,6 +168,8 @@ window.onload = () => {
                         shippingPrefilledAddress2.style.display = 'none'
                     }
                     shippingPrefilledCity.innerHTML = primaryAddress.city + ', ' + primaryAddress.state + ' ' + primaryAddress.zipCode
+
+                    checkoutDict.shippingAddress = data.shippingAddress.primary
                 }
 
                 //Prefill email and phone number
@@ -252,13 +254,15 @@ function loadInitialCheckoutState() {
     continueToPaymentButton.addEventListener('click', () => {
 
         if (checkForDeliveryInfoErrors()) {
-            checkoutDict.shippingAddress.firstName = shippingFirstNameField.value
-            checkoutDict.shippingAddress.lastName = shippingLastNameField.value
-            checkoutDict.shippingAddress.address1 = shippingAddressField.value
-            checkoutDict.shippingAddress.address2 = shippingAddressSecondField.value
-            checkoutDict.shippingAddress.city = shippingCityField.value
-            checkoutDict.shippingAddress.state = shippingStateDropdownText.innerHTML
-            checkoutDict.shippingAddress.zipCode = shippingZipField.value
+            if(!userHasShippingAddress) {
+                checkoutDict.shippingAddress.firstName = shippingFirstNameField.value
+                checkoutDict.shippingAddress.lastName = shippingLastNameField.value
+                checkoutDict.shippingAddress.address1 = shippingAddressField.value
+                checkoutDict.shippingAddress.address2 = shippingAddressSecondField.value
+                checkoutDict.shippingAddress.city = shippingCityField.value
+                checkoutDict.shippingAddress.state = shippingStateDropdownText.innerHTML
+                checkoutDict.shippingAddress.zipCode = shippingZipField.value
+            }
             checkoutDict.emailAddress = contactEmailField.value
             checkoutDict.phoneNumber = contactPhoneField.value
 
