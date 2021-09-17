@@ -45,3 +45,17 @@ function firstDayOfMonth(year, month) {
     var firstDate = new Date(year, month, 1)
     return firstDate.getDay()
 }
+
+//Notification Functions
+function sendSMSTo(number, message) {
+	var xhttp = new XMLHttpRequest();
+    
+    if (number.substring(0,2) == '+1'){
+        var herokuURL = "https://gametree-web.herokuapp.com/sendSMSTo/"+number+"/"+message
+    } else {
+        var herokuURL = "https://gametree-web.herokuapp.com/sendSMSTo/+1"+number+"/"+message
+    }
+
+	xhttp.open("GET", herokuURL, true);
+	xhttp.send();
+}
