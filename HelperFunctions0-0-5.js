@@ -46,6 +46,23 @@ function firstDayOfMonth(year, month) {
     return firstDate.getDay()
 }
 
+
+function createDOMElement(type, classStr, text, parentElement) {
+    let DOMElement = document.createElement(`${type}`)
+    DOMElement.className = classStr
+  
+    if(text != 'none') {
+      DOMElement.innerHTML = text
+    }
+  
+    if(parentElement != 'none') {
+      parentElement.appendChild(DOMElement)
+    }
+  
+    return(DOMElement)
+}
+
+
 //Notification Functions
 function sendSMSTo(number, message) {
 	var xhttp = new XMLHttpRequest();
