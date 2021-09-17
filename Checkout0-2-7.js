@@ -21,6 +21,13 @@ const orderTotal = document.getElementById('order-total')
 
 //Delivery Screen
 const orderDeliveryFormBlock = document.getElementById('order-delivery-form-block')
+const shippingPrefilledAddressContainer = document.getElementById('shipping-prefilled-address-container')
+const shippingPrefilledName = document.getElementById('shipping-prefilled-name')
+const shippingPrefilledAddress = document.getElementById('shipping-prefilled-address')
+const shippingPrefilledAddress2 = document.getElementById('shipping-prefilled-address-2')
+const shippingPrefilledCity = document.getElementById('shipping-prefilled-city')
+const shippingPrefilledChange = document.getElementById('shipping-prefilled-change')
+const shippingAddressFormBlock = document.getElementById('shipping-address-form-block')
 const shippingFirstNameField = document.getElementById('shipping-first-name-field')
 const shippingFirstNameError = document.getElementById('shipping-first-name-error')
 const shippingLastNameField = document.getElementById('shipping-last-name-field')
@@ -96,8 +103,11 @@ const placeOrderButton = document.getElementById('place-order-button')
 
 
 //Global Variables
+var database = firebase.firestore()
+var userHasShippingAddress = false
 var useShippingAddressForBilling = true
 var globalUserId
+
 var checkoutDict = {
         'shippingAddress' : {
             'firstName' : '',
@@ -135,38 +145,76 @@ var checkoutDict = {
 
 
 window.onload = () => {
+    loadInitialCheckoutState()
 
+    //TODO: Check if user is logged in
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
-            // Customer is logged in.
             globalUserId = user.uid
 
+
+            firebase.firestore().collection('users').doc(user.uid).get().then(function(doc) {
+                let data = doc.data()
+
+                //Prefill shipping address if applicable
+                if(data.shippingAddress.primary) {
+                    userHasShippingAddress = true
+
+                    let primaryAddress = data.shippingAddress.primary
+
+                    shippingPrefilledAddressContainer.style.display = 'block'
+                    shippingAddressFormBlock.style.display = 'none'
+
+                    shippingPrefilledName.innerHTML = primaryAddress.firstName + ' ' + primaryAddress.lastName
+                    shippingPrefilledAddress.innerHTML = primaryAddress.address1
+                    if(primaryAddress.address2 && primaryAddress.address2 != "") {
+                        shippingPrefilledAddress2.innerHTML = primaryAddress.address2
+                        shippingPrefilledAddress2.style.display = 'block'
+                    } else {
+                        shippingPrefilledAddress2.style.display = 'none'
+                    }
+                    shippingPrefilledCity.innerHTML = primaryAddress.city + ', ' + primaryAddress.state + ' ' + primaryAddress.zipCode
+
+                    checkoutDict.shippingAddress = data.shippingAddress.primary
+                }
+
+                //Prefill email and phone number
+                if(data.email) {
+                    contactEmailField.value = data.email
+                }
+                if(data.phoneNumber) {
+                    contactPhoneField.value = data.phoneNumber
+                }
+            })
         } else {
-            // No user is logged in.
-            location.href = 'https://www.thegametree.io/shop/cart'
+            //TODO: Sign in and guest checkout workflow
+
+            checkoutLoginScreen.style.display = 'flex'
+            checkoutScreen.style.display = 'none'
+        
+            guestLoginButton.addEventListener('click', () => {
+                loadGuestCheckoutInitialState()
+            })
         }
-    })
-
-    checkoutLoginScreen.style.display = 'flex'
-    checkoutScreen.style.display = 'none'
-
-    guestLoginButton.addEventListener('click', () => {
-        console.log('called')
-        loadGuestCheckoutInitialState()
     })
 }
 
-function loadGuestCheckoutInitialState() {
+function loadInitialCheckoutState() {
+    backToCartButton.addEventListener('click', () => {
+        location.href = 'https://www.thegametree.io/shop/cart'
+    })
+
     loadDropdownInitialStates()
     resetDeliveryInfoErrorFields()
     resetBillingInfoErrorFields()
     loadOrderSummary()
 
     $('#checkout-login-screen').fadeOut(200, () => {
-        $('#guest-checkout-screen').fadeIn()
+        $('#checkout-screen').fadeIn()
     })
 
     orderDeliveryFormBlock.style.display = 'block'
+    shippingPrefilledAddressContainer.style.display = 'none'
     orderPaymentFormBlock.style.display = 'none'
     
     paymentOptionsContainer.style.display = 'none'
@@ -175,6 +223,12 @@ function loadGuestCheckoutInitialState() {
 
 
     //Navigation and onClicks
+    shippingPrefilledChange.addEventListener('click', () => {
+        $('#shipping-address-form-block').fadeIn()
+        userHasShippingAddress = false
+        shippingPrefilledAddressContainer.style.display = 'none'
+    })
+
     shippingAddressAddSecond.addEventListener('click', () => {
         $('#shipping-address-add-second').fadeOut(200, () => {
             $('#shipping-address-second-field').fadeIn()
@@ -205,13 +259,15 @@ function loadGuestCheckoutInitialState() {
     continueToPaymentButton.addEventListener('click', () => {
 
         if (checkForDeliveryInfoErrors()) {
-            checkoutDict.shippingAddress.firstName = shippingFirstNameField.value
-            checkoutDict.shippingAddress.lastName = shippingLastNameField.value
-            checkoutDict.shippingAddress.address1 = shippingAddressField.value
-            checkoutDict.shippingAddress.address2 = shippingAddressSecondField.value
-            checkoutDict.shippingAddress.city = shippingCityField.value
-            checkoutDict.shippingAddress.state = shippingStateDropdownText.innerHTML
-            checkoutDict.shippingAddress.zipCode = shippingZipField.value
+            if(!userHasShippingAddress) {
+                checkoutDict.shippingAddress.firstName = shippingFirstNameField.value
+                checkoutDict.shippingAddress.lastName = shippingLastNameField.value
+                checkoutDict.shippingAddress.address1 = shippingAddressField.value
+                checkoutDict.shippingAddress.address2 = shippingAddressSecondField.value
+                checkoutDict.shippingAddress.city = shippingCityField.value
+                checkoutDict.shippingAddress.state = shippingStateDropdownText.innerHTML
+                checkoutDict.shippingAddress.zipCode = shippingZipField.value
+            }
             checkoutDict.emailAddress = contactEmailField.value
             checkoutDict.phoneNumber = contactPhoneField.value
 
@@ -350,15 +406,6 @@ function loadDropdownInitialStates() {
         expirationYearDropdownOptions.appendChild(yearOption)
     })
 }
-
-
-
-
-
-
-
-
-
 
 
 
