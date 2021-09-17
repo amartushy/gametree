@@ -136,13 +136,16 @@ var checkoutDict = {
 
 window.onload = () => {
 
-    //TODO: Check if user is logged in
-    const user = firebase.auth().currentUser;
-    if (user) {
-        globalUserId = user.uid
-    } else {
-        location.href = 'https://www.thegametree.io/shop/cart'
-    }
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            // Customer is logged in.
+            globalUserId = user.uid
+
+        } else {
+            // No user is logged in.
+            location.href = 'https://www.thegametree.io/shop/cart'
+        }
+    })
 
     checkoutLoginScreen.style.display = 'flex'
     guestCheckoutScreen.style.display = 'none'
@@ -157,8 +160,7 @@ function loadGuestCheckoutInitialState() {
     loadDropdownInitialStates()
     resetDeliveryInfoErrorFields()
     resetBillingInfoErrorFields()
-
-    //TODO: Load order summary from cart
+    loadOrderSummary()
 
     $('#checkout-login-screen').fadeOut(200, () => {
         $('#guest-checkout-screen').fadeIn()
@@ -257,14 +259,8 @@ function loadGuestCheckoutInitialState() {
     })
 
     placeOrderButton.addEventListener('click', () => {
-        console.log(checkoutDict)
-
-        //TODO: Check for payment issues
 
         if(checkForBillingInfoErrors()) {
-            //TODO: Process payment
-            //TODO: Show processing and confirmation screen
-            //TODO: Submit order
             submitOrderAndProcessPayment()
 
         } else {
