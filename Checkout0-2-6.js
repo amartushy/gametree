@@ -12,7 +12,7 @@ const loginGoogleButton = document.getElementById('login-google-button')
 const guestLoginButton = document.getElementById('guest-login-button')
 
 //___________________________________Guest Checkout__________________________________________
-const guestCheckoutScreen = document.getElementById('guest-checkout-screen')
+const checkoutScreen = document.getElementById('checkout-screen')
 const orderSummaryItemsContainer = document.getElementById('order-summary-items-container')
 const orderSubtotal = document.getElementById('order-subtotal')
 const orderShippingPrice = document.getElementById('order-shipping-price')
@@ -148,7 +148,7 @@ window.onload = () => {
     })
 
     checkoutLoginScreen.style.display = 'flex'
-    guestCheckoutScreen.style.display = 'none'
+    checkoutScreen.style.display = 'none'
 
     guestLoginButton.addEventListener('click', () => {
         console.log('called')
