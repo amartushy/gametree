@@ -11,8 +11,8 @@ const loginAppleButton = document.getElementById('login-apple-button')
 const loginGoogleButton = document.getElementById('login-google-button')
 const guestLoginButton = document.getElementById('guest-login-button')
 
-//___________________________________Checkout Screen__________________________________________
-const checkoutScreen = document.getElementById('checkout-screen')
+//___________________________________Guest Checkout__________________________________________
+const guestCheckoutScreen = document.getElementById('guest-checkout-screen')
 const orderSummaryItemsContainer = document.getElementById('order-summary-items-container')
 const orderSubtotal = document.getElementById('order-subtotal')
 const orderShippingPrice = document.getElementById('order-shipping-price')
@@ -21,13 +21,6 @@ const orderTotal = document.getElementById('order-total')
 
 //Delivery Screen
 const orderDeliveryFormBlock = document.getElementById('order-delivery-form-block')
-const shippingPrefilledAddressContainer = document.getElementById('shipping-prefilled-address-container')
-const shippingPrefilledName = document.getElementById('shipping-prefilled-name')
-const shippingPrefilledAddress = document.getElementById('shipping-prefilled-address')
-const shippingPrefilledAddress2 = document.getElementById('shipping-prefilled-address-2')
-const shippingPrefilledCity = document.getElementById('shipping-prefilled-city')
-const shippingPrefilledChange = document.getElementById('shipping-prefilled-change')
-const shippingAddressFormBlock = document.getElementById('shipping-address-form-block')
 const shippingFirstNameField = document.getElementById('shipping-first-name-field')
 const shippingFirstNameError = document.getElementById('shipping-first-name-error')
 const shippingLastNameField = document.getElementById('shipping-last-name-field')
@@ -103,10 +96,8 @@ const placeOrderButton = document.getElementById('place-order-button')
 
 
 //Global Variables
-var userHasShippingAddress = false
 var useShippingAddressForBilling = true
-var database = firebase.firestore()
-
+var globalUserId
 var checkoutDict = {
         'shippingAddress' : {
             'firstName' : '',
@@ -135,7 +126,8 @@ var checkoutDict = {
         'shippingFees' : 0.0,
         'tax' : 0.0,
         'checkoutTotal' : 0.0,
-        'paymentMethod' : ''
+        'paymentMethod' : '',
+        'orderStatus' : 'processing'
 }
 
 
@@ -143,74 +135,36 @@ var checkoutDict = {
 
 
 window.onload = () => {
-    loadInitialCheckoutState()
 
     //TODO: Check if user is logged in
-    firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-            firebase.firestore().collection('users').doc(user.uid).get().then(function(doc) {
-                let data = doc.data()
+    const user = firebase.auth().currentUser;
+    if (user) {
+        globalUserId = user.uid
+    } else {
+        location.href = 'https://www.thegametree.io/shop/cart'
+    }
 
-                //Prefill shipping address if applicable
-                if(data.shippingAddress.primary) {
-                    userHasShippingAddress = true
+    checkoutLoginScreen.style.display = 'flex'
+    guestCheckoutScreen.style.display = 'none'
 
-                    let primaryAddress = data.shippingAddress.primary
-
-                    shippingPrefilledAddressContainer.style.display = 'block'
-                    shippingAddressFormBlock.style.display = 'none'
-
-                    shippingPrefilledName.innerHTML = primaryAddress.firstName + ' ' + primaryAddress.lastName
-                    shippingPrefilledAddress.innerHTML = primaryAddress.address1
-                    if(primaryAddress.address2 && primaryAddress.address2 != "") {
-                        shippingPrefilledAddress2.innerHTML = primaryAddress.address2
-                        shippingPrefilledAddress2.style.display = 'block'
-                    } else {
-                        shippingPrefilledAddress2.style.display = 'none'
-                    }
-                    shippingPrefilledCity.innerHTML = primaryAddress.city + ', ' + primaryAddress.state + ' ' + primaryAddress.zipCode
-
-                    checkoutDict.shippingAddress = data.shippingAddress.primary
-                }
-
-                //Prefill email and phone number
-                if(data.email) {
-                    contactEmailField.value = data.email
-                }
-                if(data.phoneNumber) {
-                    contactPhoneField.value = data.phoneNumber
-                }
-            })
-        } else {
-            //TODO: Sign in and guest checkout workflow
-
-            checkoutLoginScreen.style.display = 'flex'
-            checkoutScreen.style.display = 'none'
-        
-            guestLoginButton.addEventListener('click', () => {
-                loadGuestCheckoutInitialState()
-            })
-        }
+    guestLoginButton.addEventListener('click', () => {
+        console.log('called')
+        loadGuestCheckoutInitialState()
     })
 }
 
-
-function loadInitialCheckoutState() {
-    backToCartButton.addEventListener('click', () => {
-        location.href = 'https://www.thegametree.io/shop/cart'
-    })
-
+function loadGuestCheckoutInitialState() {
     loadDropdownInitialStates()
     resetDeliveryInfoErrorFields()
     resetBillingInfoErrorFields()
-    loadOrderSummary()
+
+    //TODO: Load order summary from cart
 
     $('#checkout-login-screen').fadeOut(200, () => {
-        $('#checkout-screen').fadeIn()
+        $('#guest-checkout-screen').fadeIn()
     })
 
     orderDeliveryFormBlock.style.display = 'block'
-    shippingPrefilledAddressContainer.style.display = 'none'
     orderPaymentFormBlock.style.display = 'none'
     
     paymentOptionsContainer.style.display = 'none'
@@ -219,12 +173,6 @@ function loadInitialCheckoutState() {
 
 
     //Navigation and onClicks
-    shippingPrefilledChange.addEventListener('click', () => {
-        $('#shipping-address-form-block').fadeIn()
-        userHasShippingAddress = false
-        shippingPrefilledAddressContainer.style.display = 'none'
-    })
-
     shippingAddressAddSecond.addEventListener('click', () => {
         $('#shipping-address-add-second').fadeOut(200, () => {
             $('#shipping-address-second-field').fadeIn()
@@ -255,15 +203,13 @@ function loadInitialCheckoutState() {
     continueToPaymentButton.addEventListener('click', () => {
 
         if (checkForDeliveryInfoErrors()) {
-            if(!userHasShippingAddress) {
-                checkoutDict.shippingAddress.firstName = shippingFirstNameField.value
-                checkoutDict.shippingAddress.lastName = shippingLastNameField.value
-                checkoutDict.shippingAddress.address1 = shippingAddressField.value
-                checkoutDict.shippingAddress.address2 = shippingAddressSecondField.value
-                checkoutDict.shippingAddress.city = shippingCityField.value
-                checkoutDict.shippingAddress.state = shippingStateDropdownText.innerHTML
-                checkoutDict.shippingAddress.zipCode = shippingZipField.value
-            }
+            checkoutDict.shippingAddress.firstName = shippingFirstNameField.value
+            checkoutDict.shippingAddress.lastName = shippingLastNameField.value
+            checkoutDict.shippingAddress.address1 = shippingAddressField.value
+            checkoutDict.shippingAddress.address2 = shippingAddressSecondField.value
+            checkoutDict.shippingAddress.city = shippingCityField.value
+            checkoutDict.shippingAddress.state = shippingStateDropdownText.innerHTML
+            checkoutDict.shippingAddress.zipCode = shippingZipField.value
             checkoutDict.emailAddress = contactEmailField.value
             checkoutDict.phoneNumber = contactPhoneField.value
 
@@ -318,15 +264,13 @@ function loadInitialCheckoutState() {
         if(checkForBillingInfoErrors()) {
             //TODO: Process payment
             //TODO: Show processing and confirmation screen
+            //TODO: Submit order
+            submitOrderAndProcessPayment()
 
         } else {
             showErrorMessage("There's an issue with your billing information")
         }
     })
-}
-
-function loadGuestCheckoutInitialState() {
-
 }
 
 
@@ -415,29 +359,22 @@ function loadDropdownInitialStates() {
 
 
 
+
+
+
+
+
+
+
+
+
 function checkForDeliveryInfoErrors() {
     resetDeliveryInfoErrorFields()
 
     shippingStateDropdown.className = 'checkout-state-dropdown'
     shippingStateError.style.display = 'none'
 
-    if(userHasShippingAddress) {
-        if (!checkValidEmail(contactEmailField.value)) {
-            console.log(checkValidEmail(contactEmailField.value))
-            contactEmailField.className = 'checkout-input-field-error w-input'
-            contactEmailError.style.display = 'flex'
-            return false
-    
-        } else if (!checkValidPhone(contactPhoneField.value)) {
-            contactPhoneField.className = 'checkout-input-field-error w-input'
-            contactPhoneError.style.display = 'flex'
-            return false
-    
-        } else {
-            return true
-        }
-
-    } else if (shippingFirstNameField.value == '') {
+    if (shippingFirstNameField.value == '') {
         shippingFirstNameField.className = 'checkout-input-field-error w-input'
         shippingFirstNameError.style.display = 'flex'
         return false
@@ -537,6 +474,128 @@ function checkForBillingInfoErrors() {
     }
 }
 
+//Load Order Summary
+
+function loadOrderSummary() {
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            // Customer is logged in.
+            database.collection("users").doc(user.uid).onSnapshot((doc) => {
+                while(orderSummaryItemsContainer.firstChild) {
+                    orderSummaryItemsContainer.removeChild(orderSummaryItemsContainer.firstChild)
+                }
+        
+                var cartData = doc.data().cart
+        
+                if(Object.keys(cartData).length > 0 ) {
+                    //Reset Checkout Object
+                    checkoutDict.checkoutItems = {}
+
+                    //Build Cart Items
+                    for (var item in cartData) {
+                        if (cartData.hasOwnProperty(item)) {
+                            buildCartItem(item, cartData[item])
+                        }
+                    }
+        
+                    updateOrderTotal(cartData)
+        
+                } else {
+                    //Customer doesn't have any items to checkout with, redirect back
+                    location.href = 'https://www.thegametree.io/shop/cart'
+                }
+            })
+
+        } else {
+            // No user is logged in - should never occur if redirected from cart
+            location.href = 'https://www.thegametree.io'
+        }
+    })
+}
+
+
+
+function buildCartItem(purchaseID, GTIN) {
+
+    database.collection('catalog').doc(GTIN).get().then(function(doc) {
+
+        var itemData = doc.data()
+
+        const itemConditionDict = {
+            'new' : 'New',
+            'usedFantastic' : 'Used - Excellent',
+            'usedGood' : 'Used - Good',
+            'usedAcceptable' : 'Used - Acceptable'
+        }
+
+        //Check if item is still in stock
+        if( itemData.availability.hasOwnProperty(purchaseID) ) {
+            checkoutDict.checkoutItems[`${purchaseID}`] = GTIN
+
+            var itemCondition = itemData.availability[purchaseID]
+
+            const orderSummaryItemDiv = createDOMElement('div', 'order-summary-item-div', 'none', orderSummaryItemsContainer)
+            const orderSummaryImage = createDOMElement('img', 'order-summary-image', 'none', orderSummaryItemDiv)
+            orderSummaryImage.src = itemData.productImage
+            createDOMElement('div', 'order-summary-item-title', itemData.general.productName, orderSummaryItemDiv)
+
+            const orderSummaryPriceDiv = createDOMElement('div', 'order-summary-price-div', 'none', orderSummaryItemDiv)
+            const itemPrice = '$' + itemData.salePrices[itemCondition]
+            createDOMElement('div', 'order-summary-item-price', itemPrice, orderSummaryPriceDiv)
+            createDOMElement('div', 'order-summary-item-quantity', 'Qty 1', orderSummaryPriceDiv)
+            const removeItem = createDOMElement('div', 'order-summary-remove-item', 'Remove', orderSummaryPriceDiv)
+            removeItem.setAttribute('onClick', `removeItemFromOrder("${purchaseID}")`)
+
+        } else {
+            //TODO: Notify customer the item is no longer in stock, remove from cart
+        }
+    })
+}
+
+
+function updateOrderTotal(cartItems) {
+
+    var subtotalAmount = 0.00
+    var taxAmount = 0.00
+    var totalAmount = 0.00
+
+    for (let item in cartItems) {
+        if (cartItems.hasOwnProperty(item)) {
+            database.collection('catalog').doc(cartItems[item]).get().then(function(doc) {
+                var itemData = doc.data()
+                var itemCondition = itemData.availability[item]
+                var itemPrice = itemData.salePrices[itemCondition]
+
+                subtotalAmount += parseFloat(itemPrice)
+                //TODO: Calculate Sales Tax
+                totalAmount = subtotalAmount + taxAmount
+
+                orderSubtotal.innerHTML = '$' + subtotalAmount
+                orderTax.innerHTML = '$' + taxAmount
+                orderTotal.innerHTML = '$' + totalAmount
+
+                checkoutDict.itemSubtotal = subtotalAmount
+                checkoutDict.tax = taxAmount
+                checkoutDict.checkoutTotal = totalAmount
+
+            })
+        }
+    }
+}
+function removeItemFromOrder(purchaseID) {
+    var cartUpdateDict = {}
+    cartUpdateDict[`cart.${purchaseID}`] = firebase.firestore.FieldValue.delete()
+  
+    var userID = firebase.auth().currentUser.uid
+    database.collection("users").doc(userID).update(cartUpdateDict).then(function() {
+        console.log('Removed Item')
+        updateOrderTotal(false)
+
+    }).catch(function(error) {
+        console.log(error)
+    })
+}
+
 
 
 
@@ -588,21 +647,6 @@ function resetBillingInfoErrorFields() {
     inputFieldsArray.forEach( (inputElement) => { 
         inputElement.className = 'checkout-input-field w-input'
     })
-}
-
-function createDOMElement(type, classStr, text, parentElement) {
-    let DOMElement = document.createElement(`${type}`)
-    DOMElement.className = classStr
-  
-    if(text != 'none') {
-      DOMElement.innerHTML = text
-    }
-  
-    if(parentElement != 'none') {
-      parentElement.appendChild(DOMElement)
-    }
-  
-    return(DOMElement)
 }
 
 
