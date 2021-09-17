@@ -417,7 +417,23 @@ function checkForDeliveryInfoErrors() {
     shippingStateDropdown.className = 'checkout-state-dropdown'
     shippingStateError.style.display = 'none'
 
-    if (shippingFirstNameField.value == '') {
+    if(userHasShippingAddress) {
+        if (!checkValidEmail(contactEmailField.value)) {
+            console.log(checkValidEmail(contactEmailField.value))
+            contactEmailField.className = 'checkout-input-field-error w-input'
+            contactEmailError.style.display = 'flex'
+            return false
+    
+        } else if (!checkValidPhone(contactPhoneField.value)) {
+            contactPhoneField.className = 'checkout-input-field-error w-input'
+            contactPhoneError.style.display = 'flex'
+            return false
+    
+        } else {
+            return true
+        }
+
+    } else if (shippingFirstNameField.value == '') {
         shippingFirstNameField.className = 'checkout-input-field-error w-input'
         shippingFirstNameError.style.display = 'flex'
         return false
