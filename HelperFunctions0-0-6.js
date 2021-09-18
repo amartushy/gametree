@@ -63,6 +63,30 @@ function createDOMElement(type, classStr, text, parentElement) {
 }
 
 
+function getFormattedDate(timeEpoch) {
+    var time = parseFloat(timeEpoch)
+    var d = new Date(0);
+    d.setUTCSeconds(time);
+  
+    var dayLong = d.toLocaleDateString("en-US", {weekday: "long"}); 
+    var month = d.toLocaleDateString("en-US", {month: "short"});
+    var dayInt = d.toLocaleDateString("en-US", {day: "numeric"});
+
+    var suffix
+    if (dayInt == 1 || dayInt == 21 ||dayInt == 31) {
+        suffix = "st"
+    } else if( dayInt == 2 || dayInt == 22) {
+        suffix = "nd"
+    } else if (dayInt == 3 || dayInt == 23) {
+        suffix = "rd"
+    } else {
+        suffix = "th"
+    }
+    dayWithSuffix = dayInt + suffix
+    var dateObject = [dayLong, month, dayWithSuffix]
+    return (dateObject)
+}
+
 //Notification Functions
 function sendSMSTo(number, message) {
 	var xhttp = new XMLHttpRequest();
