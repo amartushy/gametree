@@ -580,6 +580,8 @@ function buildCartItem(purchaseID, GTIN) {
 
         //Check if item is still in stock
         if( itemData.availability.hasOwnProperty(purchaseID) ) {
+            var itemCondition = itemData.availability[purchaseID]
+            
             checkoutDict.checkoutItems[`${purchaseID}`] = {
                 'GTIN' : GTIN,
                 'productName' : itemData.general.productName,
@@ -589,8 +591,6 @@ function buildCartItem(purchaseID, GTIN) {
                 'category' : itemData.category,
                 'brand' : itemData.brand
             }
-
-            var itemCondition = itemData.availability[purchaseID]
 
             const orderSummaryItemDiv = createDOMElement('div', 'order-summary-item-div', 'none', orderSummaryItemsContainer)
             const orderSummaryImage = createDOMElement('img', 'order-summary-image', 'none', orderSummaryItemDiv)
