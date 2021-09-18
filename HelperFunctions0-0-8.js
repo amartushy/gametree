@@ -103,7 +103,7 @@ function sendSMSTo(number, message) {
 
 function sendReceiptTo(checkoutID, firstName, lastName, date, amount, email) {
     var xhttp = new XMLHttpRequest();
-    var herokuURL = `https://gametree-web.herokuapp.com/sendReceiptTo/"${checkoutID}"/"${firstName}"/"${lastName}"/"${date}"/"${amount}"/"${email}"`
+    var herokuURL = `https://gametree-web.herokuapp.com/sendReceiptTo/${checkoutID}/${firstName}/${lastName}/${date}/${amount}/${email}`
     xhttp.open("GET", herokuURL, true);
     xhttp.send();
 }  
