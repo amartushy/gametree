@@ -536,38 +536,29 @@ function checkForBillingInfoErrors() {
 //Load Order Summary
 
 function loadOrderSummary() {
-    firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-            // Customer is logged in.
-            database.collection("users").doc(user.uid).onSnapshot((doc) => {
-                while(orderSummaryItemsContainer.firstChild) {
-                    orderSummaryItemsContainer.removeChild(orderSummaryItemsContainer.firstChild)
-                }
-        
-                var cartData = doc.data().cart
-        
-                if(Object.keys(cartData).length > 0 ) {
-                    //Reset Checkout Object
-                    checkoutDict.checkoutItems = {}
+    database.collection("users").doc(globalUserId).get().then(function(doc) {
+        while(orderSummaryItemsContainer.firstChild) {
+            orderSummaryItemsContainer.removeChild(orderSummaryItemsContainer.firstChild)
+        }
 
-                    //Build Cart Items
-                    for (var item in cartData) {
-                        if (cartData.hasOwnProperty(item)) {
-                            buildCartItem(item, cartData[item])
-                        }
-                    }
-        
-                    updateOrderTotal(cartData)
-        
-                } else {
-                    //Customer doesn't have any items to checkout with, redirect back
-                    location.href = 'https://www.thegametree.io/shop/cart'
+        var cartData = doc.data().cart
+
+        if(Object.keys(cartData).length > 0 ) {
+            //Reset Checkout Object
+            checkoutDict.checkoutItems = {}
+
+            //Build Cart Items
+            for (var item in cartData) {
+                if (cartData.hasOwnProperty(item)) {
+                    buildCartItem(item, cartData[item])
                 }
-            })
+            }
+
+            updateOrderTotal(cartData)
 
         } else {
-            // No user is logged in - should never occur if redirected from cart
-            location.href = 'https://www.thegametree.io'
+            //Customer doesn't have any items to checkout with, redirect back to cart
+            location.href = 'https://www.thegametree.io/shop/cart'
         }
     })
 }
@@ -649,6 +640,7 @@ function removeItemFromOrder(purchaseID) {
     database.collection("users").doc(userID).update(cartUpdateDict).then(function() {
         console.log('Removed Item')
         updateOrderTotal(false)
+        loadOrderSummary()
 
     }).catch(function(error) {
         console.log(error)
