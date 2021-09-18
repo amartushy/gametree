@@ -536,7 +536,7 @@ function checkForBillingInfoErrors() {
 //Load Order Summary
 
 function loadOrderSummary() {
-    database.collection("users").doc(globalUserId).get().then(function(doc) {
+    database.collection("users").doc(globalUserId).onSnapshot((doc) => {
         while(orderSummaryItemsContainer.firstChild) {
             orderSummaryItemsContainer.removeChild(orderSummaryItemsContainer.firstChild)
         }
@@ -640,7 +640,6 @@ function removeItemFromOrder(purchaseID) {
     database.collection("users").doc(userID).update(cartUpdateDict).then(function() {
         console.log('Removed Item')
         updateOrderTotal(false)
-        loadOrderSummary()
 
     }).catch(function(error) {
         console.log(error)
