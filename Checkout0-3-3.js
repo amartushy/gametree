@@ -580,7 +580,15 @@ function buildCartItem(purchaseID, GTIN) {
 
         //Check if item is still in stock
         if( itemData.availability.hasOwnProperty(purchaseID) ) {
-            checkoutDict.checkoutItems[`${purchaseID}`] = GTIN
+            checkoutDict.checkoutItems[`${purchaseID}`] = {
+                'GTIN' : GTIN,
+                'productName' : itemData.general.productName,
+                'condition' : itemData.availability[purchaseID],
+                'price' : itemData.salePrices[itemCondition],
+                'UPC' : itemData.other.UPC,
+                'category' : itemData.category,
+                'brand' : itemData.brand
+            }
 
             var itemCondition = itemData.availability[purchaseID]
 
