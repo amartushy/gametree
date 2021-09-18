@@ -145,14 +145,14 @@ var checkoutDict = {
 
 
 window.onload = () => {
+    loadInitialCheckoutState()
 
     //TODO: Check if user is logged in
     firebase.auth().onAuthStateChanged(function(user) {
-        loadInitialCheckoutState()
 
         if (user) {
             globalUserId = user.uid
-
+            loadOrderSummary(globalUserId)
 
             firebase.firestore().collection('users').doc(user.uid).get().then(function(doc) {
                 let data = doc.data()
@@ -208,7 +208,6 @@ function loadInitialCheckoutState() {
     loadDropdownInitialStates()
     resetDeliveryInfoErrorFields()
     resetBillingInfoErrorFields()
-    loadOrderSummary()
 
     $('#checkout-login-screen').fadeOut(200, () => {
         $('#checkout-screen').fadeIn()
@@ -535,10 +534,9 @@ function checkForBillingInfoErrors() {
 }
 
 //Load Order Summary
+function loadOrderSummary(userID) {
 
-function loadOrderSummary() {
-    console.log(globalUserId)
-    database.collection("users").doc(globalUserId).onSnapshot((doc) => {
+    database.collection("users").doc(userID).onSnapshot((doc) => {
         while(orderSummaryItemsContainer.firstChild) {
             orderSummaryItemsContainer.removeChild(orderSummaryItemsContainer.firstChild)
         }
@@ -730,3 +728,4 @@ function displayAndUpdateBillingAddress() {
         billingAddressContainer.style.display = 'block'
     }
 }
+
