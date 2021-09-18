@@ -145,10 +145,11 @@ var checkoutDict = {
 
 
 window.onload = () => {
-    loadInitialCheckoutState()
 
     //TODO: Check if user is logged in
     firebase.auth().onAuthStateChanged(function(user) {
+        loadInitialCheckoutState()
+
         if (user) {
             globalUserId = user.uid
 
@@ -536,6 +537,7 @@ function checkForBillingInfoErrors() {
 //Load Order Summary
 
 function loadOrderSummary() {
+    console.log(globalUserId)
     database.collection("users").doc(globalUserId).onSnapshot((doc) => {
         while(orderSummaryItemsContainer.firstChild) {
             orderSummaryItemsContainer.removeChild(orderSummaryItemsContainer.firstChild)
