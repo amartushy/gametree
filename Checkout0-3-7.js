@@ -137,7 +137,8 @@ var checkoutDict = {
         'tax' : 0.0,
         'checkoutTotal' : 0.0,
         'paymentMethod' : '',
-        'orderStatus' : 'processing'
+        'orderStatus' : 'processing',
+        'orderDate' : new Date().getTime() / 1000
 }
 
 
@@ -737,5 +738,4 @@ function displayAndUpdateBillingAddress() {
         billingAddressContainer.style.display = 'block'
     }
 }
-
 
