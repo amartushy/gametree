@@ -68,9 +68,9 @@ function getFormattedDate(timeEpoch) {
     var d = new Date(0);
     d.setUTCSeconds(time);
   
-    var dayLong = d.toLocaleDateString("en-US", {weekday: "long"}); 
     var month = d.toLocaleDateString("en-US", {month: "short"});
     var dayInt = d.toLocaleDateString("en-US", {day: "numeric"});
+    var yearLong = d.toLocaleDateString("en-US", {year: "numeric"});
 
     var suffix
     if (dayInt == 1 || dayInt == 21 ||dayInt == 31) {
@@ -83,7 +83,7 @@ function getFormattedDate(timeEpoch) {
         suffix = "th"
     }
     dayWithSuffix = dayInt + suffix
-    var dateObject = [dayLong, month, dayWithSuffix]
+    var dateObject = [month, dayWithSuffix, yearLong]
     return (dateObject)
 }
 
