@@ -20,6 +20,10 @@ window.onload = function() {
           });
     })
 	
+    document.getElementById('account-button').addEventListener('click', () => {
+        location.href = 'https://thegametree.io/account'
+    })
+	
 	firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
             firebase.firestore().collection('users').doc(user.uid).get().then(function(doc) {
