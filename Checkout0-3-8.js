@@ -138,7 +138,7 @@ var checkoutDict = {
         'checkoutTotal' : 0.0,
         'paymentMethod' : '',
         'orderStatus' : 'processing',
-        'orderDate' : new Date().getTime() / 1000
+        'orderDate' : new Date().getTime() 
 }
 
 
@@ -737,5 +737,120 @@ function displayAndUpdateBillingAddress() {
         prefilledBillingAddressContainer.style.display = 'none'
         billingAddressContainer.style.display = 'block'
     }
+}
+
+
+
+
+
+
+
+
+
+
+const checkoutProcessingScreen = document.getElementById('checkout-processing-screen')
+const checkoutCheckMark = document.getElementById('checkout-check-mark')
+const checkoutProcessingText = document.getElementById('checkout-processing-text')
+const checkoutCompleteDiv = document.getElementById('checkout-complete-div')
+const checkoutTrackOrderButton = document.getElementById('checkout-track-order-button')
+
+function submitOrderAndProcessPayment() {
+    console.log(checkoutDict)
+    console.log(globalUserId)
+
+    //Load Processing Screen
+    checkoutCheckMark.style.display = 'none'
+    checkoutCompleteDiv.style.display = 'none'
+    checkoutProcessingText.style.display = 'block'
+
+    $('#checkout-screen').fadeOut(200, () => {
+        $('#checkout-processing-screen').fadeIn().css('display', 'flex')
+    })
+
+    var promises = []
+
+    //TODO: Check Payment Valididty
+    //var paymentPromise
+    var transactionID = createID(8)
+
+    //Update Global Orders
+    var usersPromise = database.collection('orders').doc(transactionID).set(checkoutDict).then(function() {
+        console.log("Users orders updated");
+    }).catch(function(error) {
+        console.error("Error writing document: ", error);
+    });
+
+    //Clear Users Cart
+    var usersCartPromise = database.collection('users').doc(globalUserId).update({
+        'cart' : {}
+    }).then(function() {
+        console.log("Global orders updated");
+    }).catch(function(error) {
+        console.error("Error writing document: ", error);
+    });
+
+    //Update Users Orders
+    var globalPromise = database.collection('users').doc(globalUserId).collection('orders').doc(transactionID).set(checkoutDict).then(function() {
+        console.log("Global orders updated");
+    }).catch(function(error) {
+        console.error("Error writing document: ", error);
+    });
+
+    //Update Catalog Availability
+    var cartData = checkoutDict.checkoutItems
+    for (let item in cartData) {
+        if (cartData.hasOwnProperty(item)) {
+
+            var removeItemDict = {}
+            removeItemDict[`availability.${item}`] = firebase.firestore.FieldValue.delete()
+
+            var catalogPromise = database.collection('catalog').doc(cartData[item]).update(removeItemDict).then(function() {
+                console.log(`Item: ${cartData[item]} removed with purchaseID: ${item}`)
+
+            }).catch(function(error) {
+                console.log(error.message)
+            })
+
+            promises.push(catalogPromise)
+        }
+    }
+
+
+    promises.push(usersPromise, usersCartPromise, globalPromise)
+
+    Promise.all(promises).then(results => {
+        console.log('All documents written successfully')
+
+        //Notify Admins
+        var message = `New Order Placed %0D%0AOrder ID: ${transactionID} %0D%0AOrder Total: ${checkoutDict.checkoutTotal} %0D%0A%0D%0AItems: %0D%0A`
+        var cartData = checkoutDict.checkoutItems
+        for(var item in cartData) {
+            if(cartData.hasOwnProperty(item)) {
+                var itemString = `${cartData[item].productName} %0D%0APurchaseID: ${item} %0D%0A$${cartData[item].price} %0D%0A %0D%0A`
+                message += itemString
+            }
+        }
+        var customerInfoStr = `Customer Info:%0D%0A${checkoutDict.shippingAddress.firstName} ${checkoutDict.shippingAddress.lastName}%0D%0A${checkoutDict.shippingAddress.address1}`
+        if(checkoutDict.shippingAddress.address2 != "") {
+            customerInfoStr += `%0D%0A${checkoutDict.shippingAddress.address2}`
+        }
+        var customerInfoStr2 = `%0D%0A${checkoutDict.shippingAddress.city}, ${checkoutDict.shippingAddress.state} ${checkoutDict.shippingAddress.zipCode}`
+        customerInfoStr += customerInfoStr2
+
+        message += customerInfoStr
+
+        sendSMSTo('4582108156', message)
+
+        //TODO: Send Receipt
+        var orderDateObject = getFormattedDate(checkoutDict.orderDate)
+        orderDateString = `${orderDateObject[0]} ${orderDateObject[1]}, ${orderDateObject[2]} `
+        sendReceiptTo(transactionID, checkoutDict.billingAddress.firstName, checkoutDict.billingAddress.lastName, orderDateString, checkoutDict.checkoutTotal, checkoutDict.emailAddress)
+
+        //Show Completion
+        $('#checkout-processing-text').fadeOut(200, () => {
+            $('#checkout-complete-div').fadeIn().css('display', 'flex')
+            checkoutCheckMark.style.display = 'block'
+        })
+    })
 }
 
