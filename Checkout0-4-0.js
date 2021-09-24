@@ -805,14 +805,16 @@ function submitOrderAndProcessPayment() {
             var removeItemDict = {}
             removeItemDict[`availability.${item}`] = firebase.firestore.FieldValue.delete()
 
-            var catalogPromise = database.collection('catalog').doc(cartData[item]).update(removeItemDict).then(function() {
-                console.log(`Item: ${cartData[item]} removed with purchaseID: ${item}`)
+            // var catalogPromise = database.collection('catalog').doc(cartData[item]).update(removeItemDict).then(function() {
+                // console.log(`Item: ${cartData[item]} removed with purchaseID: ${item}`)
 
-            }).catch(function(error) {
-                console.log(error.message)
-            })
+            // }).catch(function(error) {
+            //     console.log(error.message)
+            // })
 
-            promises.push(catalogPromise)
+            // promises.push(catalogPromise)
+            console.log(removeItemDict)
+            console.log(`Item: ${cartData[item]} removed with purchaseID: ${item}`)
         }
     }
 
