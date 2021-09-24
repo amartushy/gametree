@@ -586,6 +586,7 @@ function buildCartItem(purchaseID, GTIN) {
             checkoutDict.checkoutItems[`${purchaseID}`] = {
                 'GTIN' : GTIN,
                 'productName' : itemData.general.productName,
+                'productImage' : itemData.productImage,
                 'condition' : itemData.availability[purchaseID],
                 'price' : itemData.salePrices[itemCondition],
                 'UPC' : itemData.other.UPC,
