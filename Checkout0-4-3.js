@@ -662,26 +662,6 @@ function removeItemFromOrder(purchaseID) {
 
 
 //Helper Functions
-function checkValidEmail(emailStr) {
-    console.log(emailStr)
-    if( emailStr.includes("@") && emailStr.includes(".")) {
-        return true
-    } else { 
-        return false
-    }
-}
-
-function checkValidPhone(phoneStr) {
-    var strippedStr = phoneStr.replace(/\D/g, '')
-    console.log(strippedStr)
-    console.log(strippedStr.length)
-    if (strippedStr.length == 10 || strippedStr.length == 11) {
-        return true
-    } else {
-        return false
-    }
-}
-
 
 function resetDeliveryInfoErrorFields() {
     let errorMessagesArray = [shippingFirstNameError, shippingLastNameError, shippingAddressError, shippingCityError, shippingStateError, shippingZipError, contactEmailError, contactPhoneError,]
