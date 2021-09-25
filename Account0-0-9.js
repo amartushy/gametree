@@ -241,7 +241,6 @@ function loadAccountDetailsAndSettings(userID) {
             settingsNumber.innerHTML = 'No number yet'
             settingsNumberField.value = 'No number yet'
         }
-        settingsNumber.innerHTML = userData.email
         settingsPassword.innerHTML = '***********'
 
         settingsNameField.value = userData.name
