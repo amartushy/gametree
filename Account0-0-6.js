@@ -20,6 +20,8 @@ const promotionsCheckbox = document.getElementById('promotions-checkbox')
 
 //Address Modal
 const closeAddressModal = document.getElementById('close-address-modal')
+const addressTitleField = document.getElementById('address-title-field')
+const addressTitleError = document.getElementById('address-title-error')
 const addressFirstField =  document.getElementById('address-first-field')
 const addressLastField = document.getElementById('address-last-field')
 const address1Field = document.getElementById('address-1-field')
