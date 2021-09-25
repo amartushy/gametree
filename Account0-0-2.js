@@ -75,6 +75,8 @@ window.onload = () => {
 function loadAccountPage(userID, userData) {
     loadProductsAndOrders(userID, userData)
     loadAccountDetailsAndSettings(userID)
+    
+    loadAddressModal()
 }
 
 
