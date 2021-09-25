@@ -1,3 +1,5 @@
+
+
 //HTML Elements
 const accountHeaderMain = document.getElementById('account-header-main')
 const accountSignOutButton = document.getElementById('sign-out-button')
@@ -262,14 +264,17 @@ function loadAccountDetailsAndSettings(userID) {
 
     settingsNameChange.addEventListener('click', () => {
         $('#settings-modal').fadeIn().css('display', 'flex')
+        resetChangePasswordFields()
     })
 
     settingsNumberChange.addEventListener('click', () => {
         $('#settings-modal').fadeIn().css('display', 'flex')
+        resetChangePasswordFields()
     })
 
     settingsPasswordChange.addEventListener('click', () => {
         $('#settings-modal').fadeIn().css('display', 'flex')
+        resetChangePasswordFields()
     })
 
     addAddressButton.addEventListener('click', () => {
