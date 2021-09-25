@@ -1,5 +1,3 @@
-
-
 //HTML Elements
 const accountHeaderMain = document.getElementById('account-header-main')
 const accountSignOutButton = document.getElementById('sign-out-button')
@@ -7,13 +5,14 @@ const accountSignOutButton = document.getElementById('sign-out-button')
 const upcomingOrdersArea = document.getElementById('upcoming-orders-area')
 const usersProductsArea = document.getElementById('users-products-area')
 
-const deliveryAddressesContainer = document.getElementById('delivery-addresses-container')
 const settingsName = document.getElementById('settings-name')
 const settingsEmail = document.getElementById('settings-email')
 const settingsPassword = document.getElementById('settings-password')
 const settingsNameChange = document.getElementById('settings-name-change')
 const settingsEmailChange = document.getElementById('settings-email-change')
 const settingsPasswordChange = document.getElementById('settings-password-change')
+const deliveryAddressesContainer = document.getElementById('delivery-addresses-container')
+const addAddressButton = document.getElementById('add-address-button')
 const deliveryCheckbox = document.getElementById('delivery-checkbox')
 const promotionsCheckbox = document.getElementById('promotions-checkbox')
 
@@ -210,6 +209,9 @@ function showUsersProductDetails(orderID) {
     console.log(`Showing product details ${orderID}`)
 }
 
+
+
+
 function loadAccountDetailsAndSettings(userID) {
 
     database.collection('users').doc(userID).onSnapshot( (doc) => {
@@ -244,6 +246,10 @@ function loadAccountDetailsAndSettings(userID) {
 
     settingsPasswordChange.addEventListener('click', () => {
         //TODO
+    })
+
+    addAddressButton.addEventListener('click', () => {
+        displayAddressModal(userID)
     })
 
     deliveryCheckbox.addEventListener('click', () => {
