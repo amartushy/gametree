@@ -17,6 +17,30 @@ const settingsPasswordChange = document.getElementById('settings-password-change
 const deliveryCheckbox = document.getElementById('delivery-checkbox')
 const promotionsCheckbox = document.getElementById('promotions-checkbox')
 
+
+//Address Modal
+const closeAddressModal = document.getElementById('close-address-modal')
+const addressFirstField =  document.getElementById('address-first-field')
+const addressLastField = document.getElementById('address-last-field')
+const address1Field = document.getElementById('address-1-field')
+const addressAddSecond = document.getElementById('address-add-second')
+const address2Field = document.getElementById('address-2-field')
+const addressCityField = document.getElementById('address-city-field')
+const addressStateDropdown = document.getElementById('address-state-dropdown')
+const addressStateDropdownText = document.getElementById('address-state-dropdown-text')
+const addressStateDropdownChevron = document.getElementById('address-state-dropdown-chevron')
+const addressStateDropdownOptions = document.getElementById('address-state-dropdown-options')
+const addressZipcodeField = document.getElementById('address-zipcode-field')
+
+const addressFirstError = document.getElementById('address-first-error')
+const addressLastError = document.getElementById('address-last-error')
+const address1Error = document.getElementById('address-1-error')
+const addressCityError = document.getElementById('address-city-error')
+const addressStateError = document.getElementById('address-state-error')
+const addressZipcodeError = document.getElementById('address-zipcode-error')
+
+const submitAddressButton = document.getElementById('submit-address-button')
+
 //Global Variables
 var database = firebase.firestore()
 
