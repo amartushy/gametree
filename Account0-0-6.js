@@ -209,3 +209,60 @@ function showUsersProductDetails(orderID) {
     //TODO: All of it
     console.log(`Showing product details ${orderID}`)
 }
+
+function loadAccountDetailsAndSettings(userID) {
+
+    database.collection('users').doc(userID).onSnapshot( (doc) => {
+        var userData = doc.data()
+
+        settingsName.innerHTML = userData.name
+        settingsEmail.innerHTML = userData.email
+        settingsPassword.innerHTML = '***********'
+
+        buildUsersDeliveryAddresses(userID, userData)
+
+        if(userData.isReceivingDeliveryUpdates) {
+            deliveryCheckbox.innerHTML = ''
+        } else {
+            deliveryCheckbox.innerHTML = ''
+        }
+
+        if(userData.isReceivingPromotions) {
+            promotionsCheckbox.innerHTML = ''
+        } else {
+            promotionsCheckbox.innerHTML = ''
+        }
+    })
+
+    settingsNameChange.addEventListener('click', () => {
+        //TODO
+    })
+
+    settingsEmailChange.addEventListener('click', () => {
+        //TODO
+    })
+
+    settingsPasswordChange.addEventListener('click', () => {
+        //TODO
+    })
+
+    deliveryCheckbox.addEventListener('click', () => {
+        database.collection('users').doc(userID).get().then( (doc) => {
+            if (doc.data().isReceivingDeliveryUpdates) {
+                return doc.ref.update( {'isReceivingDeliveryUpdates' : !doc.data().isReceivingDeliveryUpdates})
+            } else {
+                return doc.ref.update( {'isReceivingDeliveryUpdates' : true})
+            }
+        })
+    })
+
+    promotionsCheckbox.addEventListener('click', () => {
+        database.collection('users').doc(userID).get().then( (doc) => {
+            if (doc.data().isReceivingPromotions) {
+                return doc.ref.update( {'isReceivingPromotions' : !doc.data().isReceivingPromotions})
+            } else {
+                return doc.ref.update( {'isReceivingPromotions' : true})
+            }
+        })
+    })
+}
