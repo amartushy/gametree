@@ -154,6 +154,7 @@ var checkoutDict = {
 
 
 
+
 window.onload = () => {
     loadInitialCheckoutState()
 
@@ -762,6 +763,7 @@ function submitOrderAndProcessPayment() {
     //Load Processing Screen
     checkoutCheckMark.style.display = 'none'
     checkoutCompleteDiv.style.display = 'none'
+    checkoutCompleteAccountDiv.style.display = 'none'
     checkoutProcessingText.style.display = 'block'
 
     $('#checkout-screen').fadeOut(200, () => {
@@ -851,12 +853,13 @@ function submitOrderAndProcessPayment() {
         //Show conditional completion based on account status
         if(isUserTemporaryAccount) {
             $('#checkout-processing-text').fadeOut(200, () => {
-                $('#checkout-complete-div').fadeIn().css('display', 'flex')
+                $('#checkout-complete-account-div').fadeIn().css('display', 'flex')
                 checkoutCheckMark.style.display = 'block'
             })
+
         } else {
             $('#checkout-processing-text').fadeOut(200, () => {
-                $('#checkout-complete-account-div').fadeIn().css('display', 'flex')
+                $('#checkout-complete-div').fadeIn().css('display', 'flex')
                 checkoutCheckMark.style.display = 'block'
             })
         }
