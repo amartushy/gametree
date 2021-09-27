@@ -104,6 +104,8 @@ function createUserAccount() {
 
                     }).catch((error) => {
                         console.log("Error upgrading anonymous account", error);
+                        loadUserAccountInitialState()
+                        showErrorMessage(error.message)
                     });
 
                 } else {
