@@ -92,7 +92,7 @@ function createUserAccount() {
                     firebase.auth().currentUser.linkWithCredential(credential).then((usercred) => {
                         var user = usercred.user;
 
-                        database.collection("users").doc(newUserID).set(userAccountDict, { 'merge' : true }).then(function() {
+                        database.collection("users").doc(user.uid).set(userAccountDict, { 'merge' : true }).then(function() {
                             console.log("Anonymous account created")
             
                             loadUserAccountConfirmationState()
