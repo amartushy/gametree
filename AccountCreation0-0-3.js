@@ -20,7 +20,7 @@ let userConfirmationCheck = document.getElementById('user-confirmation-check')
 var userAccountDict = {
     'name' : '',
     'email' : '',
-    'dateCreated' : new Date.now(),
+    'dateCreated' : new Date() / 1000,
     'referralCode' : '',
     'isAdmin' : false,
     'isReceivingDeliveryUpdates' : false,
