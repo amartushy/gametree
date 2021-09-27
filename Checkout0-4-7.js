@@ -221,7 +221,7 @@ window.onload = () => {
 
         } else {
             //Redirect if no user is authenticated
-            location.href = 'https://www.thegametree.io/create-account'
+            location.href = 'https://www.thegametree.io/account-creation'
         }
     })
 }
