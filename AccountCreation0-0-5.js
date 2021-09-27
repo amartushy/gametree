@@ -89,7 +89,7 @@ function createUserAccount() {
                     //User is anonymous, convert to permanent account
                     var credential = firebase.auth.EmailAuthProvider.credential(userAccountDict.email, userPasswordField.value);
 
-                    auth.currentUser.linkWithCredential(credential).then((usercred) => {
+                    firebase.auth().currentUser.linkWithCredential(credential).then((usercred) => {
                         var user = usercred.user;
 
                         database.collection("users").doc(newUserID).set(userAccountDict, { 'merge' : true }).then(function() {
