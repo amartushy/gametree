@@ -154,8 +154,9 @@ var checkoutDict = {
 
 
 
-
 window.onload = () => {
+    loadInitialCheckoutState()
+
 
     //TODO: Check if user is logged in
     firebase.auth().onAuthStateChanged(function(user) {
@@ -177,7 +178,7 @@ window.onload = () => {
                     guestLoginButton.addEventListener('click', () => {
 
                         $('#checkout-login-screen').fadeOut(200, () => {
-                            $('#checkout-screen').fadeIn()
+                            $('#checkout-screen').fadeIn().css('display', 'flex')
                         })
                     })
 
