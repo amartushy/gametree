@@ -351,7 +351,7 @@ function loadInitialCheckoutState() {
     })
 
     checkoutAccountCreateButton.addEventListener('click', () => {
-        location.href = 'https://www.thegametree.io/create-account'
+        location.href = 'https://www.thegametree.io/account-creation'
     })
 }
 
