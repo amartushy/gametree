@@ -20,9 +20,11 @@ let userConfirmationCheck = document.getElementById('user-confirmation-check')
 var userAccountDict = {
     'name' : '',
     'email' : '',
-    'dateCreated' : 0,
+    'dateCreated' : new Date.now(),
     'referralCode' : '',
     'isAdmin' : false,
+    'isReceivingDeliveryUpdates' : false,
+    'isReceivingPromotions' : false,
     'availableBalance' : 0
 }
 
@@ -69,31 +71,71 @@ function createUserAccount() {
 
     userAccountDict['name'] = userNameField.value
     userAccountDict['email'] = userEmailField.value
-    
-    var database = firebase.firestore()
 
     userAccountDict['referralCode'] = getFirstName(userNameField.value) + appendRandomLetters()
 
-    firebase.auth().createUserWithEmailAndPassword(userEmailField.value, userPasswordField.value).then(function(data) {
-        //Create User Account
-        var newUserID = data.user.uid
-        database.collection("users").doc(newUserID).set(userAccountDict)
-            .then(function() {
-                console.log("User doc written")
+    var database = firebase.firestore()
 
-                loadUserAccountConfirmationState()
-                setTimeout(function () {
-                    location.href = "https://thegametree.io/proof-of-purchase"
-                 }, 1500)
+    //Check if user is anonymous
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+            // User is signed in
+            var userID = user.uid;
+            database.collection('users').doc(userID).get().then( (doc) => {
+                var data = doc.data()
 
-            }).catch(function(error) {
+                
+                if(data.isAnonymous) {
+                    //User is anonymous, convert to permanent account
+                    var credential = firebase.auth.EmailAuthProvider.credential(userAccountDict.email, userAccountDict.password);
+
+                    auth.currentUser.linkWithCredential(credential).then((usercred) => {
+                        var user = usercred.user;
+
+                        database.collection("users").doc(newUserID).set(userAccountDict, { 'merge' : true }).then(function() {
+                            console.log("Anonymous account created")
+            
+                            loadUserAccountConfirmationState()
+                            setTimeout(function () { location.href = "https://thegametree.io/account" }, 1500)
+        
+                        }).catch(function(error) {
+                            showErrorMessage(error.message)
+                        })
+
+                    }).catch((error) => {
+                        console.log("Error upgrading anonymous account", error);
+                    });
+
+                } else {
+                    //User has account and is signed in, redirect to account page
+                    location.href = 'https://thegametree.io/account'
+                }
+            })
+
+        } else {
+
+            //User is not logged in and not anonymous, do regular account creation
+            firebase.auth().createUserWithEmailAndPassword(userEmailField.value, userPasswordField.value).then(function(data) {
+
+                var newUserID = data.user.uid
+                database.collection("users").doc(newUserID).set(userAccountDict)
+                    .then(function() {
+                        console.log("User doc written")
+        
+                        loadUserAccountConfirmationState()
+                        setTimeout(function () { location.href = "https://thegametree.io/account" }, 1500)
+
+        
+                    }).catch(function(error) {
+                        showErrorMessage(error.message)
+                })
+            })
+            .catch(function(error) {
+                loadUserAccountInitialState()
                 showErrorMessage(error.message)
-        })
-    })
-    .catch(function(error) {
-        loadUserAccountInitialState()
-        showErrorMessage(error.message)
-        console.log(error)
+                console.log(error)
+            });
+        }
     });
 }
 
