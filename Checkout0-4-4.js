@@ -101,12 +101,22 @@ const billingZipField = document.getElementById('billing-zip-field')
 const billingZipError = document.getElementById('billing-zip-error')
 const placeOrderButton = document.getElementById('place-order-button')
 
+//Processing Screen
+const checkoutProcessingScreen = document.getElementById('checkout-processing-screen')
+const checkoutCheckMark = document.getElementById('checkout-check-mark')
+const checkoutProcessingText = document.getElementById('checkout-processing-text')
+const checkoutCompleteDiv = document.getElementById('checkout-complete-div')
+const checkoutTrackOrderButton = document.getElementById('checkout-track-order-button')
+const checkoutCompleteAccountDiv = document.getElementById('checkout-complete-account-div')
+const checkoutAccountCreateButton = document.getElementById('checkout-account-create-button')
+
 
 //Global Variables
 var database = firebase.firestore()
 var userHasShippingAddress = false
 var useShippingAddressForBilling = true
 var globalUserId
+var isUserTemporaryAccount = false
 
 var checkoutDict = {
         'shippingAddress' : {
@@ -146,7 +156,6 @@ var checkoutDict = {
 
 
 window.onload = () => {
-    loadInitialCheckoutState()
 
     //TODO: Check if user is logged in
     firebase.auth().onAuthStateChanged(function(user) {
@@ -158,45 +167,59 @@ window.onload = () => {
             firebase.firestore().collection('users').doc(user.uid).get().then(function(doc) {
                 let data = doc.data()
 
-                //Prefill shipping address if applicable
-                if(data.shippingAddress.primary) {
-                    userHasShippingAddress = true
+                //Check if user is an anonymous account
+                if(data.isAnonymous) {
+                    isUserTemporaryAccount = true
 
-                    let primaryAddress = data.shippingAddress.primary
+                    checkoutLoginScreen.style.display = 'flex'
+                    checkoutScreen.style.display = 'none'
+                
+                    guestLoginButton.addEventListener('click', () => {
 
-                    shippingPrefilledAddressContainer.style.display = 'block'
-                    shippingAddressFormBlock.style.display = 'none'
+                        $('#checkout-login-screen').fadeOut(200, () => {
+                            $('#checkout-screen').fadeIn()
+                        })
+                    })
 
-                    shippingPrefilledName.innerHTML = primaryAddress.firstName + ' ' + primaryAddress.lastName
-                    shippingPrefilledAddress.innerHTML = primaryAddress.address1
-                    if(primaryAddress.address2 && primaryAddress.address2 != "") {
-                        shippingPrefilledAddress2.innerHTML = primaryAddress.address2
-                        shippingPrefilledAddress2.style.display = 'block'
-                    } else {
-                        shippingPrefilledAddress2.style.display = 'none'
+                } else {
+                    checkoutLoginScreen.style.display = 'none'
+                    checkoutScreen.style.display = 'flex'
+
+                    //Prefill shipping address if applicable
+                    if(data.shippingAddress.primary) {
+                        userHasShippingAddress = true
+
+                        let primaryAddress = data.shippingAddress.primary
+
+                        shippingPrefilledAddressContainer.style.display = 'block'
+                        shippingAddressFormBlock.style.display = 'none'
+
+                        shippingPrefilledName.innerHTML = primaryAddress.firstName + ' ' + primaryAddress.lastName
+                        shippingPrefilledAddress.innerHTML = primaryAddress.address1
+                        if(primaryAddress.address2 && primaryAddress.address2 != "") {
+                            shippingPrefilledAddress2.innerHTML = primaryAddress.address2
+                            shippingPrefilledAddress2.style.display = 'block'
+                        } else {
+                            shippingPrefilledAddress2.style.display = 'none'
+                        }
+                        shippingPrefilledCity.innerHTML = primaryAddress.city + ', ' + primaryAddress.state + ' ' + primaryAddress.zipCode
+
+                        checkoutDict.shippingAddress = data.shippingAddress.primary
                     }
-                    shippingPrefilledCity.innerHTML = primaryAddress.city + ', ' + primaryAddress.state + ' ' + primaryAddress.zipCode
 
-                    checkoutDict.shippingAddress = data.shippingAddress.primary
-                }
-
-                //Prefill email and phone number
-                if(data.email) {
-                    contactEmailField.value = data.email
-                }
-                if(data.phoneNumber) {
-                    contactPhoneField.value = data.phoneNumber
+                    //Prefill email and phone number
+                    if(data.email) {
+                        contactEmailField.value = data.email
+                    }
+                    if(data.phoneNumber) {
+                        contactPhoneField.value = data.phoneNumber
+                    }
                 }
             })
+
         } else {
-            //TODO: Sign in and guest checkout workflow
-
-            checkoutLoginScreen.style.display = 'flex'
-            checkoutScreen.style.display = 'none'
-        
-            guestLoginButton.addEventListener('click', () => {
-                loadGuestCheckoutInitialState()
-            })
+            //Redirect if no user is authenticated
+            location.href = 'https://www.thegametree.io/create-account'
         }
     })
 }
@@ -209,10 +232,6 @@ function loadInitialCheckoutState() {
     loadDropdownInitialStates()
     resetDeliveryInfoErrorFields()
     resetBillingInfoErrorFields()
-
-    $('#checkout-login-screen').fadeOut(200, () => {
-        $('#checkout-screen').fadeIn()
-    })
 
     orderDeliveryFormBlock.style.display = 'block'
     shippingPrefilledAddressContainer.style.display = 'none'
@@ -323,6 +342,14 @@ function loadInitialCheckoutState() {
         } else {
             showErrorMessage("There's an issue with your billing information")
         }
+    })
+
+    checkoutTrackOrderButton.addEventListener('click', () => {
+        location.href = 'https://www.thegametree.io/account'
+    })
+
+    checkoutAccountCreateButton.addEventListener('click', () => {
+        location.href = 'https://www.thegametree.io/create-account'
     })
 }
 
@@ -663,6 +690,7 @@ function removeItemFromOrder(purchaseID) {
 
 //Helper Functions
 
+
 function resetDeliveryInfoErrorFields() {
     let errorMessagesArray = [shippingFirstNameError, shippingLastNameError, shippingAddressError, shippingCityError, shippingStateError, shippingZipError, contactEmailError, contactPhoneError,]
     let inputFieldsArray = [shippingFirstNameField, shippingLastNameField, shippingAddressField, shippingCityField, shippingZipField, contactEmailField, contactPhoneField]
@@ -726,15 +754,6 @@ function displayAndUpdateBillingAddress() {
 
 
 
-
-
-
-const checkoutProcessingScreen = document.getElementById('checkout-processing-screen')
-const checkoutCheckMark = document.getElementById('checkout-check-mark')
-const checkoutProcessingText = document.getElementById('checkout-processing-text')
-const checkoutCompleteDiv = document.getElementById('checkout-complete-div')
-const checkoutTrackOrderButton = document.getElementById('checkout-track-order-button')
-
 function submitOrderAndProcessPayment() {
     console.log(checkoutDict)
     console.log(globalUserId)
@@ -786,7 +805,7 @@ function submitOrderAndProcessPayment() {
             removeItemDict[`availability.${item}`] = firebase.firestore.FieldValue.delete()
 
             var catalogPromise = database.collection('catalog').doc(cartData[item]['GTIN']).update(removeItemDict).then(function() {
-                console.log(`Item: ${cartData[item]} removed with purchaseID: ${item}`)
+                console.log(`Item: ${cartData[item]['GTIN']} removed with purchaseID: ${item}`)
 
             }).catch(function(error) {
                 console.log(error.message)
@@ -828,11 +847,18 @@ function submitOrderAndProcessPayment() {
         orderDateString = `${orderDateObject[0]} ${orderDateObject[1]}, ${orderDateObject[2]} `
         sendReceiptTo(transactionID, checkoutDict.billingAddress.firstName, checkoutDict.billingAddress.lastName, orderDateString, checkoutDict.checkoutTotal, checkoutDict.emailAddress)
 
-        //Show Completion
-        $('#checkout-processing-text').fadeOut(200, () => {
-            $('#checkout-complete-div').fadeIn().css('display', 'flex')
-            checkoutCheckMark.style.display = 'block'
-        })
+        //Show conditional completion based on account status
+        if(isUserTemporaryAccount) {
+            $('#checkout-processing-text').fadeOut(200, () => {
+                $('#checkout-complete-div').fadeIn().css('display', 'flex')
+                checkoutCheckMark.style.display = 'block'
+            })
+        } else {
+            $('#checkout-processing-text').fadeOut(200, () => {
+                $('#checkout-complete-account-div').fadeIn().css('display', 'flex')
+                checkoutCheckMark.style.display = 'block'
+            })
+        }
     })
 }
 
