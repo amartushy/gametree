@@ -87,7 +87,7 @@ function createUserAccount() {
                 
                 if(data.isAnonymous) {
                     //User is anonymous, convert to permanent account
-                    var credential = firebase.auth.EmailAuthProvider.credential(userAccountDict.email, userAccountDict.password);
+                    var credential = firebase.auth.EmailAuthProvider.credential(userAccountDict.email, userPasswordField.value);
 
                     auth.currentUser.linkWithCredential(credential).then((usercred) => {
                         var user = usercred.user;
