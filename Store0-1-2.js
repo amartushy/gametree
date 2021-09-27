@@ -1,3 +1,80 @@
+//HTML Elements
+
+//Product Page
+const productPageBack = document.getElementById('product-page-back')
+
+const ppNewPriceText = document.getElementById('pp-new-price')
+const ppExcellentPriceText = document.getElementById('pp-new-price')
+const ppGoodPriceText = document.getElementById('pp-new-price')
+const ppAcceptablePriceText = document.getElementById('pp-new-price')
+
+const ppNewButton = document.getElementById('pp-new-button')
+const ppExcellentButton = document.getElementById('pp-excellent-button')
+const ppGoodButton = document.getElementById('pp-good-button')
+const ppAcceptableButton = document.getElementById('pp-acceptable-button')
+
+const ppProductTitle = document.getElementById('pp-product-title')
+const ppProductDescription = document.getElementById('pp-product-description')
+const ppKeySpecsContainer = document.getElementById('pp-key-specs-container')
+const ppSubsectionContainer = document.getElementById('pp-subsection-container')
+
+
+//Cart Modal
+const storeCartCloseModal = document.getElementById('store-cart-close-modal')
+const storeCartItemArea = document.getElementById('store-cart-item-area')
+const storeCartNumItems = document.getElementById('store-cart-num-items')
+const storeCartSubtotal = document.getElementById('store-cart-subtotal')
+const storeCartCheckoutButton = document.getElementById('store-cart-checkout-button')
+const storeCartContinueButton = document.getElementById('store-cart-continue-button')
+
+
+//Global Variables
+var database = firebase.firestore()
+var globalProductData
+var globalUserId
+
+
+window.onload = () => {
+  loadShopPage()
+
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+        // Customer is logged in.
+        globalUserId = user.uid
+
+    } else {
+        // No user is logged in.
+        console.log('No authenticated user')
+    }
+  })
+}
+
+function loadShopPage() {
+
+  //Navigation and Event Listeners
+  productPageBack.addEventListener('click', () => {
+    $('#product-page').fadeOut()
+    $('#store-page').fadeIn()
+  })
+
+
+
+  storeCartCloseModal.addEventListener('click', () => {
+    $('#cart-modal').fadeOut()
+  })
+
+  storeCartContinueButton.addEventListener('click', () => {
+    $('#cart-modal').fadeOut()
+  })
+
+  storeCartCheckoutButton.addEventListener('click', () => {
+    location.href = 'https://www.thegametree.io/shop/cart'
+  })
+
+
+}
+
+
 //Algolia
 const searchClient = algoliasearch('EXJJGW7VTC', '6253027161abf2af452a4c3551a7d6ab');
   
@@ -102,14 +179,6 @@ search.start()
 
 
 //__________________________________________________________________Product Page__________________________________________________________________
-var database = firebase.firestore()
-var globalProductData
-
-var productPageBack = document.getElementById('product-page-back')
-productPageBack.addEventListener('click', () => {
-  $('#product-page').fadeOut()
-  $('#store-page').fadeIn()
-})
 
 var globalKeyDict = {
   //Games
@@ -235,15 +304,10 @@ function loadAlternateImages(mainImage, images) {
 
 
 function loadPricesAndAvailability(GTIN, saleData, availability) {
-  document.getElementById('pp-new-price').innerHTML = '$' + parseFloat(saleData.new).toFixed(2)
-  document.getElementById('pp-excellent-price').innerHTML = '$' + parseFloat(saleData.usedFantastic).toFixed(2)
-  document.getElementById('pp-good-price').innerHTML = '$' + parseFloat(saleData.usedGood).toFixed(2)
-  document.getElementById('pp-acceptable-price').innerHTML = '$' + parseFloat(saleData.usedAcceptable).toFixed(2)
-
-  const ppNewButton = document.getElementById('pp-new-button')
-  const ppExcellentButton = document.getElementById('pp-excellent-button')
-  const ppGoodButton = document.getElementById('pp-good-button')
-  const ppAcceptableButton = document.getElementById('pp-acceptable-button')
+  ppNewPriceText.innerHTML = '$' + parseFloat(saleData.new).toFixed(2)
+  ppExcellentPriceText.innerHTML = '$' + parseFloat(saleData.usedFantastic).toFixed(2)
+  ppGoodPriceText.innerHTML = '$' + parseFloat(saleData.usedGood).toFixed(2)
+  ppAcceptablePriceText.innerHTML = '$' + parseFloat(saleData.usedAcceptable).toFixed(2)
 
   ppNewButton.className = 'pp-unavailable'
   ppExcellentButton.className = 'pp-unavailable'
@@ -287,10 +351,8 @@ function loadPricesAndAvailability(GTIN, saleData, availability) {
 }
 
 function loadProductMainInfo(productTitle, description, keySpecs) {
-  document.getElementById('pp-product-title').innerHTML = productTitle
-  document.getElementById('pp-product-description').innerHTML = description
-
-  const ppKeySpecsContainer = document.getElementById('pp-key-specs-container')
+  ppProductTitle.innerHTML = productTitle
+  ppProductDescription.innerHTML = description
 
   while(ppKeySpecsContainer.firstChild) {
     ppKeySpecsContainer.removeChild(ppKeySpecsContainer.firstChild)
@@ -316,4 +378,176 @@ function loadProductMainInfo(productTitle, description, keySpecs) {
       }
     }
   }
+}
+
+//Load Tabs Section
+function loadProductPageTabs() {
+  let overviewTab = document.getElementById('pp-tab-1')
+  let detailsSpecsTab = document.getElementById('pp-tab-2')
+
+  overviewTab.innerHTML = 'Overview'
+  detailsSpecsTab.innerHTML = 'Details & Specs'
+
+  overviewTab.setAttribute('onClick', 'loadOverview()')
+  detailsSpecsTab.setAttribute('onClick', 'loadDetailsAndSpecs()')
+
+  overviewTab.click()
+}
+
+
+
+function loadOverview() {
+  resetPPTabs(1)
+
+  let overviewHeader = createDOMElement('div', 'pp-subsection-main-header', 'Overview', ppSubsectionContainer)
+
+  let descriptionBlock = createDOMElement('div', 'pp-subsection-block', 'none', ppSubsectionContainer)
+  let descriptionHeader = createDOMElement('div', 'pp-subsection-header', 'Description', descriptionBlock)
+  let descriptionSubblock = createDOMElement('div', 'pp-subsection-subblock', 'none', descriptionBlock)
+  let descriptionText = createDOMElement('div', 'pp-subsection-paragraph', `${globalProductData.overview.description}`, descriptionSubblock)
+  let descriptionDivider = createDOMElement('div', 'pp-divider', 'none', descriptionSubblock)
+
+  let featuresBlock = createDOMElement('div', 'pp-subsection-block', 'none', ppSubsectionContainer)
+  let featuresHeader = createDOMElement('div', 'pp-subsection-header', 'Features', featuresBlock)
+  let featuresSubblock = createDOMElement('div', 'pp-subsection-subblock', 'none', featuresBlock)
+  globalProductData.overview.features.forEach( (feature) => {
+    if(typeof(feature) == 'string') {
+      let featureText = createDOMElement('div', 'pp-single-line-text', `${feature}`, featuresSubblock)
+    } else {
+      let featureContainer = createDOMElement('div', 'pp-feature-with-title-container', 'none', featuresSubblock)
+      let featureTitle = createDOMElement('div', 'pp-feature-title', feature.title, featureContainer)
+      let featureText = createDOMElement('div', 'pp-feature-text', feature.description, featureContainer)
+    }
+  })
+  let featureDivider = createDOMElement('div', 'pp-divider', 'none', featuresSubblock)
+
+  let whatsIncludedBlock = createDOMElement('div', 'pp-subsection-block', 'none', ppSubsectionContainer)
+  let whatsIncludedHeader = createDOMElement('div', 'pp-subsection-header', "What's Included", whatsIncludedBlock)
+  let whatsIncludedSubblock = createDOMElement('div', 'pp-subsection-subblock', 'none', whatsIncludedBlock)
+  globalProductData.overview.included.forEach( (included) => {
+    let includedText = createDOMElement('div', 'pp-subsection-text-bold', `${included}`, whatsIncludedSubblock)
+  })
+}
+
+
+function loadDetailsAndSpecs() {
+  resetPPTabs(2)
+
+  let specsHeader = createDOMElement('div', 'pp-subsection-main-header', 'Specifications', ppSubsectionContainer)
+
+  if (globalProductData.category == 'game') {
+    createSpecificationsBlock('Key Specs', 'keySpecs')
+    createSpecificationsBlock('General', 'general')
+    createSpecificationsBlock('Game Details', 'gameDetails')
+
+  } else if (globalProductData.category == 'console') {
+    createSpecificationsBlock('Key Specs', 'keySpecs')
+    createSpecificationsBlock('General', 'general')
+    createSpecificationsBlock('Features', 'features')
+    createSpecificationsBlock('Display', 'display')
+    createSpecificationsBlock('Storage', 'storage')
+    createSpecificationsBlock('Dimensions', 'dimensions')
+    createSpecificationsBlock('Connectivity', 'connectivity')
+    createSpecificationsBlock('Included', 'included')
+  }
+
+
+  let otherBlock = createDOMElement('div', 'pp-subsection-block', 'none', ppSubsectionContainer)
+  let otherHeader = createDOMElement('div', 'pp-subsection-header', 'Other', otherBlock)
+  let otherSubBlock = createDOMElement('div', 'pp-subsection-subblock', 'none', otherBlock)
+  let UPCSubContainer = createDOMElement('div', 'pp-subsection-container', 'none', otherSubBlock)
+  let UPCTitle = createDOMElement('div', 'pp-specs-title', 'UPC', UPCSubContainer)
+  let UPCText = createDOMElement('div', 'pp-specs-text', globalProductData.other['UPC'], UPCSubContainer)
+}
+
+
+
+
+//Helper Functions
+
+function resetPPTabs(index) {
+  while(ppSubsectionContainer.firstChild) {
+    ppSubsectionContainer.removeChild(ppSubsectionContainer.firstChild)
+  }
+
+  for(i=1; i<=2; i++) {
+    if(i == index) {
+      document.getElementById(`pp-tab-${i}`).className = 'pp-tab-selected'
+    } else {
+      document.getElementById(`pp-tab-${i}`).className = 'pp-tab-unselected'
+    }
+  }
+}
+
+
+function createSpecificationsBlock(headerStr, dataPath) {
+  let specBlock = createDOMElement('div', 'pp-subsection-block', 'none', ppSubsectionContainer)
+  let specBlockHeader = createDOMElement('div', 'pp-subsection-header', headerStr, specBlock)
+  let specSubBlock = createDOMElement('div', 'pp-subsection-subblock', 'none', specBlock)
+  for (var key in globalProductData[dataPath]) {
+    if(globalProductData[dataPath].hasOwnProperty(key)) {
+
+      if(globalProductData[dataPath][key] != "") {
+        let dataSubContainer = createDOMElement('div', 'pp-subsection-container', 'none', specSubBlock)
+        let dataTitle = createDOMElement('div', 'pp-specs-title', globalKeyDict[key], dataSubContainer)
+        let dataText = createDOMElement('div', 'pp-specs-text', globalProductData[dataPath][key], dataSubContainer)
+      }
+    }
+  }
+  let specDivider = createDOMElement('div', 'pp-divider', 'none', specSubBlock)
+}
+
+
+
+function addItemToCart(GTIN, purchaseID) {
+
+  var cartUpdateDict = {}
+  cartUpdateDict[`cart.${purchaseID}`] = GTIN
+
+  const user = firebase.auth().currentUser;
+
+  if (user) {
+    // User is signed in.
+    database.collection("users").doc(user.uid).update(cartUpdateDict).then(function() {
+
+      console.log('Added to users cart')
+      loadCartModal(GTIN, purchaseID)
+
+    }).catch(function(error) {
+      console.log(error)
+    })
+
+  } else {
+    // No user is signed in, create an anonymous account and update cart
+
+    firebase.auth().signInAnonymously()
+    .then(() => {
+      // Anonymous account created
+      var userID = firebase.auth().currentUser.uid
+      var userAccountDict = {
+        'name' : '',
+        'email' : '',
+        'dateCreated' : 0,
+        'referralCode' : '',
+        'isAdmin' : false,
+        'availableBalance' : 0,
+        'cart' : {},
+        'isAnonymous' : true
+      }
+      userAccountDict['cart'][`${purchaseID}`] = GTIN
+
+      database.collection("users").doc(userID).set(userAccountDict).then(function() {
+
+        console.log('Created user and updated cart')
+        loadCartModal(GTIN, purchaseID)
+  
+      }).catch(function(error) {
+        console.log(error)
+      })
+    })
+    .catch((error) => {
+      console.log("Error code: " +  error.code + ", " + error.message)
+    });
+  }
+
 }
