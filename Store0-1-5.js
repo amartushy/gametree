@@ -55,8 +55,9 @@ function loadShopPage() {
 
   //Navigation and Event Listeners
   productPageBack.addEventListener('click', () => {
-    $('#product-page').fadeOut()
-    $('#store-page').fadeIn()
+    $('#product-page').fadeOut(200, () => {
+      $('#store-page').fadeIn()
+    })
   })
 
 
@@ -66,8 +67,10 @@ function loadShopPage() {
   })
 
   storeCartContinueButton.addEventListener('click', () => {
-    $('#cart-modal').fadeOut()
-    productPage.style.display = 'none'
+    $('#product-page').fadeOut()
+    $('#cart-modal').fadeOut(400, () => {
+      $('#store-page').fadeIn()
+    })
   })
 
   storeCartCheckoutButton.addEventListener('click', () => {
