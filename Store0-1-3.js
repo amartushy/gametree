@@ -4,9 +4,9 @@
 const productPageBack = document.getElementById('product-page-back')
 
 const ppNewPriceText = document.getElementById('pp-new-price')
-const ppExcellentPriceText = document.getElementById('pp-new-price')
-const ppGoodPriceText = document.getElementById('pp-new-price')
-const ppAcceptablePriceText = document.getElementById('pp-new-price')
+const ppExcellentPriceText = document.getElementById('pp-excellent-price')
+const ppGoodPriceText = document.getElementById('pp-good-price')
+const ppAcceptablePriceText = document.getElementById('pp-acceptable-price')
 
 const ppNewButton = document.getElementById('pp-new-button')
 const ppExcellentButton = document.getElementById('pp-excellent-button')
