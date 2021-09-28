@@ -557,3 +557,72 @@ function addItemToCart(GTIN, purchaseID) {
   }
 
 }
+
+
+
+
+
+//Cart Modal
+function loadCartModal(GTIN, purchaseID) {
+  $('#cart-modal').fadeIn().css('display', 'flex')
+
+  //Get number of items and subtotal
+  database.collection('users').doc(globalUserId).get().then( (doc) => {
+    storeCartNumItems.innerHTML = Object.keys(doc.data().cart).length + ' Items'
+
+    let cartItems = doc.data().cart
+
+    var subtotalAmount = 0.0
+    for (let item in cartItems) {
+      if (cartItems.hasOwnProperty(item)) {
+        database.collection('catalog').doc(cartItems[item]).get().then(function(doc) {
+            var itemData = doc.data()
+            var itemCondition = itemData.availability[item]
+            var itemPrice = itemData.salePrices[itemCondition]
+  
+            subtotalAmount += parseFloat(itemPrice)
+            storeCartSubtotal.innerHTML = '$' + subtotalAmount
+        })
+      }
+    }
+  })
+
+  while(storeCartItemArea.firstChild) {
+    storeCartItemArea.removeChild(storeCartItemArea.firstChild)
+  }
+
+  database.collection('catalog').doc(GTIN).get().then(function(doc) {
+    var itemData = doc.data()
+
+    const itemConditionDict = {
+        'new' : 'New',
+        'usedFantastic' : 'Used - Excellent',
+        'usedGood' : 'Used - Good',
+        'usedAcceptable' : 'Used - Acceptable'
+    }
+
+    if( itemData.availability.hasOwnProperty(purchaseID) ) {
+        var itemCondition = itemData.availability[purchaseID]
+
+        const storeCartItemBlock = createDOMElement('div', 'store-cart-item-block', 'none', storeCartItemArea)
+        const storeCartImage = createDOMElement('img', 'store-cart-item-image', 'none', storeCartItemBlock)
+        storeCartImage.src = itemData.productImage
+        const storeCartItemInfoContainer = createDOMElement('div', 'store-cart-item-info-container', 'none', storeCartItemBlock)
+        const storeCartItemInfoTop = createDOMElement('div', 'store-cart-item-info-top', 'none', storeCartItemInfoContainer)
+
+        createDOMElement('div', 'cart-item-title', itemData.general.productName, storeCartItemInfoTop)
+        createDOMElement('div', 'store-cart-item-text', itemConditionDict[itemCondition], storeCartItemInfoTop)
+
+        const itemPrice = '$' + itemData.salePrices[itemCondition]
+        createDOMElement('div', 'store-cart-item-text', itemPrice, storeCartItemInfoTop)
+        createDOMElement('div', 'store-cart-item-text-small', 'Free Shipping & Returns', storeCartItemInfoTop)
+
+        const storeCartItemInfoBottom = createDOMElement('div', 'store-cart-item-info-bottom', 'none', storeCartItemInfoContainer)
+        createDOMElement('div', 'cart-guarantee-icon', '', storeCartItemInfoBottom)
+        createDOMElement('div', 'cart-guarantee-text', 'Backed by the GameTree Guarantee', storeCartItemInfoBottom)
+
+    } else {
+        //TODO: Notify customer the item is no longer in stock, remove from cart
+    }
+  })
+}
