@@ -83,7 +83,22 @@ function getFormattedDate(timeEpoch) {
         suffix = "th"
     }
     dayWithSuffix = dayInt + suffix
-    var dateObject = [month, dayWithSuffix, yearLong]
+
+    var timeHour = d.getHours()
+    var ampm = 'am'
+    var timeMinutes = '00'
+
+    if (timeHour > 12) {
+        timeHour = timeHour - 12
+        ampm = 'pm'
+    }
+    if (d.getMinutes() > 0) {
+        timeMinutes = d.getMinutes()
+    }
+    var timeString = timeHour + ":" + timeMinutes + ampm
+
+
+    var dateObject = [month, dayWithSuffix, yearLong, timeString]
     return (dateObject)
 }
 
