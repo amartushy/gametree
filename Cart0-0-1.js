@@ -1,6 +1,3 @@
-//Global Variables
-var database = firebase.firestore()
-var globalUserId
 
 //HTML Elements
 const itemsCountText = document.getElementById('items-count-text')
@@ -10,6 +7,26 @@ const shippingText = document.getElementById('shipping-text')
 const orderTax = document.getElementById('order-tax')
 const orderTotal = document.getElementById('order-total')
 const checkoutButton = document.getElementById('checkout-button')
+
+//Change Item Modal
+const changeItemModal = document.getElementById('change-item-modal')
+const changeItemCloseModal = document.getElementById('change-item-close-modal')
+const changeItemProductTitle = document.getElementById('change-item-product-title')
+const changeItemHeaderDiv = document.getElementById('change-item-header-div')
+
+const changeItemNewButton = document.getElementById('change-item-new-button')
+const changeItemExcellentButton = document.getElementById('change-item-excellent-button')
+const changeItemGoodButton = document.getElementById('change-item-good-button')
+const changeItemAcceptableButton = document.getElementById('change-item-acceptable-button')
+
+const changeItemNewPrice = document.getElementById('change-item-new-price')
+const changeItemExcellentPrice = document.getElementById('change-item-excellent-price')
+const changeItemGoodPrice = document.getElementById('change-item-good-price')
+const changeItemAcceptablePrice = document.getElementById('change-item-acceptable-price')
+
+//Global Variables
+var database = firebase.firestore()
+var globalUserId
 
 
 window.onload = () => {
@@ -25,14 +42,21 @@ window.onload = () => {
             // No user is logged in.
         }
     })
-
-    checkoutButton.addEventListener('click' , () => {
-        location.href = 'https://www.thegametree.io/shop/gtcheckout'
-    })
 }
 
 
 function loadAuthUserCart(userID) {
+
+    //Navigation and event listeners
+    changeItemCloseModal.addEventListener('click', () => {
+        $('#change-item-modal').fadeOut()
+    })
+
+    checkoutButton.addEventListener('click' , () => {
+        location.href = 'https://www.thegametree.io/shop/gtcheckout'
+    })
+
+
     database.collection("users").doc(userID).onSnapshot((doc) => {
         while(cartItemsContainer.firstChild) {
             cartItemsContainer.removeChild(cartItemsContainer.firstChild)
@@ -158,4 +182,97 @@ function removeItemFromCart(purchaseID) {
     }).catch(function(error) {
         console.log(error)
     })
+}
+
+
+
+function changeCartItem(GTIN, purchaseID) {
+    $('#change-item-modal').fadeIn().css('display', 'flex')
+
+    database.collection('catalog').doc(GTIN).onSnapshot( (doc) => {
+        var data = doc.data()
+
+        const itemConditionDict = {
+            'new' : 'New',
+            'usedFantastic' : 'Used - Excellent',
+            'usedGood' : 'Used - Good',
+            'usedAcceptable' : 'Used - Acceptable'
+        }
+
+        var saleData = data.salePrices
+        var availabilityData = data.availability
+        var itemCondition = availabilityData[purchaseID]
+
+        while (changeItemHeaderDiv.firstChild) {
+            changeItemHeaderDiv.removeChild(changeItemHeaderDiv.firstChild)
+        }
+
+        //Build item header div
+        const itemImage = createDOMElement('img', 'cart-item-image', 'none', changeItemHeaderDiv)
+        itemImage.src = data.productImage
+        var changeItemCartInfo = createDOMElement('div', 'cart-item-info-left', 'none', changeItemHeaderDiv)
+        createDOMElement('div', 'cart-item-title', data.general.productName, changeItemCartInfo)
+        createDOMElement('div', 'cart-item-condition', itemConditionDict[itemCondition], changeItemCartInfo)
+        const itemPrice = '$' + saleData[itemCondition]
+        createDOMElement('div', 'cart-item-price', itemPrice, changeItemCartInfo)
+
+        changeItemNewPrice.innerHTML = '$' + parseFloat(saleData.new).toFixed(2)
+        changeItemExcellentPrice.innerHTML = '$' + parseFloat(saleData.usedFantastic).toFixed(2)
+        changeItemGoodPrice.innerHTML = '$' + parseFloat(saleData.usedGood).toFixed(2)
+        changeItemAcceptablePrice.innerHTML = '$' + parseFloat(saleData.usedAcceptable).toFixed(2)
+      
+        changeItemNewButton.className = 'pp-unavailable'
+        changeItemExcellentButton.className = 'pp-unavailable'
+        changeItemGoodButton.className = 'pp-unavailable'
+        changeItemAcceptableButton.className = 'pp-unavailable'
+      
+        changeItemNewButton.innerHTML = 'UNAVAILABLE'
+        changeItemExcellentButton.innerHTML = 'UNAVAILABLE'
+        changeItemGoodButton.innerHTML = 'UNAVAILABLE'
+        changeItemAcceptableButton.innerHTML = 'UNAVAILABLE'
+      
+        for (var item in availabilityData) {
+          if (availabilityData.hasOwnProperty(item)) {
+            switch(availabilityData[item]) {
+              case 'new' : 
+                changeItemNewButton.className = 'pp-add-to-cart'
+                changeItemNewButton.innerHTML = 'Available'
+                changeItemNewButton.setAttribute('onClick', `changeItemCondition("${GTIN}", "${item}", "${purchaseID}")`)
+                break
+      
+              case 'usedFantastic' : 
+                changeItemExcellentButton.className = 'pp-add-to-cart'
+                changeItemExcellentButton.innerHTML = 'Available'
+                changeItemExcellentButton.setAttribute('onClick', `changeItemCondition("${GTIN}", "${item}", "${purchaseID}")`)
+                break
+      
+              case 'usedGood' : 
+                changeItemGoodButton.className = 'pp-add-to-cart'
+                changeItemGoodButton.innerHTML = 'Available'
+                changeItemGoodButton.setAttribute('onClick', `changeItemCondition("${GTIN}", "${item}", "${purchaseID}")`)
+                break
+      
+              case 'usedAcceptable' : 
+                changeItemAcceptableButton.className = 'pp-add-to-cart'
+                changeItemAcceptableButton.innerHTML = 'Available'
+                changeItemAcceptableButton.setAttribute('onClick', `changeItemCondition("${GTIN}", "${item}", "${purchaseID}")`)
+                break
+            }
+          }
+        }
+    })
+
+}
+
+
+function changeItemCondition(GTIN, newPurchaseID, oldPurchaseID) {
+
+    var cartUpdateDict = {}
+    cartUpdateDict[`cart.${oldPurchaseID}`] = firebase.firestore.FieldValue.delete()
+    cartUpdateDict[`cart.${newPurchaseID}`] = GTIN
+
+    database.collection('users').doc(globalUserId).update(cartUpdateDict).then( () => {
+        $('#change-item-modal').fadeOut()
+    })
+
 }
