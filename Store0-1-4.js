@@ -1,6 +1,7 @@
 //HTML Elements
 
 //Product Page
+const productPage = document.getElementById('product-page')
 const productPageBack = document.getElementById('product-page-back')
 
 const ppNewPriceText = document.getElementById('pp-new-price')
@@ -51,6 +52,7 @@ window.onload = () => {
 
 function loadShopPage() {
 
+
   //Navigation and Event Listeners
   productPageBack.addEventListener('click', () => {
     $('#product-page').fadeOut()
@@ -65,6 +67,7 @@ function loadShopPage() {
 
   storeCartContinueButton.addEventListener('click', () => {
     $('#cart-modal').fadeOut()
+    productPage.style.display = 'none'
   })
 
   storeCartCheckoutButton.addEventListener('click', () => {
