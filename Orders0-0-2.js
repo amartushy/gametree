@@ -1,12 +1,3 @@
-
-
-
-
-
-
-
-
-
 //HTML Elements
 const ordersAllTab = document.getElementById('orders-all-tab')
 const ordersLocalTab = document.getElementById('orders-local-tab')
@@ -264,7 +255,7 @@ function markOrderInTransit(orderID) {
             createDOMElement('div', 'orders-driver-name', driverData.name, ordersDriverInfoDiv)
             createDOMElement('div', 'orders-driver-car-model', driverData.carModel, ordersDriverInfoDiv)
             const ordersDriverSelectButton = createDOMElement('div', 'orders-driver-select-button', 'Select', ordersDriverBlock)
-            ordersDriverSelectButton.setAttribute('onClick', `selectDriverForOrder("${orderID}", "${doc.id}", "${driverData.name}", "${driverData.profileImage}", "${driverData.carModel}")`)
+            ordersDriverSelectButton.setAttribute('onClick', `selectDriverForOrder("${orderID}", "${doc.id}", "${driverData.name}", "${driverData.profileImage}", "${driverData.carModel}", "${driverPhoneNumber}")`)
         })
     })
 }
@@ -272,7 +263,7 @@ function markOrderInTransit(orderID) {
 
 
 
-function selectDriverForOrder(orderID, driverID, driverName, driverPhoto, driverCarModel) {
+function selectDriverForOrder(orderID, driverID, driverName, driverPhoto, driverCarModel, driverPhoneNumber) {
 
     console.log(orderID, driverID, driverName, driverPhoto, driverCarModel)
     var driverUpdateDict = {
@@ -280,6 +271,7 @@ function selectDriverForOrder(orderID, driverID, driverName, driverPhoto, driver
         'driverName': driverName,
         'driverPhoto' : driverPhoto,
         'driverCarModel' : driverCarModel,
+        'driverPhoneNumber' : driverPhoneNumber,
         'driverLocation' : {
             'lat' : '',
             'lng' : ''
