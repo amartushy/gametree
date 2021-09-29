@@ -6,6 +6,9 @@ window.onload = function() {
     document.getElementById('purchases-nav').addEventListener('click', () => {
         location.href = 'https://thegametree.io/admin/purchases'
     })
+    document.getElementById('orders-button').addEventListener('click', () => {
+        location.href = 'https://thegametree.io/admin/orders'
+    })
 	
     document.getElementById('inventory-management').addEventListener('click', () => {
         location.href = 'https://thegametree.io/admin/inventory'
