@@ -158,7 +158,7 @@ function buildUpcomingOrder(orderID, orderData) {
             createDOMElement('div', 'order-processing-text', 'PROCESSING', upcomingOrderContainer)
             break;
 
-        case 'in transit' :
+        case 'in-transit' :
             createDOMElement('div', 'order-in-transit-text', 'IN TRANSIT', upcomingOrderContainer)
             break;
 
