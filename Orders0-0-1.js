@@ -1,3 +1,12 @@
+
+
+
+
+
+
+
+
+
 //HTML Elements
 const ordersAllTab = document.getElementById('orders-all-tab')
 const ordersLocalTab = document.getElementById('orders-local-tab')
@@ -168,4 +177,182 @@ function buildOrder(orderID, orderData) {
             createDOMElement('div', 'order-status-delivered-grid-div', 'DELIVERED', orderItemGridBlock)
             break;
     } 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+function orderSelected(orderID) {
+    //TODO: all of it
+    const orderCheckbox = document.getElementById(`${orderID}-checkbox`)
+
+    if(orderCheckbox.innerHTML == '') {
+        orderCheckbox.innerHTML = ''
+        orderCheckbox.className = 'order-action-check-box-empty'
+
+        const index = selectedOrders.indexOf(orderID);
+        if (index > -1) {
+            selectedOrders.splice(index, 1);
+        }
+        console.log(selectedOrders)
+
+    } else {
+        orderCheckbox.innerHTML = ''
+        orderCheckbox.className = 'order-action-check-box'
+        selectedOrders.push(orderID)
+        console.log(selectedOrders)
+    }
+}
+
+function showDropdownOptions(orderID) {
+    var dropdownOptionsContainer = document.getElementById(`${orderID}-dropdown-options-container`)
+
+    if(dropdownOptionsContainer.style.display == 'none') {
+        $(`#${orderID}-dropdown-options-container`).fadeIn()
+    } else {
+        $(`#${orderID}-dropdown-options-container`).fadeOut(200, () => {
+            dropdownOptionsContainer.style.display = 'none'
+        })
+    }
+}
+
+function buyShippingForOrder(orderID) {
+    //TODO: all of it
+    console.log('Buy shipping for order:' + orderID)
+}
+
+
+
+
+const inTransitModal = document.getElementById('in-transit-modal')
+const closeInTransitModal = document.getElementById('close-in-transit-modal')
+const inTransitOrderNumber = document.getElementById('in-transit-order-number')
+const inTransitDriversArea = document.getElementById('in-transit-drivers-area')
+
+closeInTransitModal.addEventListener('click', () => {
+    $('#in-transit-modal').fadeOut()
+})
+
+
+function markOrderInTransit(orderID) {
+
+    $('#in-transit-modal').fadeIn().css('display', 'flex')
+
+    inTransitOrderNumber.innerHTML = orderID
+
+    while(inTransitDriversArea.firstChild) {
+        inTransitDriversArea.removeChild(inTransitDriversArea.firstChild)
+    }
+
+    database.collection('users').where('isDriver', '==', true ).get().then( (querySnapshot) => {
+        querySnapshot.forEach( (doc) => {
+            var driverData = doc.data()
+            console.log(driverData)
+
+            const ordersDriverBlock = createDOMElement('div', 'orders-driver-block', 'none', inTransitDriversArea)
+            const ordersDriverImage = createDOMElement('img', 'orders-driver-image', 'none', ordersDriverBlock)
+            ordersDriverImage.src = driverData.profileImage
+            const ordersDriverInfoDiv = createDOMElement('div', 'orders-driver-info-div', 'none', ordersDriverBlock)
+            createDOMElement('div', 'orders-driver-name', driverData.name, ordersDriverInfoDiv)
+            createDOMElement('div', 'orders-driver-car-model', driverData.carModel, ordersDriverInfoDiv)
+            const ordersDriverSelectButton = createDOMElement('div', 'orders-driver-select-button', 'Select', ordersDriverBlock)
+            ordersDriverSelectButton.setAttribute('onClick', `selectDriverForOrder("${orderID}", "${doc.id}", "${driverData.name}", "${driverData.profileImage}", "${driverData.carModel}")`)
+        })
+    })
+}
+
+
+
+
+function selectDriverForOrder(orderID, driverID, driverName, driverPhoto, driverCarModel) {
+
+    console.log(orderID, driverID, driverName, driverPhoto, driverCarModel)
+    var driverUpdateDict = {
+        'driverID' : driverID,
+        'driverName': driverName,
+        'driverPhoto' : driverPhoto,
+        'driverCarModel' : driverCarModel,
+        'driverLocation' : {
+            'lat' : '',
+            'lng' : ''
+        }
+    }
+
+    if(driverID = firebase.auth().currentUser) {
+        navigator.geolocation.getCurrentPosition( (position) => {
+            const pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            };
+
+            driverUpdateDict.driverLocation = pos
+
+            database.collection('orders').doc(orderID).get().then( (doc) => {
+                var data = doc.data()
+
+                database.collection('orders').doc(orderID).update({
+                    'deliveryInfo' : driverUpdateDict,
+                    'orderStatus' : 'in-transit'
+                })
+
+                database.collection('users').doc(data.customerID).collection('orders').doc(orderID).update({
+                    'deliveryInfo' : driverUpdateDict,
+                    'orderStatus' : 'in-transit'
+                })
+
+                if(data.deliveryUpdates) {
+                    var object = {
+                        'number' : data.phoneNumber,
+                        'driverName' : getFirstName(driverName),
+                        'url' : 'www.thegametree.io/track-delivery'
+                    }
+                                            
+                    sendDeliverySMSTo(object)
+                }
+
+                closeInTransitModal.click()
+            })
+        });
+    } else {
+        console.log(driverUpdateDict)
+    }
+}
+
+
+
+function sendDeliverySMSTo(object) {
+    // Create an XHR object
+	var xhttp = new XMLHttpRequest();
+    
+    var herokuURL = "https://gametree-web.herokuapp.com/sendDeliverySMSTo"
+
+    // open a connection
+	xhttp.open("POST", herokuURL, true);
+
+    // Set the request header i.e. which type of content you are sending
+    xhttp.setRequestHeader("Content-Type", "application/json");
+
+    // Create a state change callback
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState === 4 && xhttp.status === 200) {
+
+            // Print received data from server
+            console.log(this.responseText)
+
+        }
+    };
+
+    // Converting JSON data to string
+    var data = JSON.stringify(object);
+
+    console.log(data)
+	xhttp.send(data);
 }
