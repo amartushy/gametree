@@ -255,7 +255,7 @@ function markOrderInTransit(orderID) {
             createDOMElement('div', 'orders-driver-name', driverData.name, ordersDriverInfoDiv)
             createDOMElement('div', 'orders-driver-car-model', driverData.carModel, ordersDriverInfoDiv)
             const ordersDriverSelectButton = createDOMElement('div', 'orders-driver-select-button', 'Select', ordersDriverBlock)
-            ordersDriverSelectButton.setAttribute('onClick', `selectDriverForOrder("${orderID}", "${doc.id}", "${driverData.name}", "${driverData.profileImage}", "${driverData.carModel}", "${driverPhoneNumber}")`)
+            ordersDriverSelectButton.setAttribute('onClick', `selectDriverForOrder("${orderID}", "${doc.id}", "${driverData.name}", "${driverData.profileImage}", "${driverData.carModel}", "${driverData.PhoneNumber}")`)
         })
     })
 }
