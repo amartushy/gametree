@@ -140,7 +140,7 @@ var checkoutDict = {
             'state' : '',
             'zipCode' : ''
         },
-
+        'customerID' : '',
         'checkoutItems' : {},
         'itemSubtotal' : 0.0,
         'shippingFees' : 0.0,
@@ -165,7 +165,8 @@ window.onload = () => {
         if (user) {
             globalUserId = user.uid
             loadOrderSummary(globalUserId)
-
+            checkoutDict.customerID = globalUserId
+            
             firebase.firestore().collection('users').doc(user.uid).get().then(function(doc) {
                 let data = doc.data()
 
@@ -221,7 +222,7 @@ window.onload = () => {
 
         } else {
             //Redirect if no user is authenticated
-            location.href = 'https://www.thegametree.io/account-creation'
+            location.href = 'https://www.thegametree.io/create-account'
         }
     })
 }
