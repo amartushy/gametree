@@ -163,8 +163,8 @@ function loadDeliveryPage(orderID, orderData) {
     database.collection('orders').doc(orderID).onSnapshot( (doc) => {
         if(orderData.deliveryInfo) {
 
-            let driverLocation = orderData.deliveryInfo.driverLocation
-            let driverPhoto = orderData.deliveryInfo.driverPhoto
+            var driverLocation = orderData.deliveryInfo.driverLocation
+            var driverPhoto = orderData.deliveryInfo.driverPhoto
 
             drawDriverMarker(driverLocation, driverPhoto)
         } else {
