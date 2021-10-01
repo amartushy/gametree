@@ -1,3 +1,5 @@
+
+
 //HTML Elements
 const driverInfoContainer = document.getElementById('driver-info-container')
 const estimatedDeliveryTime = document.getElementById('estimated-delivery-time')
@@ -16,7 +18,7 @@ const deliveryItemsArea = document.getElementById('delivery-items-area')
 
 //Global Variables
 var database = firebase.firestore()
-var globalUserID
+var globalUserID, globalOrderID
 const conditionDict = {
     'usedAcceptable' : 'Used - Acceptable',
     'usedGood' : 'Used - Good',
@@ -42,10 +44,12 @@ window.onload = () => {
                 querySnapshot.forEach((doc) => {       
                     let orderData = doc.data()
 
+                    globalOrderID = doc.id
+                    
                     loadDeliveryPage(doc.id, orderData)
 
                     if(globalUserID == orderData.deliveryInfo.driverID) {
-                        updateDriverLocation(doc.id)
+                        updateDriverLocation()
                     }
                     
                 });
