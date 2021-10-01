@@ -29,7 +29,6 @@ let map, infoWindow, geocoder;
 
 
 function googleIsDoneLoading () {
-    CustomMarker.prototype = new google.maps.OverlayView();
 
     initializeMap()
 
@@ -83,6 +82,9 @@ function initializeMap() {
       ],
     }
     map = new google.maps.Map(document.getElementById('delivery-map'), mapOptions);
+
+    CustomMarker.prototype = new google.maps.OverlayView();
+
 
 }
 
