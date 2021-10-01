@@ -28,7 +28,9 @@ var customDriverMarker
 let map, infoWindow, geocoder;
 
 
-window.onload = () => {
+function googleIsDoneLoading () {
+    CustomMarker.prototype = new google.maps.OverlayView();
+
     initializeMap()
 
     firebase.auth().onAuthStateChanged(function(user) {
@@ -171,7 +173,6 @@ function CustomMarker(latlng, map, imageSrc) {
     this.setMap(map)
 }
 
-CustomMarker.prototype = new google.maps.OverlayView();
 
 CustomMarker.prototype.draw = function() {
 
@@ -217,3 +218,83 @@ CustomMarker.prototype.getPosition = function () {
     console.log(this.latlng_)
     return this.latlng_;
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Helper functions
+
+function updateDriverLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            };
+            
+            var updateDict = {}
+            updateDict['deliveryInfo.driverLocation'] = pos
+            database.collection('orders').doc(globalOrderID).update(updateDict)
+
+        })
+    }
+
+    setTimeout(updateDriverLocation, 5000);
+}
+
+
+
+function getMidpointLocation(location1, location2) {
+    var x1, x2, y1, y2
+
+    x1 = location1.lat
+    x2 = location2.lat
+    y1 = location1.lng
+    y2 = location2.lng
+
+    var midX = (x1 + x2)/2
+    var midY = (y1 + y2)/2
+
+    return {lat: midX, lng: midY}
+}
+
+
+function drawDestinationMarker(destinationAddress) {
+    var destinationIcon = 'https://firebasestorage.googleapis.com/v0/b/gametree-43702.appspot.com/o/package-icon.png?alt=media&token=f53ace70-f898-41ba-ae3c-95ac1ede4ea2'
+
+    geocoder.geocode( { 'address': destinationAddress}, function(results, status) {
+        if (status == 'OK') {
+            destinationLatLng = { lat: results[0].geometry.location.lat(), lng : results[0].geometry.location.lng()}
+            new CustomMarker( new google.maps.LatLng(destinationLatLng.lat, destinationLatLng.lng), map, destinationIcon )
+
+            map.setCenter(getMidpointLocation(driverLatLng, destinationLatLng))
+        } else {
+          console.log('Geocode was not successful for the following reason: ' + status);
+        }
+    });
+}
+
+function drawDriverMarker(driverLocation, driverPhoto) {
+    driverLatLng = { lat : driverLocation.lat, lng : driverLocation.lng}
+
+    if(!customDriverMarker) {
+        customDriverMarker = new CustomMarker( new google.maps.LatLng(driverLocation.lat, driverLocation.lng), map, driverPhoto )
+    } else {
+        customDriverMarker.remove
+        customDriverMarker = new CustomMarker( new google.maps.LatLng(driverLocation.lat, driverLocation.lng), map, driverPhoto )
+    }
+
+    map.setCenter(getMidpointLocation(driverLatLng, destinationLatLng))
+}
