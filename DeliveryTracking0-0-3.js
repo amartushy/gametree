@@ -1,5 +1,3 @@
-
-
 //HTML Elements
 const driverInfoContainer = document.getElementById('driver-info-container')
 const estimatedDeliveryTime = document.getElementById('estimated-delivery-time')
@@ -45,7 +43,7 @@ window.onload = () => {
                     let orderData = doc.data()
 
                     globalOrderID = doc.id
-                    
+
                     loadDeliveryPage(doc.id, orderData)
 
                     if(globalUserID == orderData.deliveryInfo.driverID) {
@@ -91,22 +89,23 @@ function loadDeliveryPage(orderID, orderData) {
     while(driverInfoContainer.firstChild) {
         driverInfoContainer.removeChild(driverInfoContainer.firstChild)
     }
+    if(orderData.deliveryInfo) {
+        const driverPhotoElement = createDOMElement('img', 'driver-photo', 'none', driverInfoContainer)
+        driverPhotoElement.src = orderData.deliveryInfo.driverPhoto 
+        const driverInfoDiv = createDOMElement('div', 'driver-info-div', 'none', driverInfoContainer )
+        createDOMElement('div', 'driver-info-name', `${getFirstName(orderData.deliveryInfo.driverName)} is delivering your order`, driverInfoDiv )
+        createDOMElement('div', 'driver-info-car-model', orderData.deliveryInfo.driverCarModel, driverInfoDiv )
+        const contactDriverButton = createDOMElement('div', 'cart-item-change-button', 'Contact', driverInfoDiv )
+        contactDriverButton.addEventListener('click', () => {
+            console.log(orderData.deliveryInfo)
+        })
+    }
 
     let addressData = orderData.shippingAddress
 
     //Attach listener to driver data
     database.collection('orders').doc(orderID).onSnapshot( (doc) => {
         if(orderData.deliveryInfo) {
-            const driverPhotoElement = createDOMElement('img', 'driver-photo', 'none', driverInfoContainer)
-            driverPhotoElement.src = orderData.deliveryInfo.driverPhoto 
-            const driverInfoDiv = createDOMElement('div', 'driver-info-div', 'none', driverInfoContainer )
-            createDOMElement('div', 'driver-info-name', `${getFirstName(orderData.deliveryInfo.driverName)} is delivering your order`, driverInfoDiv )
-            createDOMElement('div', 'driver-info-car-model', orderData.deliveryInfo.driverCarModel, driverInfoDiv )
-            const contactDriverButton = createDOMElement('div', 'cart-item-change-button', 'Contact', driverInfoDiv )
-            contactDriverButton.addEventListener('click', () => {
-                console.log(orderData.deliveryInfo)
-            })
-
 
             let driverLocation = orderData.deliveryInfo.driverLocation
             let driverPhoto = orderData.deliveryInfo.driverPhoto
