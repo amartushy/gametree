@@ -35,7 +35,6 @@ function CustomMarker(latlng, map, imageSrc) {
     this.setMap(map)
 }
 
-CustomMarker.prototype = new google.maps.OverlayView();
 
 CustomMarker.prototype.draw = function() {
 
@@ -84,6 +83,7 @@ CustomMarker.prototype.getPosition = function () {
 
 
 window.onload = () => {
+CustomMarker.prototype = new google.maps.OverlayView();
 
     initializeMap()
 
