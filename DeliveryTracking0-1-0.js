@@ -34,56 +34,10 @@ function CustomMarker(latlng, map, imageSrc) {
     this.imageSrc = imageSrc; //added imageSrc
     this.setMap(map)
 }
-CustomMarker.prototype = new google.maps.OverlayView();
-
-
-CustomMarker.prototype.draw = function() {
-
-    // Check if the div has been created.
-    var div = this.div_;
-    if (!div) {
-      // Create a overlay text DIV
-      div = this.div_ = document.createElement('div');
-      // Create the DIV representing our CustomMarker
-      div.className = "customMarker"
-  
-  
-      var img = document.createElement("img");
-      img.src = this.imageSrc;
-      div.appendChild(img);
-      var me = this;
-      google.maps.event.addDomListener(div, "click", function (event) {
-          google.maps.event.trigger(me, "click");
-      });
-  
-      // Then add the overlay to the DOM
-      var panes = this.getPanes();
-      panes.overlayImage.appendChild(div);
-    }
-
-    // Position the overlay 
-    var point = this.getProjection().fromLatLngToDivPixel(this.latlng_);
-    if (point) {
-        div.style.left = point.x + 'px';
-        div.style.top = point.y + 'px';
-    }
-}
-
-CustomMarker.prototype.remove = function () {
-    // Check if the overlay was on the map and needs to be removed.
-    if (this.div_) {
-        this.div_.parentNode.removeChild(this.div_);
-        this.div_ = null;
-    }
-};
-
-CustomMarker.prototype.getPosition = function () {
-    console.log(this.latlng_)
-    return this.latlng_;
-};
 
 
 window.onload = () => {
+    console.log(CustomMarker)
 
     initializeMap()
 
@@ -138,7 +92,52 @@ function initializeMap() {
     }
     map = new google.maps.Map(document.getElementById('delivery-map'), mapOptions);
 
+    CustomMarker.prototype = new google.maps.OverlayView();
 
+    CustomMarker.prototype.draw = function() {
+
+        // Check if the div has been created.
+        var div = this.div_;
+        if (!div) {
+        // Create a overlay text DIV
+        div = this.div_ = document.createElement('div');
+        // Create the DIV representing our CustomMarker
+        div.className = "customMarker"
+    
+    
+        var img = document.createElement("img");
+        img.src = this.imageSrc;
+        div.appendChild(img);
+        var me = this;
+        google.maps.event.addDomListener(div, "click", function (event) {
+            google.maps.event.trigger(me, "click");
+        });
+    
+        // Then add the overlay to the DOM
+        var panes = this.getPanes();
+        panes.overlayImage.appendChild(div);
+        }
+
+        // Position the overlay 
+        var point = this.getProjection().fromLatLngToDivPixel(this.latlng_);
+        if (point) {
+            div.style.left = point.x + 'px';
+            div.style.top = point.y + 'px';
+        }
+    }
+
+    CustomMarker.prototype.remove = function () {
+        // Check if the overlay was on the map and needs to be removed.
+        if (this.div_) {
+            this.div_.parentNode.removeChild(this.div_);
+            this.div_ = null;
+        }
+    };
+
+    CustomMarker.prototype.getPosition = function () {
+        console.log(this.latlng_)
+        return this.latlng_;
+    };
 }
 
 
