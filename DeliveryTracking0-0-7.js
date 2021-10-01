@@ -34,6 +34,9 @@ function CustomMarker(latlng, map, imageSrc) {
     this.imageSrc = imageSrc; //added imageSrc
     this.setMap(map)
 }
+
+CustomMarker.prototype = new google.maps.OverlayView();
+
 CustomMarker.prototype.draw = function() {
 
     // Check if the div has been created.
@@ -80,9 +83,7 @@ CustomMarker.prototype.getPosition = function () {
 };
 
 
-
-function googleIsDoneLoading () {
-    CustomMarker.prototype = new google.maps.OverlayView();
+window.onload = () => {
 
     initializeMap()
 
