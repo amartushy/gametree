@@ -58,7 +58,7 @@ window.onload = () => {
 
                     if(globalUserID == orderData.deliveryInfo.driverID) {
                         watchDriverLocation()
-                        updateDatabaseWithDriverLocation
+                        updateDatabaseWithDriverLocation()
                     }
                     
                 });
@@ -220,6 +220,5 @@ function buildOrderItem(itemData) {
     let itemPrice = '$' + itemData.price
     createDOMElement('div', 'cart-item-price', itemPrice, deliveryItemInfoRight)
 }
-
 
 
