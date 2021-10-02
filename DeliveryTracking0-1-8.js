@@ -110,10 +110,6 @@ function initializeMap() {
         var img = document.createElement("img");
         img.src = this.imageSrc;
         div.appendChild(img);
-        var me = this;
-        google.maps.event.addDomListener(div, "click", function (event) {
-            google.maps.event.trigger(me, "click");
-        });
     
         // Then add the overlay to the DOM
         var panes = this.getPanes();
@@ -222,5 +218,4 @@ function buildOrderItem(itemData) {
     let itemPrice = '$' + itemData.price
     createDOMElement('div', 'cart-item-price', itemPrice, deliveryItemInfoRight)
 }
-
 
