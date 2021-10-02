@@ -1,4 +1,3 @@
-
 //HTML Elements
 const driverInfoContainer = document.getElementById('driver-info-container')
 const estimatedDeliveryTime = document.getElementById('estimated-delivery-time')
@@ -221,4 +220,3 @@ function buildOrderItem(itemData) {
     let itemPrice = '$' + itemData.price
     createDOMElement('div', 'cart-item-price', itemPrice, deliveryItemInfoRight)
 }
-
