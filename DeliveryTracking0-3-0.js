@@ -1,4 +1,5 @@
 
+
 //HTML Elements
 const driverInfoContainer = document.getElementById('driver-info-container')
 const estimatedDeliveryTime = document.getElementById('estimated-delivery-time')
@@ -244,4 +245,170 @@ function buildOrderItem(itemData) {
     createDOMElement('div', 'cart-item-price-title', 'Item Price', deliveryItemInfoRight)
     let itemPrice = '$' + itemData.price
     createDOMElement('div', 'cart-item-price', itemPrice, deliveryItemInfoRight)
+}
+
+
+
+//Helper functions
+
+//Updates global variable for driver data everytime the device moves
+function repositionMarker() {
+    var div = this.div_
+    var point = this.getProjection().fromLatLngToDivPixel(this.latlng_);
+    if (point) {
+        div.style.left = point.x + 'px';
+        div.style.top = point.y + 'px';
+    }
+}
+
+function watchDriverLocation() {
+
+    const watchID = navigator.geolocation.watchPosition((position) => {
+        const pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          
+          driverLatLng = { lat : pos.lat, lng : pos.lng}
+
+    })
+}
+
+//Takes global location variable and updates the database every 5 seconds
+function updateDatabaseWithDriverLocation() {
+    if(driverLatLng) {
+        var updateDict = {}
+        updateDict['deliveryInfo.driverLocation'] = driverLatLng
+        database.collection('orders').doc(globalOrderID).update(updateDict)
+    }
+
+    setTimeout(updateDatabaseWithDriverLocation, 5000)
+}
+
+
+function drawDestinationMarker(destinationAddress) {
+    var destinationIcon = 'https://firebasestorage.googleapis.com/v0/b/gametree-43702.appspot.com/o/package-icon.png?alt=media&token=f53ace70-f898-41ba-ae3c-95ac1ede4ea2'
+
+    geocoder.geocode( { 'address': destinationAddress}, function(results, status) {
+        if (status == 'OK') {
+            destinationLatLng = { lat: results[0].geometry.location.lat(), lng : results[0].geometry.location.lng()}
+            new CustomMarker( new google.maps.LatLng(destinationLatLng.lat, destinationLatLng.lng), map, destinationIcon )
+
+            resizeAndCenterMap(driverLatLng, destinationLatLng)
+        } else {
+          console.log('Geocode was not successful for the following reason: ' + status);
+        }
+    });
+}
+
+function drawDriverMarker(location) {
+
+    if(!customDriverMarker) {
+        customDriverMarker = new CustomMarker( new google.maps.LatLng(location.lat, location.lng), map, driverProfilePhoto )
+    } else {
+
+        customDriverMarker.latlng_ = new google.maps.LatLng(location.lat, location.lng)
+        customDriverMarker.repositionMarker()
+    }
+
+    resizeAndCenterMap(location, destinationLatLng)
+}
+
+function resizeAndCenterMap(location1, location2) {
+
+    if(location1 && location2) {
+        var x1, x2, y1, y2
+
+        x1 = location1.lat
+        x2 = location2.lat
+        y1 = location1.lng
+        y2 = location2.lng
+    
+        var midX = (x1 + x2)/2
+        var midY = (y1 + y2)/2
+    
+        map.setCenter({lat : midX, lng : midY})
+
+        var bounds = new google.maps.LatLngBounds()
+        bounds.extend( {lat: location1.lat, lng : location1.lng})
+        bounds.extend( {lat: location2.lat, lng : location2.lng})
+        map.fitBounds(bounds)
+    }
+}
+
+var hasTravelTimeBeenCalculated = false
+
+function getTravelTime() {
+
+    if( driverLatLng && destinationLatLng) {
+
+        if(!hasTravelTimeBeenCalculated) {
+            const service = new google.maps.DistanceMatrixService(); // instantiate Distance Matrix service
+
+            //TODO: Make call to database and get all stops for driver
+    
+            const matrixOptions = {
+                origins: [`${driverLatLng.lat},${driverLatLng.lng}`], 
+                destinations: [`${destinationLatLng.lat},${destinationLatLng.lng}`], 
+                travelMode: 'DRIVING',
+                unitSystem: google.maps.UnitSystem.IMPERIAL
+            };
+            // Call Distance Matrix service
+            service.getDistanceMatrix(matrixOptions, callback);
+        
+            // Callback function used to process Distance Matrix response
+            function callback(response, status) {
+                if (status !== "OK") {
+                    alert("Error with distance matrix");
+                    return;
+                }
+                console.log(response);
+        
+                let allStopsForDriver = response.rows[0].elements;
+                var travelTime = 0;
+        
+                //Driver has multiple stops, add 5 mins in between each one
+                if(allStopsForDriver.length > 1) {
+                    for (let i = 0; i < allStopsForDriver.length; i++) {
+                        const routeseconds = allStopsForDriver[i].duration.value;
+            
+                        travelTime += (routeseconds + 300)
+            
+                    }
+                } else {
+                    travelTime = allStopsForDriver[0].duration.value
+                }
+                console.log(travelTime)
+
+                //Display estimated arrival time
+                var currentTime = new Date().getTime() / 1000;
+                var bestCaseArrivalTime = getFormattedDate(currentTime + travelTime)
+                var worstCaseArrivalTime = getFormattedDate(currentTime + travelTime + 600)
+
+                estimatedDeliveryTime.innerHTML = bestCaseArrivalTime[3] + ' - ' + worstCaseArrivalTime[3]
+                hasTravelTimeBeenCalculated = true
+            }
+        }
+    } else {
+        setTimeout(getTravelTime, 250)
+    }
+}
+
+
+
+function markOrderDelivered(orderData) {
+    
+    //Update database
+    var updateDict = {
+        'orderStatus' : 'delivered',
+        'dateDelivered' : new Date().getTime()
+    }
+
+    database.collection('orders').doc(globalOrderID).update(updateDict).then( () => {
+        if(orderData.deliveryUpdates) {
+            var message = `${getFirstName(orderData.deliveryInfo.driverName)} has delivered your order from GameTree. We hope you enjoy it!`
+            sendSMSTo(orderData.phoneNumber, message)
+        }
+    })
+
 }
