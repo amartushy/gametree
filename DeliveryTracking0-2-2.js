@@ -25,7 +25,7 @@ const conditionDict = {
 }
 var destinationLatLng, driverLatLng
 var customDriverMarker, driverProfilePhoto
-let map, infoWindow, geocoder;
+let map, geocoder;
 
 
 //Custom Marker Object and Functions
@@ -38,8 +38,6 @@ function CustomMarker(latlng, map, imageSrc) {
 
 
 window.onload = () => {
-    console.log(CustomMarker)
-
     initializeMap()
 
     firebase.auth().onAuthStateChanged(function(user) {
@@ -49,9 +47,11 @@ window.onload = () => {
             var ordersRef = database.collection('orders').where('customerID', '==', globalUserID).where('orderStatus', 'in', ['processing', 'in-transit'])
 
             ordersRef.get().then((querySnapshot) => {
+                
 
                 querySnapshot.forEach((doc) => {       
                     let orderData = doc.data()
+                    getTravelTime()
 
                     globalOrderID = doc.id
 
