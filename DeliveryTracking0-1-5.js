@@ -57,7 +57,8 @@ window.onload = () => {
                     loadDeliveryPage(doc.id, orderData)
 
                     if(globalUserID == orderData.deliveryInfo.driverID) {
-                        updateDriverLocation()
+                        watchDriverLocation()
+                        updateDatabaseWithDriverLocation
                     }
                     
                 });
@@ -164,15 +165,15 @@ function loadDeliveryPage(orderID, orderData) {
         if(orderData.deliveryInfo) {
             driverProfilePhoto = orderData.deliveryInfo.driverPhoto
 
-            watchDriverLocation()
-            beginUpdatesAndDrawDeliveryMarker()
+            driverLocation = doc.data().deliveryInfo.driverLocation
+            drawDriverMarker(driverLocation)
 
         } else {
 
             driverProfilePhoto = 'https://firebasestorage.googleapis.com/v0/b/gametree-43702.appspot.com/o/GT-Logo.png?alt=media&token=4b4ceb87-9070-4648-b39e-120330e6a585'
             driverLatLng = { lat: 44.049720, lng: -123.093170}
 
-            drawDriverMarker()
+            drawDriverMarker(driverLatLng)
         }
     })
 
