@@ -152,10 +152,8 @@ function loadDeliveryPage(orderID, orderData) {
         const driverInfoDiv = createDOMElement('div', 'driver-info-div', 'none', driverInfoContainer )
         createDOMElement('div', 'driver-info-name', `${getFirstName(orderData.deliveryInfo.driverName)} is delivering your order`, driverInfoDiv )
         createDOMElement('div', 'driver-info-car-model', orderData.deliveryInfo.driverCarModel, driverInfoDiv )
-        const contactDriverButton = createDOMElement('div', 'cart-item-change-button', 'Contact', driverInfoDiv )
-        contactDriverButton.addEventListener('click', () => {
-            console.log(orderData.deliveryInfo)
-        })
+        const contactDriverButton = createDOMElement('a', 'cart-item-change-button', 'Contact', driverInfoDiv )
+        aTag.setAttribute('href', `sms://+1${orderData.deliveryInfo.driverPhoneNumber}`)
     }
 
     let addressData = orderData.shippingAddress
