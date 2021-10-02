@@ -2,6 +2,7 @@
 //HTML Elements
 const driverInfoContainer = document.getElementById('driver-info-container')
 const estimatedDeliveryTime = document.getElementById('estimated-delivery-time')
+const markDeliveredButton = document.getElementById('mark-delivered-button')
 
 const customerDeliveryInfoBlock = document.getElementById('customer-delivery-info-block')
 const customerAddressName = document.getElementById('customer-address-name')
@@ -42,6 +43,7 @@ function CustomMarker(latlng, map, imageSrc) {
 
 window.onload = () => {
     initializeMap()
+    markDeliveredButton.style.display = 'none'
 
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
@@ -62,6 +64,11 @@ window.onload = () => {
                         isUserDriver = true
                         watchDriverLocation()
                         updateDatabaseWithDriverLocation()
+
+                        markDeliveredButton.style.display = 'flex'
+                        markDeliveredButton.addEventListener('click', () => {
+                            markOrderDelivered(orderData)
+                        })
                     }
 
                     loadDeliveryPage(doc.id, orderData)
@@ -192,7 +199,6 @@ function loadDeliveryPage(orderID, orderData) {
     customerNotifications.innerHTML = orderData.deliveryUpdates ? 'Text me' : "No SMS updates"
 
     if(isUserDriver) {
-        console.log('test')
         const contactCustomerButton = createDOMElement('a', 'cart-item-change-button', 'Contact', customerDeliveryInfoBlock )
         if(orderData.phoneNumber.substring(0,2) == '+1') {
             contactCustomerButton.setAttribute('href', `sms://${orderData.phoneNumber}`)
