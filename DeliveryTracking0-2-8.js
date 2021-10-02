@@ -1,5 +1,4 @@
 
-
 //HTML Elements
 const driverInfoContainer = document.getElementById('driver-info-container')
 const estimatedDeliveryTime = document.getElementById('estimated-delivery-time')
@@ -59,13 +58,14 @@ window.onload = () => {
 
                     globalOrderID = doc.id
 
-                    loadDeliveryPage(doc.id, orderData)
-
                     if(globalUserID == orderData.deliveryInfo.driverID) {
                         isUserDriver = true
                         watchDriverLocation()
                         updateDatabaseWithDriverLocation()
                     }
+
+                    loadDeliveryPage(doc.id, orderData)
+
                     
                 });
             })
