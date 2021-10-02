@@ -97,7 +97,9 @@ function getFormattedDate(timeEpoch) {
     if (minutes > 0) {
         if(minutes.toString().length == 1) {
             timeMinutes = '0' + d.getMinutes()
-        }
+        } else {
+		timeMinutes = d.getMinutes()	
+	}
     }
     var timeString = timeHour + ":" + timeMinutes + ampm
 
