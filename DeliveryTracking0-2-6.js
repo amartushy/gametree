@@ -1,7 +1,10 @@
+
+
 //HTML Elements
 const driverInfoContainer = document.getElementById('driver-info-container')
 const estimatedDeliveryTime = document.getElementById('estimated-delivery-time')
 
+const customerDeliveryInfoBlock = document.getElementById('customer-delivery-info-block')
 const customerAddressName = document.getElementById('customer-address-name')
 const customerAddress = document.getElementById('customer-address')
 const customerAddressCity = document.getElementById('customer-address-city')
@@ -16,6 +19,7 @@ const deliveryItemsArea = document.getElementById('delivery-items-area')
 
 //Global Variables
 var database = firebase.firestore()
+var isUserDriver = false
 var globalUserID, globalOrderID
 const conditionDict = {
     'usedAcceptable' : 'Used - Acceptable',
@@ -58,6 +62,7 @@ window.onload = () => {
                     loadDeliveryPage(doc.id, orderData)
 
                     if(globalUserID == orderData.deliveryInfo.driverID) {
+                        isUserDriver = true
                         watchDriverLocation()
                         updateDatabaseWithDriverLocation()
                     }
@@ -153,9 +158,12 @@ function loadDeliveryPage(orderID, orderData) {
         createDOMElement('div', 'driver-info-name', `${getFirstName(orderData.deliveryInfo.driverName)} is delivering your order`, driverInfoDiv )
         createDOMElement('div', 'driver-info-car-model', orderData.deliveryInfo.driverCarModel, driverInfoDiv )
         const contactDriverButton = createDOMElement('a', 'cart-item-change-button', 'Contact', driverInfoDiv )
-        contactDriverButton.setAttribute('href', `sms://+1${orderData.deliveryInfo.driverPhoneNumber}`)
-                contactDriverButton.setAttribute('style', 'text-decoration:none')
-
+        if(orderData.deliveryInfo.driverPhoneNumber.substring(0,2) == '+1') {
+            contactDriverButton.setAttribute('href', `sms://${orderData.deliveryInfo.driverPhoneNumber}`)
+        } else {
+            contactDriverButton.setAttribute('href', `sms://+1${orderData.deliveryInfo.driverPhoneNumber}`)
+        }
+        contactDriverButton.setAttribute('style', 'text-decoration:none')
     }
 
     let addressData = orderData.shippingAddress
@@ -182,6 +190,16 @@ function loadDeliveryPage(orderID, orderData) {
     customerAddressCity.innerHTML = `${addressData.city}, ${addressData.state} ${addressData.zipCode}`
     customerAddressNumber.innerHTML = orderData.phoneNumber
     customerNotifications.innerHTML = orderData.deliveryUpdates ? 'Text me' : "No SMS updates"
+
+    if(isUserDriver) {
+        const contactCustomerButton = createDOMElement('a', 'cart-item-change-button', 'Contact', customerDeliveryInfoBlock )
+        if(orderData.phoneNumber.substring(0,2) == '+1') {
+            contactCustomerButton.setAttribute('href', `sms://${orderData.phoneNumber}`)
+        } else {
+            contactCustomerButton.setAttribute('href', `sms://+1${orderData.phoneNumber}`)
+        }
+        contactCustomerButton.setAttribute('style', 'text-decoration:none')
+    }
 
     var addressStr = `${addressData.address1}, ${addressData.city} ${addressData.state} ${addressData.zipCode}`
 
