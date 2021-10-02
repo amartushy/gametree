@@ -192,6 +192,7 @@ function loadDeliveryPage(orderID, orderData) {
     customerNotifications.innerHTML = orderData.deliveryUpdates ? 'Text me' : "No SMS updates"
 
     if(isUserDriver) {
+        console.log('test')
         const contactCustomerButton = createDOMElement('a', 'cart-item-change-button', 'Contact', customerDeliveryInfoBlock )
         if(orderData.phoneNumber.substring(0,2) == '+1') {
             contactCustomerButton.setAttribute('href', `sms://${orderData.phoneNumber}`)
