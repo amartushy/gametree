@@ -24,7 +24,7 @@ const conditionDict = {
     'new' : 'New'
 }
 var destinationLatLng, driverLatLng
-var customDriverMarker
+var customDriverMarker, driverProfilePhoto
 let map, infoWindow, geocoder;
 
 
@@ -162,14 +162,17 @@ function loadDeliveryPage(orderID, orderData) {
     //Attach listener to driver data
     database.collection('orders').doc(orderID).onSnapshot( (doc) => {
         if(orderData.deliveryInfo) {
+            driverProfilePhoto = orderData.deliveryInfo.driverPhoto
 
-            var driverLocation = orderData.deliveryInfo.driverLocation
-            var driverPhoto = orderData.deliveryInfo.driverPhoto
+            watchDriverLocation()
+            beginUpdatesAndDrawDeliveryMarker()
 
-            drawDriverMarker(driverLocation, driverPhoto)
         } else {
-            var gtLogo = 'https://firebasestorage.googleapis.com/v0/b/gametree-43702.appspot.com/o/GT-Logo.png?alt=media&token=4b4ceb87-9070-4648-b39e-120330e6a585'
-            drawDriverMarker({ lat: 44.049720, lng: -123.093170}, gtLogo)
+
+            driverProfilePhoto = 'https://firebasestorage.googleapis.com/v0/b/gametree-43702.appspot.com/o/GT-Logo.png?alt=media&token=4b4ceb87-9070-4648-b39e-120330e6a585'
+            driverLatLng = { lat: 44.049720, lng: -123.093170}
+
+            drawDriverMarker()
         }
     })
 
@@ -216,8 +219,6 @@ function buildOrderItem(itemData) {
     let itemPrice = '$' + itemData.price
     createDOMElement('div', 'cart-item-price', itemPrice, deliveryItemInfoRight)
 }
-
-
 
 
 
