@@ -100,20 +100,20 @@ function initializeMap() {
         // Check if the div has been created.
         var div = this.div_;
         if (!div) {
-        // Create a overlay text DIV
-        div = this.div_ = document.createElement('div');
-        // Create the DIV representing our CustomMarker
-        div.className = "customMarker"
-        div.id = 'custom-driver-marker'
-    
-    
-        var img = document.createElement("img");
-        img.src = this.imageSrc;
-        div.appendChild(img);
-    
-        // Then add the overlay to the DOM
-        var panes = this.getPanes();
-        panes.overlayImage.appendChild(div);
+            // Create a overlay text DIV
+            div = this.div_ = document.createElement('div');
+            // Create the DIV representing our CustomMarker
+            div.className = "customMarker"
+            div.id = 'custom-driver-marker'
+        
+        
+            var img = document.createElement("img");
+            img.src = this.imageSrc;
+            div.appendChild(img);
+        
+            // Then add the overlay to the DOM
+            var panes = this.getPanes();
+            panes.overlayImage.appendChild(div);
         }
 
         // Position the overlay 
@@ -128,6 +128,7 @@ function initializeMap() {
         // Check if the overlay was on the map and needs to be removed.
         console.log('removed')
         if (this.div_) {
+            console.log('removed2')
             this.div_.parentNode.removeChild(this.div_);
             this.div_ = null;
         }
