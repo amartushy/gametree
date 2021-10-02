@@ -1,3 +1,4 @@
+
 //HTML Elements
 const driverInfoContainer = document.getElementById('driver-info-container')
 const estimatedDeliveryTime = document.getElementById('estimated-delivery-time')
@@ -33,6 +34,7 @@ function CustomMarker(latlng, map, imageSrc) {
     this.latlng_ = latlng;
     this.imageSrc = imageSrc; //added imageSrc
     this.setMap(map)
+    this.repositionMarker = repositionMarker
 }
 
 
