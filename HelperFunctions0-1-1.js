@@ -92,8 +92,12 @@ function getFormattedDate(timeEpoch) {
         timeHour = timeHour - 12
         ampm = 'pm'
     }
-    if (d.getMinutes() > 0) {
-        timeMinutes = d.getMinutes()
+    var minutes = d.getMinutes()
+
+    if (minutes > 0) {
+        if(minutes.toString().length == 1) {
+            timeMinutes = '0' + d.getMinutes()
+        }
     }
     var timeString = timeHour + ":" + timeMinutes + ampm
 
