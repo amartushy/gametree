@@ -154,6 +154,8 @@ function loadDeliveryPage(orderID, orderData) {
         createDOMElement('div', 'driver-info-car-model', orderData.deliveryInfo.driverCarModel, driverInfoDiv )
         const contactDriverButton = createDOMElement('a', 'cart-item-change-button', 'Contact', driverInfoDiv )
         contactDriverButton.setAttribute('href', `sms://+1${orderData.deliveryInfo.driverPhoneNumber}`)
+                contactDriverButton.setAttribute('style', 'text-decoration:none')
+
     }
 
     let addressData = orderData.shippingAddress
