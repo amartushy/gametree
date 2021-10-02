@@ -104,6 +104,7 @@ function initializeMap() {
         div = this.div_ = document.createElement('div');
         // Create the DIV representing our CustomMarker
         div.className = "customMarker"
+        div.id = 'custom-driver-marker'
     
     
         var img = document.createElement("img");
@@ -129,6 +130,7 @@ function initializeMap() {
 
     CustomMarker.prototype.remove = function () {
         // Check if the overlay was on the map and needs to be removed.
+        console.log('removed')
         if (this.div_) {
             this.div_.parentNode.removeChild(this.div_);
             this.div_ = null;
