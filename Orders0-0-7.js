@@ -69,6 +69,22 @@ function loadOrdersPage() {
         buildOrders('shipments')
     })
 
+    ordersDeliveredTab.addEventListener('click', () => {
+        while(ordersGridContainer.firstChild) {
+            ordersGridContainer.removeChild(ordersGridContainer.firstChild)
+        }
+        
+        database.collection('orders').where('orderStatus', '==', 'delivered').get().then( (querySnapshot) => {
+            querySnapshot.forEach( (doc) => {
+                allOrderIDs.push(doc.id)
+
+                buildOrder(doc.id, doc.data())
+            })
+        })
+    })
+
+    ordersAllTab.click()
+
     ordersSelectAllActions.addEventListener('click', () => {
         selectedOrders = []
         isSelectingAllOrders = !isSelectingAllOrders
@@ -95,22 +111,6 @@ function loadOrdersPage() {
         console.log(allOrderIDs)
 
     })
-
-    ordersDeliveredTab.addEventListener('click', () => {
-        while(ordersGridContainer.firstChild) {
-            ordersGridContainer.removeChild(ordersGridContainer.firstChild)
-        }
-        
-        database.collection('orders').where('orderStatus', '==', 'delivered').get().then( (querySnapshot) => {
-            querySnapshot.forEach( (doc) => {
-                allOrderIDs.push(doc.id)
-
-                buildOrder(doc.id, doc.data())
-            })
-        })
-    })
-
-    ordersAllTab.click()
 }
 
 
