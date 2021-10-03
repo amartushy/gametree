@@ -3,12 +3,14 @@ const ordersAllTab = document.getElementById('orders-all-tab')
 const ordersLocalTab = document.getElementById('orders-local-tab')
 const ordersShipmentTab = document.getElementById('orders-shipment-tab')
 const ordersDeliveredTab = document.getElementById('orders-delivered-tab')
+const ordersSelectAllActions = document.getElementById('select-all-actions')
 
 const ordersSearchField = document.getElementById('orders-search-field')
 const ordersGridContainer = document.getElementById('orders-grid-container')
 
 //Global Variables
 var database = firebase.firestore()
+var allOrderIDs = []
 var selectedOrders = []
 const itemConditionDict = {
     'new' : 'New',
@@ -16,6 +18,8 @@ const itemConditionDict = {
     'usedGood' : 'Used - Good',
     'usedAcceptable' : 'Used - Acceptable'
 }
+var isSelectingAllOrders = false
+
 
 window.onload = () => {
 
@@ -65,6 +69,29 @@ function loadOrdersPage() {
         buildOrders('shipments')
     })
 
+    ordersSelectAllActions.addEventListener('click', () => {
+        allOrderIDs = []
+        isSelectingAllOrders = !isSelectingAllOrders
+
+        if(isSelectingAllOrders) {
+            allOrderIDs.push(orderID)
+
+            allOrderIDs.forEach( (orderID) => {
+                document.getElementById(`${orderID}-checkbox`).innerHTML = ''
+            })    
+
+        } else {
+            allOrderIDs = []
+
+            allOrderIDs.forEach( (orderID) => {
+                document.getElementById(`${orderID}-checkbox`).innerHTML = ''
+            })  
+        }
+
+        console.log(allOrderIDs)
+
+    })
+
     ordersDeliveredTab.addEventListener('click', () => {
         while(ordersGridContainer.firstChild) {
             ordersGridContainer.removeChild(ordersGridContainer.firstChild)
@@ -72,6 +99,8 @@ function loadOrdersPage() {
         
         database.collection('orders').where('orderStatus', '==', 'delivered').get().then( (querySnapshot) => {
             querySnapshot.forEach( (doc) => {
+                allOrderIDs.push(doc.id)
+
                 buildOrder(doc.id, doc.data())
             })
         })
@@ -84,7 +113,7 @@ function loadOrdersPage() {
 
 
 function buildOrder(orderID, orderData) {
-
+    
     const orderItemGridBlock = createDOMElement('div', 'order-item-grid-block', 'none', ordersGridContainer)
 
     //Order Actions Div
