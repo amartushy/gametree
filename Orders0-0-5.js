@@ -77,14 +77,18 @@ function loadOrdersPage() {
             allOrderIDs.push(orderID)
 
             allOrderIDs.forEach( (orderID) => {
-                document.getElementById(`${orderID}-checkbox`).innerHTML = ''
+                var actionCheckbox = document.getElementById(`${orderID}-checkbox`)
+                actionCheckbox.innerHTML = ''
+                actionCheckbox.className = 'order-action-check-box'
             })    
 
         } else {
             allOrderIDs = []
 
             allOrderIDs.forEach( (orderID) => {
-                document.getElementById(`${orderID}-checkbox`).innerHTML = ''
+                var actionCheckbox = document.getElementById(`${orderID}-checkbox`)
+                actionCheckbox.innerHTML = ''
+                actionCheckbox.className = 'order-action-check-box'
             })  
         }
 
