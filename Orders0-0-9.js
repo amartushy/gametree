@@ -51,9 +51,12 @@ function loadOrdersPage() {
         while(ordersGridContainer.firstChild) {
             ordersGridContainer.removeChild(ordersGridContainer.firstChild)
         }
-        
+
+        allOrderIDs = []
         database.collection('orders').get().then( (querySnapshot) => {
             querySnapshot.forEach( (doc) => {
+
+                allOrderIDs.push(doc.id)
                 buildOrder(doc.id, doc.data())
             })
         })
@@ -73,7 +76,7 @@ function loadOrdersPage() {
         while(ordersGridContainer.firstChild) {
             ordersGridContainer.removeChild(ordersGridContainer.firstChild)
         }
-        
+        allOrderIDs = []
         database.collection('orders').where('orderStatus', '==', 'delivered').get().then( (querySnapshot) => {
             querySnapshot.forEach( (doc) => {
                 allOrderIDs.push(doc.id)
