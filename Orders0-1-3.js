@@ -115,8 +115,6 @@ function loadOrdersPage() {
             })  
         }
     
-        console.log(allOrderIDs)
-        console.log(selectedOrders)
     })
 
 }
