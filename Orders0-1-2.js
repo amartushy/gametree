@@ -88,6 +88,37 @@ function loadOrdersPage() {
 
     ordersAllTab.click()
 
+    ordersSelectAllActions.addEventListener('click', () => {
+        selectedOrders = []
+        isSelectingAllOrders = !isSelectingAllOrders
+    
+        if(isSelectingAllOrders) {
+            ordersSelectAllActions.innerHTML = ''
+            ordersSelectAllActions.className = 'order-action-check-box'
+    
+            allOrderIDs.forEach( (orderID) => {
+                selectedOrders.push(orderID)
+                var actionCheckbox = document.getElementById(`${orderID}-checkbox`)
+                actionCheckbox.innerHTML = ''
+                actionCheckbox.className = 'order-action-check-box'
+            })    
+    
+        } else {
+            selectedOrders = []
+            ordersSelectAllActions.innerHTML = ''
+            ordersSelectAllActions.className = 'order-action-check-box-empty'
+    
+            allOrderIDs.forEach( (orderID) => {
+                var actionCheckbox = document.getElementById(`${orderID}-checkbox`)
+                actionCheckbox.innerHTML = ''
+                actionCheckbox.className = 'order-action-check-box-empty'
+            })  
+        }
+    
+        console.log(allOrderIDs)
+        console.log(selectedOrders)
+    })
+
 }
 
 
