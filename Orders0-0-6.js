@@ -70,11 +70,11 @@ function loadOrdersPage() {
     })
 
     ordersSelectAllActions.addEventListener('click', () => {
-        allOrderIDs = []
+        selectedOrders = []
         isSelectingAllOrders = !isSelectingAllOrders
 
         if(isSelectingAllOrders) {
-            allOrderIDs.push(orderID)
+            selectedOrders.push(orderID)
 
             allOrderIDs.forEach( (orderID) => {
                 var actionCheckbox = document.getElementById(`${orderID}-checkbox`)
@@ -83,7 +83,7 @@ function loadOrdersPage() {
             })    
 
         } else {
-            allOrderIDs = []
+            selectedOrders = []
 
             allOrderIDs.forEach( (orderID) => {
                 var actionCheckbox = document.getElementById(`${orderID}-checkbox`)
