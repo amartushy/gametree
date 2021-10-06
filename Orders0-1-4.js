@@ -114,7 +114,6 @@ function loadOrdersPage() {
                 actionCheckbox.className = 'order-action-check-box-empty'
             })  
         }
-    
     })
 
 }
@@ -141,7 +140,7 @@ function buildOrder(orderID, orderData) {
     dropdownOptionsContainer.setAttribute('id', `${orderID}-dropdown-options-container`)
     dropdownOptionsContainer.style.display = 'none'
     const buyShippingOption = createDOMElement('div', 'dropdown-option', 'Buy Shipping', dropdownOptionsContainer)
-    buyShippingOption.setAttribute('onClick', `buyShippingForOrder("${orderID}")`)
+    buyShippingOption.setAttribute('onClick', `loadSingleShippingPage("${orderID}")`)
     const markOrderInTransit = createDOMElement('div', 'dropdown-option', 'Mark In-Transit', dropdownOptionsContainer)
     markOrderInTransit.setAttribute('onClick', `markOrderInTransit("${orderID}")`)
 
@@ -252,11 +251,6 @@ function showDropdownOptions(orderID) {
             dropdownOptionsContainer.style.display = 'none'
         })
     }
-}
-
-function buyShippingForOrder(orderID) {
-    //TODO: all of it
-    console.log('Buy shipping for order:' + orderID)
 }
 
 
