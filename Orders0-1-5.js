@@ -143,6 +143,8 @@ function buildOrder(orderID, orderData) {
     buyShippingOption.setAttribute('onClick', `loadSingleShippingPage("${orderID}")`)
     const markOrderInTransit = createDOMElement('div', 'dropdown-option', 'Mark In-Transit', dropdownOptionsContainer)
     markOrderInTransit.setAttribute('onClick', `markOrderInTransit("${orderID}")`)
+    const printPackingSlip = createDOMElement('div', 'dropdown-option', 'Print Packing Slip', dropdownOptionsContainer)
+    printPackingSlip.setAttribute('onClick', `printPackingSlip("${orderID}")`)
 
     //Order Details Div
     const orderDetailsGridDiv = createDOMElement('div', 'order-details-grid-div', 'none', orderItemGridBlock)
