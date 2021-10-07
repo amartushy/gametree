@@ -383,3 +383,80 @@ function sendDeliverySMSTo(object) {
     console.log(data)
 	xhttp.send(data);
 }
+
+
+
+
+
+
+
+
+
+//Packing Slips_______________________________________________________
+//HTML Elements
+const packingSlipScreen = document.getElementById('packing-slip-screen')
+packingSlipScreen.classList.add('printPackingSlip')
+
+const packingSlipName = document.getElementById('packing-slip-name')
+const packingSlipAddress1 = document.getElementById('packing-slip-address1')
+const packingSlipAddress2 = document.getElementById('packing-slip-address2')
+const packingSlipCityState = document.getElementById('packing-slip-city-state')
+
+const packingSlipOrderID = document.getElementById('packing-slip-order-id')
+const packingSlipOrderDate = document.getElementById('packing-slip-order-date')
+const packingSlipItemsArea = document.getElementById('packing-slip-items-area')
+
+const packingSlipSubtotal = document.getElementById('packing-slip-subtotal')
+const packingSlipShipping = document.getElementById('packing-slip-shipping')
+const packingSlipSalesTax = document.getElementById('packing-slip-sales-tax')
+const packingSlipDiscount = document.getElementById('packing-slip-discount')
+const packingSlipTotal = document.getElementById('packing-slip-total')
+
+
+//Global Variables
+
+function loadPackingSlipPage(orderID) {
+    while(packingSlipItemsArea.firstChild) {
+        packingSlipItemsArea.removeChild(packingSlipItemsArea.firstChild)
+    }
+
+    database.collection('orders').doc(orderID).get().then( (doc) => {
+
+        var orderData = doc.data()
+
+        packingSlipName.innerHTML = orderData.shippingAddress.firstName + ' ' + orderData.shippingAddress.lastName
+        packingSlipAddress1.innerHTML = orderData.shippingAddress.address1
+        if(orderData.shippingAddress.address2 != "") {
+            packingSlipAddress2.innerHTML = orderData.shippingAddress.address2
+            packingSlipAddress2.style.display = 'flex'
+        } else {
+            packingSlipAddress2.style.display = 'none'
+        }
+        packingSlipCityState.innerHTML = `${orderData.shippingAddress.city}, ${orderData.shippingAddress.state} ${orderData.shippingAddress.zipCode}`
+
+        packingSlipOrderID.innerHTML = `ORDER ID: ${orderID}`
+        var dateObject = getFormattedDate(parseFloat(orderData.orderDate) / 1000)
+        var dateString = `${dateObject[0]} ${dateObject[1]}, ${dateObject[2]} ${dateObject[3]}`
+        packingSlipOrderDate.innerHTML = `Order Date: ${dateString}`
+
+        var orderItems = orderData.checkoutItems
+        for (var item in orderItems) {
+            if (orderItems.hasOwnProperty(item)) {
+                var packingSlipItemBlock = createDOMElement('div', 'packing-slip-item-block', 'none', packingSlipItemsArea)
+                var packingSlipTextBlock = createDOMElement('div', 'packing-slip-item-text-block', 'none', packingSlipItemBlock)
+                createDOMElement('div', 'packing-slip-item-text', `${orderItems[item].productName} - ${itemConditionDict[orderItems[item].condition]}`, packingSlipTextBlock)
+                createDOMElement('div', 'packing-slip-item-text', `Item ID: ${item}`, packingSlipTextBlock)
+                createDOMElement('div', 'packing-slip-item-text-small', '1', packingSlipItemBlock)
+                createDOMElement('div', 'packing-slip-item-text-small', orderItems[item].price, packingSlipItemBlock)
+            }
+        }
+
+        packingSlipSubtotal.innerHTML = '$' + orderData.itemSubtotal
+        packingSlipShipping.innerHTML = '$0.00'
+        packingSlipSalesTax.innerHTML = '$' + parseFloat(orderData.tax).toFixed(2)
+        packingSlipDiscount.innerHTML = '$0.00'
+        packingSlipTotal.innerHTML = '$' + orderData.checkoutTotal
+
+        window.print()
+    })
+}
