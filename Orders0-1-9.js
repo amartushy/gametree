@@ -204,6 +204,10 @@ function buildOrder(orderID, orderData) {
             createDOMElement('div', 'order-status-in-transit-grid-div', 'IN TRANSIT', orderItemGridBlock)
             break;
         
+        case 'shipped' :
+            createDOMElement('div', 'order-status-in-transit-grid-div', 'SHIPPED', orderItemGridBlock)
+            break;
+        
         case 'delivered' :
             createDOMElement('div', 'order-status-delivered-grid-div', 'DELIVERED', orderItemGridBlock)
             break;
