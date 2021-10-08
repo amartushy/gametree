@@ -213,14 +213,6 @@ function buildOrder(orderID, orderData) {
 
 
 
-
-
-
-
-
-
-
-
 function orderSelected(orderID) {
     //TODO: all of it
     const orderCheckbox = document.getElementById(`${orderID}-checkbox`)
@@ -459,4 +451,241 @@ function loadPackingSlipPage(orderID) {
 
         window.print()
     })
+}
+
+
+
+
+
+//Buy Shipping____________________________________________________________________________________________________________________________________
+//HTML Elements
+const inventoryPage = document.getElementById('inventory-page')
+const loadingScreen = document.getElementById('loading-screen')
+inventoryPage.classList.add('inventoryHide')
+
+const singleShippingPage = document.getElementById('single-shipping-page')
+const singleShippingModalBack = document.getElementById('single-shipping-modal-back')
+const singleShippingOptionsArea = document.getElementById('single-shipping-options-area')
+const singleShippingLoadingContainer = document.getElementById('single-shipping-loading-container')
+const singleShippingPrice = document.getElementById('single-shipping-price')
+const buySingleShippingButton = document.getElementById('buy-single-shipping-button')
+const calculateShippingRates = document.getElementById('calculate-shipping-rates')
+
+const weightLbField = document.getElementById('weight-lb-field')
+const weightOzField = document.getElementById('weight-oz-field')
+const lengthField = document.getElementById('length-field')
+const widthField = document.getElementById('width-field')
+const heightField = document.getElementById('height-field')
+
+
+//Global Variables
+var shippingObject = {}
+var globalShippingOptions = {}
+var globalShippingID
+
+//Event Listeners
+singleShippingModalBack.addEventListener('click', () => {
+    $('#single-shipping-page').fadeOut(200, () => {
+        $('#inventory-page').fadeIn().css('display', 'flex')
+    })
+})
+
+buySingleShippingButton.addEventListener('click', () => {
+    singleShippingPage.style.display = 'none'
+    loadingScreen.style.display = 'flex'
+
+    var xhttp = new XMLHttpRequest();
+    var herokuURL = `https://gametree-web.herokuapp.com/purchaseShippingLabel/${globalShippingID}`
+    xhttp.open("GET", herokuURL, true);
+
+    xhttp.onreadystatechange = function () {
+        
+        if (xhttp.readyState === 4 && xhttp.status === 200) {
+            loadingScreen.style.display = 'none'
+            $('#inventory-page').fadeIn().css('display', 'flex')
+
+            responseObject = JSON.parse(this.responseText)
+
+            var shippingDict = {
+                'trackingNumber' : responseObject['tracking_number'],
+                'labelPurchasedBy' : responseObject['object_owner'],
+                'labelCreated' : responseObject['object_created'],
+                'labelURL' : responseObject['label_url'],
+                'trackingStatus' : responseObject['tracking_status'],
+                'trackingProvider' : responseObject['tracking_url_provider'],
+            }
+
+            database.collection('orders').doc(shippingObject.orderID).update({
+                'shippingInfo' : shippingDict,
+                'orderStatus' : 'shipped'
+            })
+
+            window.open(shippingDict.labelURL)
+        }
+    };
+
+    xhttp.send();
+})
+
+calculateShippingRates.addEventListener('click', () => {
+    var parcelWeight = parseFloat(weightLbField.value) + ( parseFloat(weightOzField.value) / 16 )
+    shippingObject.parcelWeight = parcelWeight.toFixed(2)
+
+    shippingObject.parcelLength = lengthField.value
+    shippingObject.parcelWidth = widthField.value
+    shippingObject.parcelHeight = heightField.value
+
+    getShippingRatesFromServer()
+})
+
+
+function loadSingleShippingPage(orderID) {
+    $('#inventory-page').fadeOut(200, () => {
+        $('#single-shipping-page').fadeIn().css('display', 'flex')
+    })
+
+    while (singleShippingOptionsArea.firstChild) {
+        singleShippingOptionsArea.removeChild(singleShippingOptionsArea.firstChild)
+    }
+
+    singleShippingLoadingContainer.style.display = 'none'
+
+    singleShippingPrice.innerHTML = '$-.--'
+    buySingleShippingButton.className = 'purchase-shipping-label-unavailable'
+
+    globalShippingOptions = {}
+
+    shippingObject = {
+        'orderID' : orderID,
+        'destinationName' : '',
+        'destinationStreet1' : '',
+        'destinationStreet2' : '',
+        'destinationCity' : '',
+        'destinationState' : '',
+        'destinationZipcode' : '',
+        'destinationCountry' : '',
+        'parcelLength' : '',
+        'parcelWidth' : '',
+        'parcelHeight' : '',
+        'parcelWeight' : '',
+    }
+
+    database.collection('orders').doc(orderID).get().then( (doc) => {
+        var orderData = doc.data()
+
+        shippingObject.destinationName = orderData.shippingAddress.firstName + ' ' + orderData.shippingAddress.lastName
+        shippingObject.destinationStreet1 = orderData.shippingAddress.address1
+        shippingObject.destinationStreet2 = orderData.shippingAddress.address2
+        shippingObject.destinationCity = orderData.shippingAddress.city
+        shippingObject.destinationState = orderData.shippingAddress.state
+        shippingObject.destinationZipcode = orderData.shippingAddress.zipCode
+        shippingObject.destinationCountry = 'US'
+    })
+
+    weightLbField.value = 0
+    weightOzField.value = 0
+    lengthField.value = 0
+    widthField.value = 0
+    heightField.value = 0
+}
+
+
+function getShippingRatesFromServer() {
+    while (singleShippingOptionsArea.firstChild) {
+        singleShippingOptionsArea.removeChild(singleShippingOptionsArea.firstChild)
+    }
+    singleShippingLoadingContainer.style.display = 'flex'
+    globalShippingOptions = {}
+
+        // Create an XHR object
+	var xhttp = new XMLHttpRequest();
+    
+    var herokuURL = "https://gametree-web.herokuapp.com/getShippingRates"
+
+    // open a connection
+	xhttp.open("POST", herokuURL, true);
+
+    // Set the request header i.e. which type of content you are sending
+    xhttp.setRequestHeader("Content-Type", "application/json");
+
+    // Create a state change callback
+    xhttp.onreadystatechange = function () {
+
+        if (xhttp.readyState === 4 && xhttp.status === 200) {
+
+            singleShippingLoadingContainer.style.display = 'none'
+            // Print received data from server
+            var responseObject = JSON.parse(this.responseText)
+            console.log(responseObject)
+            buildShippingOptions(responseObject.rates)
+
+        }
+    };
+
+    // Converting JSON data to string
+    var data = JSON.stringify(shippingObject);
+    console.log(shippingObject)
+	xhttp.send(data);
+}
+
+
+function buildShippingOptions(shippingOptions) {
+
+    shippingOptions.forEach( (option) => {
+        var shippingID = option['object_id']
+        globalShippingOptions[shippingID] = option
+
+        const singleShippingOptionBlock = createDOMElement('div', 'shipping-service-option-block', 'none', singleShippingOptionsArea)
+
+        const shippingServiceTitleDiv = createDOMElement('div', 'shipping-service-title-div', 'none',  singleShippingOptionBlock)
+        const shippingOptionSelector = createDOMElement('div', 'shipping-option-unselected', 'none',  shippingServiceTitleDiv)
+        shippingOptionSelector.setAttribute('id', `${shippingID}-selector`)
+        shippingOptionSelector.setAttribute('onClick', `selectShippingOption("${shippingID}")`)
+        const shippingOptionUnselectedHeader = createDOMElement('div', 'shipping-option-unselected-header', option.servicelevel.name, shippingServiceTitleDiv)
+        shippingOptionUnselectedHeader.setAttribute('id', `${shippingID}-header`)
+        var shippingAttributes = option.attributes
+        if(shippingAttributes.length > 0) {
+            shippingAttributes.forEach( (attribute) => {
+                if(attribute == 'CHEAPEST') {
+                    const shippingCheapestDiv = createDOMElement('div', 'shipping-cheapest-div', 'none', shippingServiceTitleDiv)
+                    createDOMElement('div', 'shipping-cheapest-check', '', shippingCheapestDiv)
+                    createDOMElement('div', 'shipping-cheapest-text', 'CHEAPEST', shippingCheapestDiv)
+                }
+            })
+        }
+
+        const shippingCarrierImageContainer = createDOMElement('div', 'shipping-service-info-div', 'none', singleShippingOptionBlock)
+        const shippingCarrierImage = createDOMElement('img', 'shipping-carrier-image', 'none', shippingCarrierImageContainer)
+        shippingCarrierImage.src = option['provider_image_200']
+
+        const deliveryDateDiv = createDOMElement('div', 'shipping-service-info-div', 'none', singleShippingOptionBlock)
+        createDOMElement('div', 'shipping-service-info-text', `${option['estimated_days']} days`, deliveryDateDiv)
+
+        const deliveryPriceDiv = createDOMElement('div', 'shipping-service-info-div', 'none', singleShippingOptionBlock)
+        createDOMElement('div', 'shipping-service-info-text', `$${option['amount']}`, deliveryPriceDiv)
+
+    })
+    console.log(shippingOptions)
+}
+
+function selectShippingOption(shippingID) {
+
+    globalShippingID = shippingID
+
+    for (var option in globalShippingOptions) {
+        if (globalShippingOptions.hasOwnProperty(option)){
+
+            var optionSelector = document.getElementById(`${option}-selector`)
+            optionSelector.className = 'shipping-option-unselected'
+            optionSelector.innerHTML = ''
+        }
+    }
+
+    var optionSelected = document.getElementById(`${shippingID}-selector`)
+    optionSelected.className = 'shipping-option-selected'
+    optionSelected.innerHTML = ''
+
+    buySingleShippingButton.className = 'purchase-shipping-label'
+    singleShippingPrice.innerHTML = '$' + globalShippingOptions[shippingID].amount
+
 }
