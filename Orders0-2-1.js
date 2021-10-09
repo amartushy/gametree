@@ -20,6 +20,7 @@ const itemConditionDict = {
 }
 var isSelectingAllOrders = false
 var deliveryZipCodes = ['97401', '97402', '97403', '97404', '97405', '97408', '97440', '97477', '97478', '97482']
+var tabs = [ordersAllTab, ordersLocalTab, ordersShipmentTab, ordersDeliveredTab]
 
 
 window.onload = () => {
@@ -49,6 +50,8 @@ function loadOrdersPage() {
     }
 
     ordersAllTab.addEventListener('click', () => {
+        selectTab('all')
+
         while(ordersGridContainer.firstChild) {
             ordersGridContainer.removeChild(ordersGridContainer.firstChild)
         }
@@ -63,8 +66,9 @@ function loadOrdersPage() {
         })
     })
 
-    //TODO
     ordersLocalTab.addEventListener('click', () => {
+        selectTab('local')
+
         while(ordersGridContainer.firstChild) {
             ordersGridContainer.removeChild(ordersGridContainer.firstChild)
         }
@@ -79,8 +83,9 @@ function loadOrdersPage() {
         })
     })
 
-    //TODO
     ordersShipmentTab.addEventListener('click', () => {
+        selectTab('shipping')
+
         while(ordersGridContainer.firstChild) {
             ordersGridContainer.removeChild(ordersGridContainer.firstChild)
         }
@@ -96,6 +101,8 @@ function loadOrdersPage() {
     })
 
     ordersDeliveredTab.addEventListener('click', () => {
+        selectTab('delivered')
+
         while(ordersGridContainer.firstChild) {
             ordersGridContainer.removeChild(ordersGridContainer.firstChild)
         }
@@ -139,6 +146,17 @@ function loadOrdersPage() {
         }
     })
 
+}
+
+function selectTab(tab) {
+
+    tabs.forEach( (tabName) => {
+        if (tab == tabName) {
+            tabName.className = 'inventory-tab-selected'
+        } else {
+            tabName.className = 'inventory-tab'
+        }
+    })
 }
 
 
