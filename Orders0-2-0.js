@@ -19,6 +19,7 @@ const itemConditionDict = {
     'usedAcceptable' : 'Used - Acceptable'
 }
 var isSelectingAllOrders = false
+var deliveryZipCodes = ['97401', '97402', '97403', '97404', '97405', '97408', '97440', '97477', '97478', '97482']
 
 
 window.onload = () => {
@@ -64,12 +65,34 @@ function loadOrdersPage() {
 
     //TODO
     ordersLocalTab.addEventListener('click', () => {
-        buildOrders('local')
+        while(ordersGridContainer.firstChild) {
+            ordersGridContainer.removeChild(ordersGridContainer.firstChild)
+        }
+
+        allOrderIDs = []
+        database.collection('orders').where('shippingAddress.zipCode', 'in', deliveryZipCodes).get().then( (querySnapshot) => {
+            querySnapshot.forEach( (doc) => {
+
+                allOrderIDs.push(doc.id)
+                buildOrder(doc.id, doc.data())
+            })
+        })
     })
 
     //TODO
     ordersShipmentTab.addEventListener('click', () => {
-        buildOrders('shipments')
+        while(ordersGridContainer.firstChild) {
+            ordersGridContainer.removeChild(ordersGridContainer.firstChild)
+        }
+        
+        allOrderIDs = []
+        database.collection('orders').where('shippingAddress.zipCode', 'not-in', deliveryZipCodes).get().then( (querySnapshot) => {
+            querySnapshot.forEach( (doc) => {
+
+                allOrderIDs.push(doc.id)
+                buildOrder(doc.id, doc.data())
+            })
+        })
     })
 
     ordersDeliveredTab.addEventListener('click', () => {
