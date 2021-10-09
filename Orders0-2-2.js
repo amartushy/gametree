@@ -50,7 +50,7 @@ function loadOrdersPage() {
     }
 
     ordersAllTab.addEventListener('click', () => {
-        selectTab('all')
+        selectTab(ordersAllTab)
 
         while(ordersGridContainer.firstChild) {
             ordersGridContainer.removeChild(ordersGridContainer.firstChild)
@@ -67,7 +67,7 @@ function loadOrdersPage() {
     })
 
     ordersLocalTab.addEventListener('click', () => {
-        selectTab('local')
+        selectTab(ordersLocalTab)
 
         while(ordersGridContainer.firstChild) {
             ordersGridContainer.removeChild(ordersGridContainer.firstChild)
@@ -84,7 +84,7 @@ function loadOrdersPage() {
     })
 
     ordersShipmentTab.addEventListener('click', () => {
-        selectTab('shipping')
+        selectTab(ordersShipmentTab)
 
         while(ordersGridContainer.firstChild) {
             ordersGridContainer.removeChild(ordersGridContainer.firstChild)
@@ -101,7 +101,7 @@ function loadOrdersPage() {
     })
 
     ordersDeliveredTab.addEventListener('click', () => {
-        selectTab('delivered')
+        selectTab(ordersDeliveredTab)
 
         while(ordersGridContainer.firstChild) {
             ordersGridContainer.removeChild(ordersGridContainer.firstChild)
