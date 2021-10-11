@@ -483,6 +483,7 @@ function loadATCProcessingState(source) {
 
 
 //________________________________________________________________ADD CONSOLE TO CATALOG____________________________________________________________________
+
 let atcConsoleModal = document.getElementById('atc-console-modal')
 let atcCloseconsoleModal = document.getElementById('atc-close-console-modal')
 let atcConsoleButton = document.getElementById('atc-console-button')
@@ -749,6 +750,48 @@ function buildATCConsoleIncluded() {
         newIncluded.innerHTML = includedText
         atcConsoleWhatsIncludedContainer.appendChild(newIncluded)
     })
+}
+
+const storageOptionsArea = document.getElementById('storage-options-area')
+const storageOptions = ['4GB', '8GB', '16GB', '32GB', '40GB', '60GB', '64GB', '80GB', '120GB', '128GB', '160GB', '250GB', '256GB', '320GB', '500GB', '512GB', '1TB', '2TB']
+var selectedStorageOptions = []
+
+function buildATCConsoleStorageOptions() {
+    while(storageOptionsArea.firstChild) {
+        storageOptionsArea.removeChild(storageOptionsArea.firstChild)
+    }
+
+    storageOptions.forEach( (option) => {
+        var storageOptionButton = createDOMElement('div', 'storage-option-unselected', option, storageOptionsArea)
+        storageOptionButton.setAttribute('id', `storage-option-${option}`)
+        storageOptionButton.setAttribute('onClick', `selectStorageOption("${option}")`)
+    })
+
+}
+
+function selectStorageOption(optionValue) {
+
+    if ( selectedStorageOptions.includes(optionValue) ){
+        const indexOfOption = selectedStorageOptions.indexOf(optionValue)
+        if (indexOfOption > -1) {
+            selectedStorageOptions.splice(indexOfOption, 1)
+        }
+    } else {
+        selectedStorageOptions.push(optionValue)
+    }
+
+    storageOptions.forEach( (option) => {
+        var optionButton = document.getElementById(`storage-option-${option}`)
+
+        if (selectedStorageOptions.includes(option)) {
+            optionButton.className = 'storage-option-selected'
+        } else {
+            optionButton.className = 'storage-option-unselected'
+        }
+    })
+
+    atcConsoleObject['storageOptions'] = selectedStorageOptions
+    console.log(atcConsoleObject)
 }
 
 
@@ -1143,6 +1186,8 @@ function setATCConsoleInitialState() {
     buildATCConsoleFeatures()
 
     buildATCConsoleIncluded()
+
+    buildATCConsoleStorageOptions()
 
     resetConsoleSpecificationFields()
 
