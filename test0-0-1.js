@@ -276,7 +276,7 @@ function buildATCConsoleStorageOptions() {
     }
 
     storageOptions.forEach( (option) => {
-        var storageOptionButton = createDOMElement('div', 'storage-option-unselected', 'none', storageOptionsArea)
+        var storageOptionButton = createDOMElement('div', 'storage-option-unselected', option, storageOptionsArea)
         storageOptionButton.setAttribute('id', `storage-option-${option}`)
         storageOptionButton.setAttribute('onClick', `selectStorageOption("${option}")`)
     })
@@ -297,7 +297,7 @@ function selectStorageOption(optionValue) {
     storageOptions.forEach( (option) => {
         var optionButton = document.getElementById(`storage-option-${option}`)
 
-        if (selectStorageOption.includes(option)) {
+        if (selectedStorageOption.includes(option)) {
             optionButton.className = 'storage-option-selected'
         } else {
             optionButton.className = 'storage-option-unselected'
