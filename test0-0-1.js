@@ -297,14 +297,15 @@ function selectStorageOption(optionValue) {
     storageOptions.forEach( (option) => {
         var optionButton = document.getElementById(`storage-option-${option}`)
 
-        if (selectedStorageOption.includes(option)) {
+        if (selectedStorageOptions.includes(option)) {
             optionButton.className = 'storage-option-selected'
         } else {
             optionButton.className = 'storage-option-unselected'
         }
     })
 
-    console.log(selectedStorageOptions)
+    atcConsoleObject['storageOptions'] = selectedStorageOptions
+    console.log(atcConsoleObject)
 }
 
 
