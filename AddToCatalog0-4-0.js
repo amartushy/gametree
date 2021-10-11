@@ -483,7 +483,6 @@ function loadATCProcessingState(source) {
 
 
 //________________________________________________________________ADD CONSOLE TO CATALOG____________________________________________________________________
-
 let atcConsoleModal = document.getElementById('atc-console-modal')
 let atcCloseconsoleModal = document.getElementById('atc-close-console-modal')
 let atcConsoleButton = document.getElementById('atc-console-button')
@@ -753,7 +752,7 @@ function buildATCConsoleIncluded() {
 }
 
 const storageOptionsArea = document.getElementById('storage-options-area')
-const storageOptions = ['4GB', '8GB', '16GB', '32GB', '40GB', '60GB', '64GB', '80GB', '120GB', '128GB', '160GB', '250GB', '256GB', '320GB', '500GB', '512GB', '1TB', '2TB']
+const storageOptions = ['4GB', '8GB', '16GB', '32GB', '40GB', '60GB', '64GB', '80GB', '120GB', '128GB', '160GB', '250GB', '256GB', '320GB', '500GB', '512GB', '825GB', '1TB', '2TB']
 var selectedStorageOptions = []
 
 function buildATCConsoleStorageOptions() {
@@ -1218,7 +1217,6 @@ submitATCConsole.addEventListener('click', () => {
         alert(error.message)
     })
 })
-
 
 
 
