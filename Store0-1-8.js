@@ -226,8 +226,8 @@ var globalKeyDict = {
 
   'maxResolution' : 'Maximum Video Resolution (Streaming)',
 
-  'storage' : 'Internal Storage',
-  'type' : 'storageType',
+  'internal' : 'Internal Storage',
+  'type' : 'Storage Type',
   'capacity' : 'Storage Capacity',
   'memoryCards' : 'Memory Card Support',
   'numMemoryCards' : 'Number of Memory Card Slots',
