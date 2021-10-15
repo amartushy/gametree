@@ -759,6 +759,7 @@ function buildATCConsoleStorageOptions() {
     while(storageOptionsArea.firstChild) {
         storageOptionsArea.removeChild(storageOptionsArea.firstChild)
     }
+	selectedStorageOptions = []
 
     storageOptions.forEach( (option) => {
         var storageOptionButton = createDOMElement('div', 'storage-option-unselected', option, storageOptionsArea)
