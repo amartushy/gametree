@@ -1,34 +1,5 @@
 //HTML Elements
 
-//Product Page
-const productPage = document.getElementById('product-page')
-const productPageBack = document.getElementById('product-page-back')
-
-const ppNewPriceText = document.getElementById('pp-new-price')
-const ppExcellentPriceText = document.getElementById('pp-excellent-price')
-const ppGoodPriceText = document.getElementById('pp-good-price')
-const ppAcceptablePriceText = document.getElementById('pp-acceptable-price')
-
-const ppNewButton = document.getElementById('pp-new-button')
-const ppExcellentButton = document.getElementById('pp-excellent-button')
-const ppGoodButton = document.getElementById('pp-good-button')
-const ppAcceptableButton = document.getElementById('pp-acceptable-button')
-
-const ppProductTitle = document.getElementById('pp-product-title')
-const ppProductDescription = document.getElementById('pp-product-description')
-const ppKeySpecsContainer = document.getElementById('pp-key-specs-container')
-const ppSubsectionContainer = document.getElementById('pp-subsection-container')
-
-
-//Cart Modal
-const storeCartCloseModal = document.getElementById('store-cart-close-modal')
-const storeCartItemArea = document.getElementById('store-cart-item-area')
-const storeCartNumItems = document.getElementById('store-cart-num-items')
-const storeCartSubtotal = document.getElementById('store-cart-subtotal')
-const storeCartCheckoutButton = document.getElementById('store-cart-checkout-button')
-const storeCartContinueButton = document.getElementById('store-cart-continue-button')
-
-
 //Global Variables
 var database = firebase.firestore()
 var globalProductData
@@ -36,7 +7,6 @@ var globalUserId
 
 
 window.onload = () => {
-  loadShopPage()
 
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
@@ -50,35 +20,6 @@ window.onload = () => {
   })
 }
 
-function loadShopPage() {
-
-
-  //Navigation and Event Listeners
-  productPageBack.addEventListener('click', () => {
-    $('#product-page').fadeOut(200, () => {
-      $('#store-page').fadeIn()
-    })
-  })
-
-
-
-  storeCartCloseModal.addEventListener('click', () => {
-    $('#cart-modal').fadeOut()
-  })
-
-  storeCartContinueButton.addEventListener('click', () => {
-    $('#product-page').fadeOut()
-    $('#cart-modal').fadeOut(400, () => {
-      $('#store-page').fadeIn()
-    })
-  })
-
-  storeCartCheckoutButton.addEventListener('click', () => {
-    location.href = 'https://www.thegametree.io/shop/cart'
-  })
-
-
-}
 
 
 //Algolia
