@@ -129,6 +129,7 @@ function openProductPage(productID) {
 
   var lowerCaseID = productID.toLowerCase()
 
-  location.href = `https/www.thegametree.io/products/${lowerCaseID}`
+  var link = `https/www.thegametree.io/products/${lowerCaseID}`
+  console.log(link)
 
 }
