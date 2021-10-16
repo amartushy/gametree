@@ -344,6 +344,7 @@ function setATCGameInitialState() {
         'category' : 'game',
         'brand' : '',
         'productImage' : '',
+	'dateCreated' : new Date() / 1000,
         'purchasePrices' : {
             'usedAcceptable' :  0,
             'usedGood' : 0,
@@ -1099,6 +1100,7 @@ function setATCConsoleInitialState() {
         'category' : 'console',
         'brand' : '',
         'productImage' : '',
+	'dateCreated' : new Date() / 1000,
         'productImages' : {},
         'purchasePrices' : {
             'usedAcceptable' :  0,
