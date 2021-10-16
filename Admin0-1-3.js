@@ -14,6 +14,10 @@ window.onload = function() {
         location.href = 'https://thegametree.io/admin/inventory'
     })
 
+    document.getElementById('add-to-cms-button').addEventListener('click', () => {
+        addProductsToWebflowCMS()
+    })
+
     document.getElementById('logout-button').addEventListener('click', () => {
         firebase.auth().signOut().then(() => {
             // Sign-out successful.
