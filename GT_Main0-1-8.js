@@ -36,13 +36,14 @@ firebase.auth().onAuthStateChanged(function(user) {
 
 function beginListeningForUpdates(userID) {
     console.log('listening')
-
+    console.log(userID)
+    
     firebase.firestore().collection('users').doc(userID).onSnapshot( (doc) => {
         let data = doc.data()
 
         //Update Cart Icon
         var cartItems = data.cart
-        console.log(cartItems.length)
+        console.log(cartItems)
         if(cartItems.length > 0 ) {
             cartTotal.style.display = 'flex'
             cartTotal.innerHTML = cartItems.length
