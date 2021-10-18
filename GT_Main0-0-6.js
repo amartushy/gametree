@@ -1,4 +1,3 @@
-
 //Load Cart Button and Total
 var cartButton = document.getElementById('main-cart-button')
 cartButton.addEventListener('click', () => {
@@ -41,8 +40,9 @@ $('#header-search-form').submit(function() {
 const headerAutocompleteResults = document.getElementById('header-autocomplete-results')
 headerAutocompleteResults.style.display = 'none'
 
-
 //Algolia  
+const headerSearchClient = algoliasearch('EXJJGW7VTC', '6253027161abf2af452a4c3551a7d6ab');
+
 const headerSearch = instantsearch({
     indexName: 'products_gametree',
     headerSearchClient,
