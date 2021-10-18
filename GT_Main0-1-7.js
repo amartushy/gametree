@@ -41,11 +41,11 @@ function beginListeningForUpdates(userID) {
         let data = doc.data()
 
         //Update Cart Icon
-        var numItemsInCart = data.cart.length
-        console.log(numItemsInCart)
-        if(numItemsInCart > 0 ) {
+        var cartItems = data.cart
+        console.log(cartItems.length)
+        if(cartItems.length > 0 ) {
             cartTotal.style.display = 'flex'
-            cartTotal.innerHTML = numItemsInCart
+            cartTotal.innerHTML = cartItems.length
         } else {
             cartTotal.style.display = 'none'
         }
