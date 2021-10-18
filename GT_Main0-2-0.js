@@ -50,7 +50,7 @@ function beginListeningForUpdates(userID) {
             }
         }
 
-        if(numCartItems.length ) {
+        if(numCartItems > 0 ) {
             cartTotal.style.display = 'flex'
             cartTotal.innerHTML = numCartItems
         } else {
