@@ -14,7 +14,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 
         beginListeningForUpdates(user.uid)
 
-        firebase.firestore().collection('users').doc(userID).get().then( (doc) => {
+        firebase.firestore().collection('users').doc(user.uid).get().then( (doc) => {
             var isAdmin = doc.data().isAdmin
             if(isAdmin) {
     
