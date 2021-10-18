@@ -14,17 +14,19 @@ firebase.auth().onAuthStateChanged(function(user) {
 
         beginListeningForUpdates(user.uid)
 
-        var isAdmin = doc.data().isAdmin
-        if(isAdmin) {
-
-            var adminNavElement = document.getElementById("admin-nav-element");
-            console.log(adminNavElement)
-            if(adminNavElement) {
-                adminNavElement.style.display = 'flex'
-            } else {
-                console.log('no element')
+        firebase.firestore().collection('users').doc(userID).get().then( (doc) => {
+            var isAdmin = doc.data().isAdmin
+            if(isAdmin) {
+    
+                var adminNavElement = document.getElementById("admin-nav-element");
+                console.log(adminNavElement)
+                if(adminNavElement) {
+                    adminNavElement.style.display = 'flex'
+                } else {
+                    console.log('no element')
+                }
             }
-        }
+        })
 
     } else {
         //No authenticated user, hide cart items icon
