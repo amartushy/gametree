@@ -115,7 +115,7 @@ const headerRenderAutocomplete = (renderOptions, isFirstRender) => {
 
 // Create the custom widget
 const headerCustomAutocomplete = instantsearch.connectors.connectAutocomplete(
-  renderAutocomplete
+    headerRenderAutocomplete
 );
 
 // Instantiate the custom widget
