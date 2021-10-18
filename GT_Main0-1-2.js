@@ -14,7 +14,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 
         beginListeningForUpdates(user.uid)
 
-        var isAdmin = data.isAdmin
+        var isAdmin = doc.data().isAdmin
         if(isAdmin) {
 
             var adminNavElement = document.getElementById("admin-nav-element");
