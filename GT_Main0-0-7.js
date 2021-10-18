@@ -41,11 +41,11 @@ const headerAutocompleteResults = document.getElementById('header-autocomplete-r
 headerAutocompleteResults.style.display = 'none'
 
 //Algolia  
-const headerSearchClient = algoliasearch('EXJJGW7VTC', '6253027161abf2af452a4c3551a7d6ab');
+const searchClient = algoliasearch('EXJJGW7VTC', '6253027161abf2af452a4c3551a7d6ab');
 
 const headerSearch = instantsearch({
     indexName: 'products_gametree',
-    headerSearchClient,
+    searchClient,
     getSearchParams() {
         return {
           hitsPerPage: 10,
