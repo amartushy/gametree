@@ -677,7 +677,7 @@ function resetDeliveryInfoErrorFields() {
 
 
 function resetBillingInfoErrorFields() {
-    let errorMessagesArray = [creditCardFieldError, cvcFieldError, billingFirstError, billingLastError, billingAddressError, billingCityError, billingStateError, billingZipError]
+    let errorMessagesArray = [cardNameFieldError, creditCardFieldError,expirationFieldError, cvcFieldError, billingFirstError, billingLastError, billingAddressError, billingCityError, billingStateError, billingZipError]
     let inputFieldsArray = [creditCardField, cvcField, billingFirstField, billingLastField, billingAddressField, billingCityField, billingZipField]
 
     errorMessagesArray.forEach( (errorElement) => {
