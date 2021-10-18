@@ -1,3 +1,4 @@
+
 //Load Cart Button and Total
 var cartButton = document.getElementById('main-cart-button')
 var cartTotal = document.getElementById('cart-total')
@@ -97,7 +98,7 @@ function createAutocompleteResults(results) {
     
             let headerAutocompleteResult = document.createElement('div')
             headerAutocompleteResult.className = 'header-autocomplete-result'
-            headerAutocompleteResult.setAttribute('onClick', `openProductPage("${hit.objectID}")`)
+            headerAutocompleteResult.setAttribute('onClick', `headerOpenProductPage("${hit.objectID}")`)
             hitsContainer.appendChild(headerAutocompleteResult)
     
             let headerResultImage = createDOMElement('img', 'header-result-image', 'none', headerAutocompleteResult)
