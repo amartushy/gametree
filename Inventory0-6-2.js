@@ -69,7 +69,6 @@ function resetTabFilterClasses() {
 
 
 //Algolia
-const searchClient = algoliasearch('EXJJGW7VTC', '6253027161abf2af452a4c3551a7d6ab');
   
 const search = instantsearch({
     indexName: 'inventory_gametree',
@@ -713,4 +712,3 @@ function changeItemPlatform(itemID, platform) {
     document.getElementById(`platform-dropdown-text-${itemID}`).innerHTML = platform
     $(`#platform-dropdown-options-container-${itemID}`).fadeOut()
 }
-
