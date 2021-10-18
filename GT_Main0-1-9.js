@@ -37,16 +37,22 @@ firebase.auth().onAuthStateChanged(function(user) {
 function beginListeningForUpdates(userID) {
     console.log('listening')
     console.log(userID)
-    
+
     firebase.firestore().collection('users').doc(userID).onSnapshot( (doc) => {
         let data = doc.data()
 
         //Update Cart Icon
+        var numCartItems = 0
         var cartItems = data.cart
-        console.log(cartItems)
-        if(cartItems.length > 0 ) {
+        for (let item in cartItems) {
+            if (cartItems.hasOwnProperty(item)) {
+                numCartItems += 1
+            }
+        }
+
+        if(numCartItems.length ) {
             cartTotal.style.display = 'flex'
-            cartTotal.innerHTML = cartItems.length
+            cartTotal.innerHTML = numCartItems
         } else {
             cartTotal.style.display = 'none'
         }
