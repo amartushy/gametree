@@ -1,3 +1,16 @@
+const firebaseConfig = {
+    apiKey: "AIzaSyDO2LzI22vwo59CdcJ8J5amTNuWtVfiJ5I",
+    authDomain: "gametree-43702.firebaseapp.com",
+    projectId: "gametree-43702",
+    storageBucket: "gametree-43702.appspot.com",
+    messagingSenderId: "815394615554",
+    appId: "1:815394615554:web:32105bb53d33d1e059921b",
+    measurementId: "G-GSSQ4YB1WZ"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+firebase.analytics();
+var storageService = firebase.storage();
 
 //Load Cart Button and Total
 var cartButton = document.getElementById('main-cart-button')
@@ -43,8 +56,9 @@ headerAutocompleteResults.style.display = 'none'
 
 
 //Algolia
+const headerSearchClient = algoliasearch('EXJJGW7VTC', '6253027161abf2af452a4c3551a7d6ab');
   
-const search = instantsearch({
+const headerSearch = instantsearch({
     indexName: 'products_gametree',
     searchClient,
     getSearchParams() {
@@ -54,7 +68,7 @@ const search = instantsearch({
     }
 });
 
-function createStoreSearchResults(results) {
+function createAutocompleteResults(results) {
     console.log(results)
 
     let hitsContainer = document.createElement('div')
@@ -89,7 +103,7 @@ function createStoreSearchResults(results) {
 }
 
 // Create the render function
-const renderAutocomplete = (renderOptions, isFirstRender) => {
+const headerRenderAutocomplete = (renderOptions, isFirstRender) => {
   const { indices, currentRefinement, refine, widgetParams } = renderOptions;
 
   if (isFirstRender) {
@@ -110,17 +124,17 @@ const renderAutocomplete = (renderOptions, isFirstRender) => {
 
   document.querySelector('#product-search-field').value = currentRefinement;
   widgetParams.container.innerHTML = indices
-    .map(createStoreSearchResults)
+    .map(createAutocompleteResults)
     .join('');
 };
 
 // Create the custom widget
-const customAutocomplete = instantsearch.connectors.connectAutocomplete(
+const headerCustomAutocomplete = instantsearch.connectors.connectAutocomplete(
   renderAutocomplete
 );
 
 // Instantiate the custom widget
-search.addWidgets([
+headerSearch.addWidgets([
     
   customAutocomplete({
     container: document.querySelector('#header-autocomplete-results'),
@@ -128,10 +142,10 @@ search.addWidgets([
   
 ]);
 
-search.start()
+headerSearch.start()
 
 
-function openProductPage(productID) {
+function headerOpenProductPage(productID) {
 
     var lowerCaseID = productID.toLowerCase()
   
