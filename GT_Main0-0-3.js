@@ -1,12 +1,3 @@
-const firebaseConfig = {
-    apiKey: "AIzaSyDO2LzI22vwo59CdcJ8J5amTNuWtVfiJ5I",
-    authDomain: "gametree-43702.firebaseapp.com",
-    projectId: "gametree-43702",
-    storageBucket: "gametree-43702.appspot.com",
-    messagingSenderId: "815394615554",
-    appId: "1:815394615554:web:32105bb53d33d1e059921b",
-    measurementId: "G-GSSQ4YB1WZ"
-};
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
@@ -55,9 +46,7 @@ const headerAutocompleteResults = document.getElementById('header-autocomplete-r
 headerAutocompleteResults.style.display = 'none'
 
 
-//Algolia
-const headerSearchClient = algoliasearch('EXJJGW7VTC', '6253027161abf2af452a4c3551a7d6ab');
-  
+//Algolia  
 const headerSearch = instantsearch({
     indexName: 'products_gametree',
     searchClient,
