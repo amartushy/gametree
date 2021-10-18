@@ -11,34 +11,41 @@ cartButton.addEventListener('click', () => {
 //Check if user is an admin, load admin header option
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-        firebase.firestore().collection('users').doc(user.uid).onSnapshot( (doc) => {
-            let data = doc.data()
 
-            //Update Cart Icon
-            var numItemsInCart = data.cart.length
+        beginListeningForUpdates(user.uid)
 
-            if(numItemsInCart != null || numItemsInCart == 0) {
-                cartTotal.style.display = 'flex'
-                cartTotal.innerHTML = numItemsInCart
+        var isAdmin = data.isAdmin
+        if(isAdmin) {
+
+            var adminNavElement = document.getElementById("admin-nav-element");
+            console.log(adminNavElement)
+            if(adminNavElement) {
+                adminNavElement.style.display = 'flex'
+            } else {
+                console.log('no element')
             }
+        }
 
-            var isAdmin = data.isAdmin
-            if(isAdmin) {
-
-                var adminNavElement = document.getElementById("admin-nav-element");
-                console.log(adminNavElement)
-                if(adminNavElement) {
-                    adminNavElement.style.display = 'flex'
-                } else {
-                    console.log('no element')
-                }
-            }
-        })
     } else {
         //No authenticated user, hide cart items icon
         console.log('No user logged in')
     }
 })
+
+function beginListeningForUpdates(userID) {
+    firebase.firestore().collection('users').doc(userID).onSnapshot( (doc) => {
+        let data = doc.data()
+
+        //Update Cart Icon
+        var numItemsInCart = data.cart.length
+
+        if(numItemsInCart != null || numItemsInCart == 0) {
+            cartTotal.style.display = 'flex'
+            cartTotal.innerHTML = numItemsInCart
+        }
+
+    })
+}
 
 
 //Disable header form
