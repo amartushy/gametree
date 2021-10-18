@@ -45,7 +45,7 @@ headerAutocompleteResults.style.display = 'none'
 //Algolia  
 const headerSearch = instantsearch({
     indexName: 'products_gametree',
-    searchClient,
+    headerSearchClient,
     getSearchParams() {
         return {
           hitsPerPage: 10,
