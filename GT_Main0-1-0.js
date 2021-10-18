@@ -1,5 +1,8 @@
 //Load Cart Button and Total
 var cartButton = document.getElementById('main-cart-button')
+var cartTotal = document.getElementById('cart-total')
+cartTotal.style.display = 'none'
+
 cartButton.addEventListener('click', () => {
   location.href = 'https://www.thegametree.io/shop/cart'
 })
@@ -8,24 +11,32 @@ cartButton.addEventListener('click', () => {
 //Check if user is an admin, load admin header option
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-    console.log('user found')
-        firebase.firestore().collection('users').doc(user.uid).get().then(function(doc) {
+        firebase.firestore().collection('users').doc(user.uid).onSnapshot( (doc) => {
             let data = doc.data()
+
+            //Update Cart Icon
+            var numItemsInCart = data.cart.length
+
+            if(numItemsInCart != null || numItemsInCart == 0) {
+                cartTotal.style.display = 'flex'
+                cartTotal.innerHTML = numItemsInCart
+            }
+
             var isAdmin = data.isAdmin
             if(isAdmin) {
-                console.log('user is an admin')
 
                 var adminNavElement = document.getElementById("admin-nav-element");
                 console.log(adminNavElement)
                 if(adminNavElement) {
                     adminNavElement.style.display = 'flex'
                 } else {
-                console.log('no element')
+                    console.log('no element')
                 }
             }
         })
     } else {
-    console.log('No user logged in')
+        //No authenticated user, hide cart items icon
+        console.log('No user logged in')
     }
 })
 
