@@ -22,9 +22,7 @@ window.onload = () => {
 
 
 
-//Algolia
-const searchClient = algoliasearch('EXJJGW7VTC', '6253027161abf2af452a4c3551a7d6ab');
-  
+//Algolia  
 const search = instantsearch({
     indexName: 'products_gametree',
     searchClient,
