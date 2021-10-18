@@ -121,7 +121,7 @@ const headerCustomAutocomplete = instantsearch.connectors.connectAutocomplete(
 // Instantiate the custom widget
 headerSearch.addWidgets([
     
-  customAutocomplete({
+    headerCustomAutocomplete({
     container: document.querySelector('#header-autocomplete-results'),
   })
   
