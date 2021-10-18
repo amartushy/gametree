@@ -1,7 +1,3 @@
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-firebase.analytics();
-var storageService = firebase.storage();
 
 //Load Cart Button and Total
 var cartButton = document.getElementById('main-cart-button')
