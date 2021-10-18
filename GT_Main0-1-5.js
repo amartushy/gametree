@@ -41,9 +41,11 @@ function beginListeningForUpdates(userID) {
         //Update Cart Icon
         var numItemsInCart = data.cart.length
 
-        if(numItemsInCart != null || numItemsInCart == 0) {
+        if(numItemsInCart > 0 ) {
             cartTotal.style.display = 'flex'
             cartTotal.innerHTML = numItemsInCart
+        } else {
+            cartTotal.style.display = 'none'
         }
 
     })
