@@ -50,8 +50,8 @@ function createStoreSearchResults(results) {
         let storeButtonWrapper = createDOMElement('div', 'store-product-wrapper', 'none', storeProductBackground)
         createDOMElement('div', 'store-product-button', 'Details', storeButtonWrapper)
 
-        let storeQuickViewWrapper = createDOMElement('div', 'store-product-view-wrapper', 'none', storeProductBackground)
-        createDOMElement('div', 'store-product-view-button', '', storeQuickViewWrapper)
+        let storeQuickViewWrapper = createDOMElement('div', 'store-quick-view-wrapper', 'none', storeProductBackground)
+        createDOMElement('div', 'store-quick-view-button', '', storeQuickViewWrapper)
     })
 
     return hitsContainer.outerHTML
