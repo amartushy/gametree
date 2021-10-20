@@ -767,7 +767,6 @@ function buildATCConsoleStorageOptions() {
         storageOptionButton.setAttribute('id', `storage-option-${option}`)
         storageOptionButton.setAttribute('onClick', `selectStorageOption("${option}")`)
     })
-
 }
 
 function selectStorageOption(optionValue) {
@@ -858,6 +857,7 @@ atcConsoleGeneralProductName.addEventListener('blur', () => {
 })
 atcConsoleGeneralBrand.addEventListener('blur', () => {
     atcConsoleObject['general']['brand'] = atcConsoleGeneralBrand.value
+    atcConsoleObject['brand'] = atcConsoleGeneralBrand.value
 })
 atcConsoleGeneralAccessories.addEventListener('blur', () => {
     atcConsoleObject['general']['additionalAccessories'] = atcConsoleGeneralAccessories.value
@@ -1097,8 +1097,9 @@ function setATCConsoleInitialState() {
 
 
     atcConsoleObject = {
-        'category' : 'console',
+        'category' : 'Consoles',
         'brand' : '',
+        'platform' : '',
         'productImage' : '',
 	'dateCreated' : new Date() / 1000,
         'productImages' : {},
