@@ -254,7 +254,7 @@ let atcGameGeneralRelease = document.getElementById('game-general-release')
 atcGameGeneralProduct.addEventListener('blur', () => {
     atcGameObject['general']['productName'] = atcGameGeneralProduct.value
 })
-atcGameGeneralBrand.addEventListener('blur', () => {
+atcGameGeneralPlatform.addEventListener('blur', () => {
     atcGameObject['general']['platform'] = atcGameGeneralPlatform.value
 })
 atcGameGeneralPublisher.addEventListener('blur', () => {
