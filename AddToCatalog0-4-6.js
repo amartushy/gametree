@@ -225,6 +225,7 @@ let atcGameSpecsEdition = document.getElementById('game-specs-edition')
 let atcGameSpecsRating = document.getElementById('game-specs-rating')
 let atcGameSpecsDescriptors = document.getElementById('game-specs-descriptors')
 let atcGameSpecsPlatform = document.getElementById('game-specs-platform')
+let atcGameSpecsCompatiblePlatforms = document.getElementById('game-specs-compatible-platforms')
 let atcGameSpecsFormat = document.getElementById('game-specs-format')
 
 atcGameSpecsEdition.addEventListener('blur', () => {
@@ -237,8 +238,11 @@ atcGameSpecsDescriptors.addEventListener('blur', () => {
     atcGameObject['keySpecs']['ESRBDescriptors'] = atcGameSpecsDescriptors.value
 })
 atcGameSpecsPlatform.addEventListener('blur', () => {
-    atcGameObject['keySpecs']['compatiblePlatforms'] = atcGameSpecsPlatform.value
-    atcGameObject['brand'] = atcGameSpecsPlatform.value
+    atcGameObject['keySpecs']['platform'] = atcGameSpecsPlatform.value
+    atcGameObject['platform'] = atcGameSpecsPlatform.value
+})
+atcGameSpecsCompatiblePlatforms.addEventListener('blur', () => {
+    atcGameObject['keySpecs']['compatiblePlatforms'] = atcGameSpecsCompatiblePlatforms.value
 })
 atcGameSpecsFormat.addEventListener('blur', () => {
     atcGameObject['keySpecs']['softwareFormat'] = atcGameSpecsFormat.value
@@ -246,16 +250,18 @@ atcGameSpecsFormat.addEventListener('blur', () => {
 
 //General
 let atcGameGeneralProduct = document.getElementById('game-general-product')
-let atcGameGeneralPlatform = document.getElementById('game-general-platform')
+let atcGameGeneralBrand = document.getElementById('game-general-brand')
 let atcGameGeneralPublisher = document.getElementById('game-general-publisher')
 let atcGameGeneralDeveloper = document.getElementById('game-general-developer')
 let atcGameGeneralModel = document.getElementById('game-general-model')
 let atcGameGeneralRelease = document.getElementById('game-general-release')
+
 atcGameGeneralProduct.addEventListener('blur', () => {
     atcGameObject['general']['productName'] = atcGameGeneralProduct.value
 })
-atcGameGeneralPlatform.addEventListener('blur', () => {
-    atcGameObject['general']['platform'] = atcGameGeneralPlatform.value
+atcGameGeneralBrand.addEventListener('blur', () => {
+    atcGameObject['general']['brand'] = atcGameGeneralBrand.value
+    atcGameObject['brand'] = atcGameGeneralBrand.value
 })
 atcGameGeneralPublisher.addEventListener('blur', () => {
     atcGameObject['general']['publisher'] = atcGameGeneralPublisher.value
@@ -368,6 +374,7 @@ function setATCGameInitialState() {
             'edition' : '',
             'ESRBRating' : '',
             'ESRBDescriptors' : '',
+            'platform' : '',
             'compatiblePlatforms' : '',
             'softwareFormat' : '',
         },
