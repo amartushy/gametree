@@ -246,7 +246,7 @@ atcGameSpecsFormat.addEventListener('blur', () => {
 
 //General
 let atcGameGeneralProduct = document.getElementById('game-general-product')
-let atcGameGeneralBrand = document.getElementById('game-general-brand')
+let atcGameGeneralPlatform = document.getElementById('game-general-platform')
 let atcGameGeneralPublisher = document.getElementById('game-general-publisher')
 let atcGameGeneralDeveloper = document.getElementById('game-general-developer')
 let atcGameGeneralModel = document.getElementById('game-general-model')
@@ -255,7 +255,7 @@ atcGameGeneralProduct.addEventListener('blur', () => {
     atcGameObject['general']['productName'] = atcGameGeneralProduct.value
 })
 atcGameGeneralBrand.addEventListener('blur', () => {
-    atcGameObject['general']['brand'] = atcGameGeneralBrand.value
+    atcGameObject['general']['platform'] = atcGameGeneralPlatform.value
 })
 atcGameGeneralPublisher.addEventListener('blur', () => {
     atcGameObject['general']['publisher'] = atcGameGeneralPublisher.value
@@ -341,8 +341,9 @@ function setATCGameInitialState() {
     })
 
     atcGameObject = {
-        'category' : 'game',
+        'category' : 'Games',
         'brand' : '',
+        'platform' : '',
         'productImage' : '',
 	'dateCreated' : new Date() / 1000,
         'purchasePrices' : {
@@ -845,6 +846,7 @@ atcConsoleSpecsUSBPorts.addEventListener('blur', () => {
 //General
 let atcConsoleGeneralProductName = document.getElementById('console-general-productname')
 let atcConsoleGeneralBrand = document.getElementById('console-general-brand')
+let atcConsoleGeneralPlatform = document.getElementById('console-general-platform')
 let atcConsoleGeneralAccessories = document.getElementById('console-general-accessories')
 let atcConsoleGeneralParental = document.getElementById('console-general-parental')
 let atcConsoleGeneralType = document.getElementById('console-general-type')
@@ -858,6 +860,9 @@ atcConsoleGeneralProductName.addEventListener('blur', () => {
 atcConsoleGeneralBrand.addEventListener('blur', () => {
     atcConsoleObject['general']['brand'] = atcConsoleGeneralBrand.value
     atcConsoleObject['brand'] = atcConsoleGeneralBrand.value
+})
+atcConsoleGeneralPlatform.addEventListener('blur', () => {
+    atcConsoleObject['platform'] = atcConsoleGeneralPlatform.value
 })
 atcConsoleGeneralAccessories.addEventListener('blur', () => {
     atcConsoleObject['general']['additionalAccessories'] = atcConsoleGeneralAccessories.value
