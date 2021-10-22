@@ -148,3 +148,17 @@ function checkValidPhone(phoneStr) {
         return false
     }
 }
+
+function checkAndUpdateProductAvailability(GTIN) {
+  database.collection('catalog').doc(GTIN).get().then( (doc) => {
+      var data = doc.data()
+      var numItemsAvailable = Object.keys(data.availability).length
+
+      var isAvailable = (numItemsAvailable > 0) ? true : false
+      var updateDict = {}
+      updateDict['isAvailable'] = isAvailable
+      updateDict['numItemsAvailable'] = numItemsAvailable
+
+      database.collection('catalog').doc(GTIN).update(updateDict)
+  })
+}
