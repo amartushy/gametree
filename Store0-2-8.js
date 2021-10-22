@@ -55,7 +55,11 @@ function createStoreSearchResults(results) {
         var storeAvailabilityDiv = createDOMElement('div', 'store-availability-div', 'none', storeProductBackground)
         createDOMElement('div', 'store-product-price', '$' + hit.salePrices.new, storeAvailabilityDiv)
 
-        (hit.isAvailable) ? createDOMElement('div', 'store-product-available', 'Available', storeAvailabilityDiv) : createDOMElement('div', 'store-product-unavailable', 'Out of Stock', storeAvailabilityDiv)
+        if(hit.isAvailable) {
+          createDOMElement('div', 'store-product-available', 'Available', storeAvailabilityDiv)
+        } else {
+          createDOMElement('div', 'store-product-unavailable', 'Out of Stock', storeAvailabilityDiv)
+        }
 
         let storeQuickViewWrapper = createDOMElement('div', 'store-quick-view-wrapper', 'none', storeProductBackground)
         createDOMElement('div', 'store-quick-view-button', '', storeQuickViewWrapper)
