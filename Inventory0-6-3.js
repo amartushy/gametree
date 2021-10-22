@@ -438,6 +438,9 @@ function daySelected(dayVal, monthVal, yearVal) {
 
 //Status and Update Functions
 function changeItemStatus(GTIN, itemID, newStatus) {
+
+    checkAndUpdateProductAvailability(GTIN)
+    
     var dropdownTextElement = document.getElementById(`status-dropdown-text-${itemID}`)
     var priorStatus = dropdownTextElement.innerHTML
 
