@@ -15,7 +15,7 @@ window.onload = function() {
     })
 
     document.getElementById('add-to-cms-button').addEventListener('click', () => {
-        addProductsToWebflowCMS()
+        downloadProductsCSV()
     })
 
     document.getElementById('logout-button').addEventListener('click', () => {
