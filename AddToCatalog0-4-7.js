@@ -351,6 +351,8 @@ function setATCGameInitialState() {
         'brand' : '',
         'platform' : '',
         'productImage' : '',
+        'isAvailable' : false,
+        'numItemsAvailable' : 0,
 	'dateCreated' : new Date() / 1000,
         'purchasePrices' : {
             'usedAcceptable' :  0,
@@ -1113,6 +1115,8 @@ function setATCConsoleInitialState() {
         'brand' : '',
         'platform' : '',
         'productImage' : '',
+        'isAvailable' : false,
+        'numItemsAvailable' : 0,
 	'dateCreated' : new Date() / 1000,
         'productImages' : {},
         'purchasePrices' : {
