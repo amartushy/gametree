@@ -83,6 +83,9 @@ const specHeadersDict = {
 }
 
 var globalKeyDict = {
+    //All
+    'UPC' : 'UPC',
+
     //Games
     'ESRBDescriptors' : 'ESRB Descriptors',
     'ESRBRating' : 'ESRB Rating',
