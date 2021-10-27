@@ -186,4 +186,9 @@ function setATCAccessoryInitialState() {
     //Reset price fields
 
     //Reset Overview Fields
+
+    //Reset Specification Fields
+    while(atcSpecificationsLower.firstChild) {
+        atcSpecificationsLower.removeChild(atcSpecificationsLower.firstChild)
+    }
 }
