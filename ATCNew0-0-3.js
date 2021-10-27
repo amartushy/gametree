@@ -4,7 +4,6 @@
 let atcButton = document.getElementById('atc-button')
 let atcModal = document.getElementById('atc-modal')
 let atcCloseModal = document.getElementById('atc-close-modal')
-console.log(atcButton)
 
 let atcPrimaryImageContainer = document.getElementById('atc-primary-image-container')
 let atcAdditionalImagesContainer = document.getElementById('atc-additional-images-container')
@@ -56,7 +55,7 @@ let atcAddIncludedCancel = document.getElementById('atc-add-included-cancel')
 let atcAddIncludedSubmit = document.getElementById('atc-add-included-submit')
 
 
-let atcSpecificationsLower = document.getElementById('atc-overview-lower')
+let atcSpecificationsLower = document.getElementById('atc-specifications-lower')
 let atcSpecificationsDropdown = document.getElementById('atc-specifications-dropdown')
 let atcSpecificationsChevron = document.getElementById('atc-specifications-chevron')
 
@@ -168,75 +167,3 @@ categoryOptionButtons.forEach((option) => {
         resetCategoryOptions(option)
     })
 })
-
-
-//Onload
-function setATCAccessoryInitialState() {
-    productID = createID(8)
-
-    //Reset Image Buttons and Containers
-
-    //Load Search Field
-
-    //Reset product name field
-
-    //Reset Category Buttons
-    resetCategoryOptions()
-
-    //Reset price fields
-
-    //Reset Overview Fields
-
-    //Reset Specification Fields
-    while(atcSpecificationsLower.firstChild) {
-        atcSpecificationsLower.removeChild(atcSpecificationsLower.firstChild)
-    }
-}
-
-
-function resetCategoryOptions(option) {
-
-    categoryOptionButtons.forEach( (categoryOption) => {
-        document.getElementById(categoryOption).className = 'accessory-option-unselected'
-    })
-
-    switch (option) {
-        case 'game-category' :
-            buildATCGame()
-            document.getElementById(option).className = 'accessory-option-selected'
-            break;
-
-        case 'console-category' :
-            buildATCConsole()
-            document.getElementById(option).className = 'accessory-option-selected'
-            break;
-
-        case 'headset-category' :
-            buildATCHeadset()
-            document.getElementById(option).className = 'accessory-option-selected'
-            break;
-
-        case 'controller-category' :
-            buildATCController()
-            document.getElementById(option).className = 'accessory-option-selected'
-            break;
-
-        case 'cable-category' :
-            buildATCCable()
-            document.getElementById(option).className = 'accessory-option-selected'
-            break;
-
-        case 'power-category' :
-            buildATCPower()
-            document.getElementById(option).className = 'accessory-option-selected'
-            break;
-
-        case 'pc-category' :
-            buildATCPC()
-            document.getElementById(option).className = 'accessory-option-selected'
-            break;
-        
-        default:
-            break;
-    }
-}
