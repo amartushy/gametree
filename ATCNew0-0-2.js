@@ -192,3 +192,51 @@ function setATCAccessoryInitialState() {
         atcSpecificationsLower.removeChild(atcSpecificationsLower.firstChild)
     }
 }
+
+
+function resetCategoryOptions(option) {
+
+    categoryOptionButtons.forEach( (categoryOption) => {
+        document.getElementById(categoryOption).className = 'accessory-option-unselected'
+    })
+
+    switch (option) {
+        case 'game-category' :
+            buildATCGame()
+            document.getElementById(option).className = 'accessory-option-selected'
+            break;
+
+        case 'console-category' :
+            buildATCConsole()
+            document.getElementById(option).className = 'accessory-option-selected'
+            break;
+
+        case 'headset-category' :
+            buildATCHeadset()
+            document.getElementById(option).className = 'accessory-option-selected'
+            break;
+
+        case 'controller-category' :
+            buildATCController()
+            document.getElementById(option).className = 'accessory-option-selected'
+            break;
+
+        case 'cable-category' :
+            buildATCCable()
+            document.getElementById(option).className = 'accessory-option-selected'
+            break;
+
+        case 'power-category' :
+            buildATCPower()
+            document.getElementById(option).className = 'accessory-option-selected'
+            break;
+
+        case 'pc-category' :
+            buildATCPC()
+            document.getElementById(option).className = 'accessory-option-selected'
+            break;
+        
+        default:
+            break;
+    }
+}
