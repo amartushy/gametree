@@ -43,6 +43,7 @@ let atcDescriptionField = document.getElementById('atc-description-field')
 let atcFeaturesContainer = document.getElementById('atc-features-container')
 let atcAddFeatureButton = document.getElementById('atc-add-feature-button')
 let atcAddFeatureForm = document.getElementById('atc-add-feature-form')
+let atcFeatureTitleField = document.getElementById('atc-feature-title-field')
 let atcFeatureDescriptionField = document.getElementById('atc-feature-description-field')
 let atcAddFeatureCancel = document.getElementById('atc-add-feature-cancel')
 let atcAddFeatureSubmit = document.getElementById('atc-add-feature-submit')
@@ -240,7 +241,7 @@ atcAddFeatureSubmit.addEventListener('click', () => {
 })
 
 function buildATCFeatures() {
-        console.log('called')
+    console.log('called')
     atcAddFeatureForm.style.display = 'none'
 
     while(atcFeaturesContainer.firstChild) {
@@ -308,10 +309,3 @@ atcSubmit.addEventListener('click', () => {
     console.log(productObject)
     console.log(globalSpecsObject)
 })
-
-
-
-
-
-
-
