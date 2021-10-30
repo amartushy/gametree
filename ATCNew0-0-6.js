@@ -68,11 +68,11 @@ var productObject = {
     'category' : 'Consoles',
     'brand' : '',
     'platform' : '',
-    'productImage' : productImageURL,
+    'productImage' : '',
     'isAvailable' : false,
     'numItemsAvailable' : 0,
     'dateCreated' : new Date() / 1000,
-    'productImages' : productImagesURLObject,
+    'productImages' : {},
     'availability' : {},
     'overview' : {
         'description' : '',
