@@ -10,30 +10,30 @@ let atcAdditionalImagesContainer = document.getElementById('atc-additional-image
 let atcSearchField = document.getElementById('atc-search-field')
 let atcProductNameField = document.getElementById('atc-product-name-fieldr')
 
-let atcPurchase1 = document.getElementById('atc-purchase-1')
-let atcPurchaseDiv1 = document.getElementById('atc-purchase-div-1')
-let atcPurchaseHeader1 = document.getElementById('atc-purchase-header-1')
-let atcPurchase2 = document.getElementById('atc-purchase-2')
-let atcPurchaseDiv2 = document.getElementById('atc-purchase-div-2')
-let atcPurchaseHeader2 = document.getElementById('atc-purchase-header-2')
-let atcPurchase3 = document.getElementById('atc-purchase-3')
-let atcPurchaseDiv3 = document.getElementById('atc-purchase-div-3')
-let atcPurchaseHeader3 = document.getElementById('atc-purchase-header-3')
-let atcPurchase4 = document.getElementById('atc-purchase-4')
-let atcPurchaseDiv4 = document.getElementById('atc-purchase-div-4')
-let atcPurchaseHeader4 = document.getElementById('atc-purchase-header-4')
-let atcPurchase5 = document.getElementById('atc-purchase-5')
-let atcPurchaseDiv5 = document.getElementById('atc-purchase-div-5')
-let atcPurchaseHeader5 = document.getElementById('atc-purchase-header-5')
-let atcPurchase6 = document.getElementById('atc-purchase-6')
-let atcPurchaseDiv6 = document.getElementById('atc-purchase-div-6')
-let atcPurchaseHeader6 = document.getElementById('atc-purchase-header-6')
-let atcPurchase7 = document.getElementById('atc-purchase-7')
-let atcPurchaseDiv7 = document.getElementById('atc-purchase-div-7')
-let atcPurchaseHeader7 = document.getElementById('atc-purchase-header-7')
-let atcPurchase8 = document.getElementById('atc-purchase-8')
-let atcPurchaseDiv8 = document.getElementById('atc-purchase-div-8')
-let atcPurchaseHeader8 = document.getElementById('atc-purchase-header-8')
+let atcPurchaseAcceptable = document.getElementById('atc-purchase-1')
+let atcPurchaseAcceptableDiv = document.getElementById('atc-purchase-div-1')
+let atcPurchaseAcceptableHeader = document.getElementById('atc-purchase-header-1')
+let atcPurchaseGood = document.getElementById('atc-purchase-2')
+let atcPurchaseGoodDiv = document.getElementById('atc-purchase-div-2')
+let atcPurchaseGoodHeader = document.getElementById('atc-purchase-header-2')
+let atcPurchaseExcellent = document.getElementById('atc-purchase-3')
+let atcPurchaseExcellentDiv = document.getElementById('atc-purchase-div-3')
+let atcPurchaseExcellentHeader = document.getElementById('atc-purchase-header-3')
+let atcPurchaseNew = document.getElementById('atc-purchase-4')
+let atcPurchaseNewDiv = document.getElementById('atc-purchase-div-4')
+let atcPurchaseNewHeader = document.getElementById('atc-purchase-header-4')
+let atcSaleAcceptable = document.getElementById('atc-sale-5')
+let atcSaleAcceptableDiv = document.getElementById('atc-sale-div-5')
+let atcSaleAcceptableHeader = document.getElementById('atc-sale-header-5')
+let atcSaleGood = document.getElementById('atc-sale-6')
+let atcSaleGoodDiv = document.getElementById('atc-sale-div-6')
+let atcSaleGoodHeader = document.getElementById('atc-sale-header-6')
+let atcSaleExcellent = document.getElementById('atc-sale-7')
+let atcSaleExcellentDiv = document.getElementById('atc-sale-div-7')
+let atcSaleExcellentHeader = document.getElementById('atc-sale-header-7')
+let atcSaleNew = document.getElementById('atc-sale-8')
+let atcSaleNewDiv = document.getElementById('atc-sale-div-8')
+let atcSaleNewHeader = document.getElementById('atc-sale-header-8')
 
 let atcOverviewDropdown = document.getElementById('atc-overview-dropdown')
 let atcOverviewChevron = document.getElementById('atc-overview-chevron')
@@ -64,9 +64,35 @@ let atcHazardWarning = document.getElementById('atc-hazard-warning')
 
 //Global Variables
 var productID
-var productObject = {}
-var productImagesURLObject = {}
-var productImageURL = {}
+var productObject = {
+    'category' : 'Consoles',
+    'brand' : '',
+    'platform' : '',
+    'productImage' : productImageURL,
+    'isAvailable' : false,
+    'numItemsAvailable' : 0,
+    'dateCreated' : new Date() / 1000,
+    'productImages' : productImagesURLObject,
+    'availability' : {},
+    'overview' : {
+        'description' : '',
+        'features' : [],
+        'included' : [],
+    },
+    'purchasePrices' : {
+        'usedAcceptable' :  0,
+        'usedGood' : 0,
+        'usedExcellent' : 0,
+        'new' : 0,
+    },
+    'salePrices' : {
+        'usedAcceptable' :  0,
+        'usedGood' : 0,
+        'usedExcellent' : 0,
+        'new' : 0,
+    },
+}
+var globalSpecsObject = {}
 let categoryOptionButtons = ['game-category', 'console-category', 'headset-category', 'controller-category', 'cable-category', 'power-category', 'pc-category' ]
 
 const specHeadersDict = {
@@ -152,7 +178,7 @@ var globalKeyDict = {
 
 //Event Listeners
 atcButton.addEventListener('click', () => {
-    setATCAccessoryInitialState()
+    setATCInitialState()
     $('#admin-nav-section').fadeOut(200, () => {
         $('#atc-modal').fadeIn().css('display', 'flex');
     })
@@ -163,10 +189,51 @@ atcCloseModal.addEventListener('click', () => {
     $('#admin-nav-section').fadeIn().css('display', 'flex');
 })
 
+atcProductNameField.onblur = () => {
+    productObject.productName = atcProductNameField.value
+}
 
 categoryOptionButtons.forEach((option) => {
     document.getElementById(option).addEventListener('click', () => {
 
         resetCategoryOptions(option)
     })
+})
+
+
+atcPurchaseAcceptable.addEventListener('blur', () => {
+    productObject['purchasePrices']['usedAcceptable'] = atcPurchaseAcceptable.value
+})
+atcPurchaseGood.addEventListener('blur', () => {
+    productObject['purchasePrices']['usedGood'] = atcPurchaseGood.value
+})
+atcPurchaseExcellent.addEventListener('blur', () => {
+    productObject['purchasePrices']['usedExcellent'] = atcPurchaseExcellent.value
+})
+atcPurchaseNew.addEventListener('blur', () => {
+    productObject['purchasePrices']['new'] = atcPurchaseNew.value
+})
+
+atcSaleAcceptable.addEventListener('blur', () => {
+    productObject['salePrices']['usedAcceptable'] = atcSaleAcceptable.value
+})
+atcSaleGood.addEventListener('blur', () => {
+    productObject['salePrices']['usedGood'] = atcSaleGood.value
+})
+atcSaleExcellent.addEventListener('blur', () => {
+    productObject['salePrices']['usedExcellent'] = atcSaleExcellent.value
+})
+atcSaleNew.addEventListener('blur', () => {
+    productObject['salePrices']['new'] = atcSaleNew.value
+})
+
+
+atcOverviewDropdown.addEventListener('click', () => {
+    $('#atc-overview-lower').toggle()
+
+    if(atcOverviewLower.style.display == 'none') {
+        atcOverviewLower.setAttribute('class', 'atc-chevron-down')
+    } else {
+        atcOverviewLower.setAttribute('class', 'atc-chevron')
+    }
 })
