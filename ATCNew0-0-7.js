@@ -8,7 +8,7 @@ let atcCloseModal = document.getElementById('atc-close-modal')
 let atcPrimaryImageContainer = document.getElementById('atc-primary-image-container')
 let atcAdditionalImagesContainer = document.getElementById('atc-additional-images-container')
 let atcSearchField = document.getElementById('atc-search-field')
-let atcProductNameField = document.getElementById('atc-product-name-fieldr')
+let atcProductNameField = document.getElementById('atc-product-name-field')
 
 let atcPurchaseAcceptable = document.getElementById('atc-purchase-1')
 let atcPurchaseAcceptableDiv = document.getElementById('atc-purchase-div-1')
