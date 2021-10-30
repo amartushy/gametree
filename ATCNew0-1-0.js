@@ -65,34 +65,7 @@ let atcSubmit = document.getElementById('atc-submit')
 
 //Global Variables
 var productID
-var productObject = {
-    'category' : 'Consoles',
-    'brand' : '',
-    'platform' : '',
-    'productImage' : '',
-    'isAvailable' : false,
-    'numItemsAvailable' : 0,
-    'dateCreated' : new Date() / 1000,
-    'productImages' : {},
-    'availability' : {},
-    'overview' : {
-        'description' : '',
-        'features' : [],
-        'included' : [],
-    },
-    'purchasePrices' : {
-        'usedAcceptable' :  0,
-        'usedGood' : 0,
-        'usedExcellent' : 0,
-        'new' : 0,
-    },
-    'salePrices' : {
-        'usedAcceptable' :  0,
-        'usedGood' : 0,
-        'usedExcellent' : 0,
-        'new' : 0,
-    },
-}
+var productObject = {}
 var globalSpecsObject = {}
 let categoryOptionButtons = ['game-category', 'console-category', 'headset-category', 'controller-category', 'cable-category', 'power-category', 'pc-category' ]
 
