@@ -295,6 +295,12 @@ function buildATCIncluded() {
     })
 }
 
+atcHazardWarning.addEventListener('click', () => {
+    var previousHazardBool = productObject.hazardWarnings.chokingHazard
+    productObject.hazardWarnings.chokingHazard = !previousHazardBool
+    atcHazardWarning.className = previousHazardBool ? 'atc-hazard-warning' : 'atc-hazard-warning-selected'
+})
+
 
 //Final Submit Button
 atcSubmit.addEventListener('click', () => {
