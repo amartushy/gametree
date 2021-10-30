@@ -61,6 +61,7 @@ let atcSpecificationsChevron = document.getElementById('atc-specifications-chevr
 
 let atcHazardWarning = document.getElementById('atc-hazard-warning')
 
+let atcSubmit = document.getElementById('atc-submit')
 
 //Global Variables
 var productID
@@ -228,6 +229,7 @@ atcSaleNew.addEventListener('blur', () => {
 })
 
 
+//Overview Event Listeners
 atcOverviewDropdown.addEventListener('click', () => {
     $('#atc-overview-lower').toggle()
 
@@ -236,4 +238,93 @@ atcOverviewDropdown.addEventListener('click', () => {
     } else {
         atcOverviewLower.setAttribute('class', 'atc-chevron')
     }
+})
+
+
+atcDescriptionField.addEventListener('blur', () => {
+    productObject['overview']['description'] = atcDescriptionField.value
+})
+
+atcAddFeatureButton.addEventListener('click', () => {
+    $('#atc-add-feature-form').fadeIn()
+})
+
+atcAddFeatureCancel.addEventListener('click', () => {
+    atcFeatureTitleField.value = ''
+    atcFeatureDescriptionField.value = ''
+    $('#atc-add-feature-form').fadeOut()
+})
+atcAddFeatureSubmit.addEventListener('click', () => {
+    productObject.overview.features.push({
+        'title' : atcFeatureTitleField.value,
+        'description' : atcFeatureDescriptionField.value
+    })
+
+    buildATCFeatures()
+    $('#atc-add-feature-form').fadeOut()
+    atcFeatureTitleField.value = ''
+    atcFeatureDescriptionField.value = ''
+})
+
+function buildATCFeatures() {
+    atcAddFeatureForm.style.display = 'none'
+
+    while(atcFeaturesContainer.firstChild) {
+        atcFeaturesContainer.removeChild(atcFeaturesContainer.firstChild)
+    }
+
+    let features = productObject.overview.features
+    features.forEach((feature) => {
+        let atcFeatureDiv = document.createElement('div')
+        atcFeatureDiv.className = 'atc-feature-div'
+        atcFeaturesContainer.appendChild(atcFeatureDiv)
+
+        let atcFeatureTitle = document.createElement('div')
+        atcFeatureTitle.className = 'atc-feature-title'
+        atcFeatureTitle.innerHTML = feature.title 
+        atcFeatureDiv.appendChild(atcFeatureTitle)
+
+        let atcFeatureDescription = document.createElement('div')
+        atcFeatureDescription.className = 'atc-feature-description'
+        atcFeatureDescription.innerHTML = feature.description 
+        atcFeatureDiv.appendChild(atcFeatureDescription)
+    })
+}
+
+
+atcAddIncludedButton.addEventListener('click', () => {
+    $('#atc-add-included-form').fadeIn()
+})
+atcAddIncludedCancel.addEventListener('click', () => {
+    atcAddIncludedField.value = ''
+    $('#atc-add-included-form').fadeOut()
+})
+atcAddIncludedSubmit.addEventListener('click', () => {
+    productObject.overview.included.push(atcAddIncludedField.value)
+    buildATCIncluded()
+    $('#atc-add-included-form').fadeOut()
+    atcAddIncludedField.value = ''
+})
+
+function buildATCIncluded() {
+    atcAddIncludedForm.style.display = 'none'
+
+    while(atcWhatsIncludedContainer.firstChild) {
+        atcWhatsIncludedContainer.removeChild(atcWhatsIncludedContainer.firstChild)
+    }
+
+    let included = productObject.overview.included
+    included.forEach((includedText) => {
+        let newIncluded = document.createElement('div')
+        newIncluded.setAttribute('class', 'atc-feature-text')
+        newIncluded.innerHTML = includedText
+        atcWhatsIncludedContainer.appendChild(newIncluded)
+    })
+}
+
+
+//Final Submit Button
+atcSubmit.addEventListener('click', () => {
+    console.log(productObject)
+    console.log(globalSpecsObject)
 })
