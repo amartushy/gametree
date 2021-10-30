@@ -240,6 +240,7 @@ atcAddFeatureSubmit.addEventListener('click', () => {
 })
 
 function buildATCFeatures() {
+        console.log('called')
     atcAddFeatureForm.style.display = 'none'
 
     while(atcFeaturesContainer.firstChild) {
