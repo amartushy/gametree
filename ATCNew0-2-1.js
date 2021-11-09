@@ -1,5 +1,3 @@
-
-
 //HTML Elements
 let atcButton = document.getElementById('atc-button')
 let atcModal = document.getElementById('atc-modal')
@@ -312,6 +310,11 @@ atcHazardWarning.addEventListener('click', () => {
     atcHazardWarning.className = previousHazardBool ? 'atc-hazard-warning' : 'atc-hazard-warning-selected'
 })
 
+
+
+
+
+
 //________________________________________IMAGE UPLOAD________________________________________
 //Main Image
 function uploadPrimaryImage(e) {
@@ -320,7 +323,7 @@ function uploadPrimaryImage(e) {
 }
 
 async function handlePrimaryImageUpload() {
-	const uploadTask = await storageRef.child(`productImages/${productID}`).put(selectedConsoleImageFile);
+	const uploadTask = await storageRef.child(`productImages/${productID}`).put(selectedPrimaryImageFile);
 	uploadAndCreatePrimaryImage()
 }
 
