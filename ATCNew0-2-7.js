@@ -498,7 +498,7 @@ function setATCInitialState() {
 
     //Reset Specification Fields
     atcSpecificationsLower.style.display = 'none'
-    atcOverviewChevron.className = 'atc-chevron'
+    atcSpecificationsChevron.className = 'atc-chevron'
     while(atcSpecificationsLower.firstChild) {
         atcSpecificationsLower.removeChild(atcSpecificationsLower.firstChild)
     }
