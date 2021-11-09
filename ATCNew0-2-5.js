@@ -215,7 +215,7 @@ atcOverviewDropdown.addEventListener('click', () => {
     $('#atc-overview-lower').toggle()
 
     if(atcOverviewLower.style.display == 'none') {
-        atcOverviewChevron.className = 'atc-chevron-down'
+        atcOverviewChevron.className = 'atc-chevron'
     } else {
         atcOverviewChevron.className = 'atc-chevron-down'
     }
@@ -315,9 +315,9 @@ atcSpecificationsDropdown.addEventListener('click', () => {
     $('#atc-specifications-lower').toggle()
 
     if(atcSpecificationsLower.style.display == 'none') {
-        atcSpecificationsChevron.className = 'atc-chevron-down'
-    } else {
         atcSpecificationsChevron.className = 'atc-chevron'
+    } else {
+        atcSpecificationsChevron.className = 'atc-chevron-down'
     }
 })
 
@@ -497,6 +497,7 @@ function setATCInitialState() {
 
 
     //Reset Specification Fields
+    atcSpecificationsLower.style.display = 'none'
     while(atcSpecificationsLower.firstChild) {
         atcSpecificationsLower.removeChild(atcSpecificationsLower.firstChild)
     }
