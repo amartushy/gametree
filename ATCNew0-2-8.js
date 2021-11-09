@@ -81,6 +81,7 @@ const specHeadersDict = {
     'dimensions' : 'Dimensions',
     'display' : 'Display',
     'features' : 'Features',
+    'gameDetails' : 'Game Details',
     'gameplay' : 'Gameplay',
     'general' : 'General',
     'included' : 'Included',
