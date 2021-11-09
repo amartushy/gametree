@@ -311,6 +311,77 @@ atcHazardWarning.addEventListener('click', () => {
     atcHazardWarning.className = previousHazardBool ? 'atc-hazard-warning' : 'atc-hazard-warning-selected'
 })
 
+//________________________________________IMAGE UPLOAD________________________________________
+//Main Image
+function uploadPrimaryImage(e) {
+    selectedPrimaryImageFile = e.target.files[0];
+    handlePrimaryImageUpload()
+}
+
+async function handlePrimaryImageUpload() {
+	const uploadTask = await storageRef.child(`productImages/${productID}`).put(selectedConsoleImageFile);
+	uploadAndCreatePrimaryImage()
+}
+
+async function uploadAndCreatePrimaryImage() {
+    //Update database
+	await storageRef.child('/productImages/'+productID)
+		.getDownloadURL()
+		.then(function(url) { productObject['productImage'] = url.toString() })
+
+    //Create Image
+    while(atcPrimaryImageContainer.firstChild) {
+        atcPrimaryImageContainer.removeChild(atcPrimaryImageContainer.firstChild)
+    }
+    var newImage = document.createElement('img')
+    newImage.setAttribute('class', 'atc-main-product-image')
+    newImage.src = productObject['productImage']
+    atcPrimaryImageContainer.appendChild(newImage)
+    newImage.addEventListener('click', () => {
+        hiddenPrimaryImageUploadButton.click();
+    })
+}
+
+
+//Additional Images
+function uploadAdditionalImage(e) {
+    selectedAdditionalImageFile = e.target.files[0];
+    handleAdditionalImageUpload()
+}
+
+var newImageID, numImages
+async function handleAdditionalImageUpload() {
+    numImages = Object.keys(productObject['productImages']).length
+    newImageID = `${consoleID}-${numImages} `
+	const uploadTask = await storageRef.child(`productImages/${newImageID}`).put(selectedAdditionalImageFile);
+	uploadAndCreateAdditionalImages()
+}
+
+async function uploadAndCreateAdditionalConsoleImages() {
+    //Update database
+	await storageRef.child('/productImages/'+newImageID)
+		.getDownloadURL()
+		.then(function(url) { productObject['productImages'][numImages] = url.toString() })
+
+    //Create Image
+    while(atcAdditionalImagesContainer.firstChild) {
+        atcAdditionalImagesContainer.removeChild(atcAdditionalImagesContainer.firstChild)
+    }
+    for( key in productObject['productImages']) {
+        var newImage = document.createElement('img')
+        newImage.setAttribute('class', 'atc-additional-image')
+        newImage.src = productObject['productImages'][key]
+        atcAdditionalImagesContainer.appendChild(newImage)
+    }
+    let addAdditionalImageButton = document.createElement('div')
+    addAdditionalImageButton.className = 'atc-add-product-image'
+    addAdditionalImageButton.innerHTML = ''
+    atcAdditionalImagesContainer.appendChild(addAdditionalImageButton)
+    addAdditionalImageButton.addEventListener('click', () => {
+        hiddeAdditionalImageUploadButton.click()
+    })
+}
+
 
 //Final Submit Button
 atcSubmit.addEventListener('click', () => {
