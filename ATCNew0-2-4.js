@@ -1,5 +1,3 @@
-
-
 //HTML Elements
 let atcButton = document.getElementById('atc-button')
 let atcModal = document.getElementById('atc-modal')
@@ -217,9 +215,9 @@ atcOverviewDropdown.addEventListener('click', () => {
     $('#atc-overview-lower').toggle()
 
     if(atcOverviewLower.style.display == 'none') {
-        atcOverviewLower.setAttribute('class', 'atc-chevron-down')
+        atcOverviewChevron.className = 'atc-chevron-down'
     } else {
-        atcOverviewLower.setAttribute('class', 'atc-chevron')
+        atcOverviewChevron.className = 'atc-chevron-down'
     }
 })
 
@@ -311,6 +309,17 @@ atcHazardWarning.addEventListener('click', () => {
     atcHazardWarning.className = previousHazardBool ? 'atc-hazard-warning' : 'atc-hazard-warning-selected'
 })
 
+
+//Specifications toggle
+atcSpecificationsDropdown.addEventListener('click', () => {
+    $('#atc-specifications-lower').toggle()
+
+    if(atcSpecificationsLower.style.display == 'none') {
+        atcSpecificationsChevron.className = 'atc-chevron-down'
+    } else {
+        atcSpecificationsChevron.className = 'atc-chevron'
+    }
+})
 
 
 
