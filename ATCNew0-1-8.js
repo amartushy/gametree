@@ -6,7 +6,10 @@ let atcModal = document.getElementById('atc-modal')
 let atcCloseModal = document.getElementById('atc-close-modal')
 
 let atcPrimaryImageContainer = document.getElementById('atc-primary-image-container')
+let hiddenPrimaryImageUploadButton = document.getElementById('hidden-primary-image-upload-button')
 let atcAdditionalImagesContainer = document.getElementById('atc-additional-images-container')
+let hiddeAdditionalImageUploadButton = document.getElementById('hidden-additional-image-upload-button')
+
 let atcSearchField = document.getElementById('atc-search-field')
 let atcProductNameField = document.getElementById('atc-product-name-field')
 
@@ -68,6 +71,8 @@ let atcSubmit = document.getElementById('atc-submit')
 var productID
 var productObject = {}
 var globalSpecsObject = {}
+var selectedPrimaryImageFile;
+var selectedAdditionalImageFile;
 let categoryOptionButtons = ['game-category', 'console-category', 'headset-category', 'controller-category', 'cable-category', 'power-category', 'pc-category' ]
 
 const specHeadersDict = {
@@ -163,6 +168,9 @@ atcCloseModal.addEventListener('click', () => {
     $('#atc-modal').fadeOut()
     $('#admin-nav-section').fadeIn().css('display', 'flex');
 })
+
+hiddenPrimaryImageUploadButton.addEventListener('change', uploadPrimaryImage);
+hiddeAdditionalImageUploadButton.addEventListener('change', uploadAdditionalImage);
 
 atcProductNameField.onblur = () => {
     productObject.productName = atcProductNameField.value
@@ -353,6 +361,29 @@ function setATCInitialState() {
     }
 
     //Reset Image Buttons and Containers
+    while(atcPrimaryImageContainer.firstChild) {
+        atcPrimaryImageContainer.removeChild(atcPrimaryImageContainer.firstChild)
+    }
+
+    var primaryImageButton = document.createElement('div')
+    primaryImageButton.setAttribute('class', 'atc-main-product-image')
+    primaryImageButton.innerHTML = ''
+    atcPrimaryImageContainer.appendChild(primaryImageButton)
+    primaryImageButton.addEventListener('click', () => {
+        hiddenPrimaryImageUploadButton.click();
+    })
+
+    while(atcAdditionalImagesContainer.firstChild) {
+        atcAdditionalImagesContainer.removeChild(atcAdditionalImagesContainer.firstChild)
+    }
+
+    let additionalImageButton = document.createElement('div')
+    additionalImageButton.className = 'atc-add-product-image'
+    additionalImageButton.innerHTML = ''
+    atcAdditionalImagesContainer.appendChild(additionalImageButton)
+    additionalImageButton.addEventListener('click', () => {
+        hiddeAdditionalImageUploadButton.click()
+    })
 
     //Load Search Field
 
