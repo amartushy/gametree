@@ -69,6 +69,7 @@ let atcSubmit = document.getElementById('atc-submit')
 
 //Global Variables
 var productID
+var storageRef = firebase.storage().ref()
 var productObject = {}
 var globalSpecsObject = {}
 var selectedPrimaryImageFile;
