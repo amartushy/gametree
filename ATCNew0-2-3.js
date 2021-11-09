@@ -362,7 +362,7 @@ async function handleAdditionalImageUpload() {
 	uploadAndCreateAdditionalImages()
 }
 
-async function uploadAndCreateAdditionalConsoleImages() {
+async function uploadAndCreateAdditionalImages() {
     //Update database
 	await storageRef.child('/productImages/'+newImageID)
 		.getDownloadURL()
