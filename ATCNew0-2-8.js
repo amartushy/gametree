@@ -39,6 +39,8 @@ let atcSaleNewHeader = document.getElementById('atc-sale-header-4')
 let atcOverviewDropdown = document.getElementById('atc-overview-dropdown')
 let atcOverviewChevron = document.getElementById('atc-overview-chevron')
 let atcOverviewLower = document.getElementById('atc-overview-lower')
+let atcBrandField = document.getElementById('atc-brand-field')
+let atcPlatformField = document.getElementById('atc-platform-field')
 let atcDescriptionField = document.getElementById('atc-description-field')
 
 let atcFeaturesContainer = document.getElementById('atc-features-container')
@@ -221,6 +223,13 @@ atcOverviewDropdown.addEventListener('click', () => {
     }
 })
 
+atcBrandField.addEventListener('blur', () => {
+    productObject['brand'] = atcBrandField.value
+})
+
+atcPlatformField.addEventListener('blur', () => {
+    productObject['platform'] = atcPlatformField.value
+})
 
 atcDescriptionField.addEventListener('blur', () => {
     productObject['overview']['description'] = atcDescriptionField.value
@@ -414,7 +423,7 @@ atcSubmit.addEventListener('click', () => {
 function setATCInitialState() {
     productID = createID(8)
     productObject = {
-        'category' : 'Consoles',
+        'category' : '',
         'brand' : '',
         'platform' : '',
         'productImage' : '',
@@ -555,10 +564,44 @@ function resetCategoryOptions(option) {
 }
 
 function buildATCGame() {
-    console.log('game')
+    productObject.category = 'Games'
+
+    globalSpecsObject = {
+        'keySpecs' : {
+            'edition' : '',
+            'ESRBRating' : '',
+            'ESRBDescriptors' : '',
+            'platform' : '',
+            'compatiblePlatforms' : '',
+            'softwareFormat' : '',
+        },
+        'general' : {
+            'productName' : '',
+            'brand' : '',
+            'publisher' : '',
+            'developer' : '',
+            'modelNumber' : '',
+            'releaseDate' : '',
+        },
+        'gameDetails' : {
+            'genre' : '',
+            'gameFranchise' : '',
+            'gameSeries' : '',
+            'enhancedFor' : '',
+            'multiplayer' : '',
+        },
+        'other' : {
+            'UPC' : ''
+        }
+    }
+
+    var specificationsArray = ['keySpecs', 'general', 'gameDetails', 'other']
+    buildSpecificationsLower(specificationsArray)
 }
 
 function buildATCConsole() {
+    productObject.category = 'Consoles'
+
     globalSpecsObject = {
         'keySpecs' : {
             '4KPlayer' : '',
@@ -622,29 +665,8 @@ function buildATCConsole() {
         }
     }
 
-    //Build specifications lower
-    while(atcSpecificationsLower.firstChild) {
-        atcSpecificationsLower.removeChild(atcSpecificationsLower.firstChild)
-    }
-
     var specificationsArray = ['keySpecs', 'general', 'features', 'display', 'storage', 'dimensions', 'connectivity', 'gameplay', 'included', 'other']
-
-    specificationsArray.forEach( (specificationHeader) => {
-        var atcSpecBlock = createDOMElement('div', 'atc-spec-block', 'none', atcSpecificationsLower)
-        createDOMElement('text', 'atc-spec-header', specHeadersDict[specificationHeader], atcSpecBlock)
-        var atcSpecBlockRight = createDOMElement('div', 'atc-spec-block-right', 'none', atcSpecBlock)
-        for (var spec in globalSpecsObject[specificationHeader]) {
-            if( globalSpecsObject[specificationHeader].hasOwnProperty(spec) ){
-                var atcSpecSubsection = createDOMElement('div', 'atc-spec-subsection', 'none', atcSpecBlockRight)
-                createDOMElement('text', 'atc-subsection-text', globalKeyDict[spec], atcSpecSubsection)
-                var atcSubsectionInput = createDOMElement('input', 'atc-subsection-input w-input', 'none', atcSpecSubsection)
-                atcSubsectionInput.setAttribute('type', 'text')
-                atcSubsectionInput.placeholder = 'Enter Text'
-                atcSubsectionInput.setAttribute('id', `spec-${specificationHeader}-${spec}`)
-                atcSubsectionInput.setAttribute('onblur', `updateProductSpecs("${specificationHeader}", "${spec}")`)
-            }
-        }
-    })
+    buildSpecificationsLower(specificationsArray)
 }
 
 function buildATCHeadset() {
@@ -673,4 +695,28 @@ function updateProductSpecs(header, spec) {
     globalSpecsObject[header][spec] = document.getElementById(`spec-${header}-${spec}`).value 
 
     console.log(globalSpecsObject)
+}
+
+
+function buildSpecificationsLower(specificationsArray) {
+    while(atcSpecificationsLower.firstChild) {
+        atcSpecificationsLower.removeChild(atcSpecificationsLower.firstChild)
+    }
+
+    specificationsArray.forEach( (specificationHeader) => {
+        var atcSpecBlock = createDOMElement('div', 'atc-spec-block', 'none', atcSpecificationsLower)
+        createDOMElement('text', 'atc-spec-header', specHeadersDict[specificationHeader], atcSpecBlock)
+        var atcSpecBlockRight = createDOMElement('div', 'atc-spec-block-right', 'none', atcSpecBlock)
+        for (var spec in globalSpecsObject[specificationHeader]) {
+            if( globalSpecsObject[specificationHeader].hasOwnProperty(spec) ){
+                var atcSpecSubsection = createDOMElement('div', 'atc-spec-subsection', 'none', atcSpecBlockRight)
+                createDOMElement('text', 'atc-subsection-text', globalKeyDict[spec], atcSpecSubsection)
+                var atcSubsectionInput = createDOMElement('input', 'atc-subsection-input w-input', 'none', atcSpecSubsection)
+                atcSubsectionInput.setAttribute('type', 'text')
+                atcSubsectionInput.placeholder = 'Enter Text'
+                atcSubsectionInput.setAttribute('id', `spec-${specificationHeader}-${spec}`)
+                atcSubsectionInput.setAttribute('onblur', `updateProductSpecs("${specificationHeader}", "${spec}")`)
+            }
+        }
+    })
 }
