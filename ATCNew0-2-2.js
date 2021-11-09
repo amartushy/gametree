@@ -1,3 +1,5 @@
+
+
 //HTML Elements
 let atcButton = document.getElementById('atc-button')
 let atcModal = document.getElementById('atc-modal')
@@ -248,7 +250,6 @@ atcAddFeatureSubmit.addEventListener('click', () => {
 })
 
 function buildATCFeatures() {
-    console.log('called')
     atcAddFeatureForm.style.display = 'none'
 
     while(atcFeaturesContainer.firstChild) {
@@ -356,7 +357,7 @@ function uploadAdditionalImage(e) {
 var newImageID, numImages
 async function handleAdditionalImageUpload() {
     numImages = Object.keys(productObject['productImages']).length
-    newImageID = `${consoleID}-${numImages} `
+    newImageID = `${productID}-${numImages} `
 	const uploadTask = await storageRef.child(`productImages/${newImageID}`).put(selectedAdditionalImageFile);
 	uploadAndCreateAdditionalImages()
 }
