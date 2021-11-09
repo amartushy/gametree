@@ -1,3 +1,5 @@
+
+
 //HTML Elements
 let atcButton = document.getElementById('atc-button')
 let atcModal = document.getElementById('atc-modal')
@@ -87,6 +89,7 @@ const specHeadersDict = {
     'included' : 'Included',
     'keySpecs' : 'Key Specs',
     'other' : 'Other',
+    'power' : 'Power',
     'storage' : 'Storage'
 }
 
@@ -154,7 +157,24 @@ var globalKeyDict = {
   
     'cables' : 'Cable(s) Included',
     'controllers' : 'Number of Controllers Included',
-    'games' : 'Number of Games Included'
+    'games' : 'Number of Games Included',
+
+    //Controllers
+    'voiceAssistant' : 'Voice Assistant Built-in',
+    'wireless' : 'Wireless',
+    'batterySize' : 'Battery Size',
+    'headsetJack' : 'Headset Jack',
+    'rumbleVibration' : 'Rumble Vibration',
+    'analogJoysticks' : 'Analog Joysticks',
+    'buttonMapping' : 'Button Mapping',
+    'lightingType' : 'Lighting Type',
+    'illumination' : 'Illumination',
+    'shareButton' : 'Share Button',
+    'rechargeableBattery' : 'Rechargeable Battery',
+    'chargingInterfaces' : 'Charging Interfaces',
+    'numBatteries' : 'Number of Batteries Required',
+    'batteriesIncluded' : 'Batteries Included',
+    'cordLength' : 'Cord Length',
 }
 
 
@@ -675,7 +695,49 @@ function buildATCHeadset() {
 }
 
 function buildATCController() {
-    console.log('controller')
+    productObject.category = 'Controllers'
+
+    globalSpecsObject = {
+        'keySpecs' : {
+            'voiceAssistant' : '',
+            'wireless' : '',
+            'batterySize' : '',
+            'compatiblePlatforms' : '',
+        },
+        'general' : {
+            'productName' : '',
+            'brand' : '',
+            'additionalAccessories' : '',
+            'modelNumber' : '',
+            'color' : '',
+        },
+        'features' : {
+            'headsetJack' : '',
+            'rumbleVibration' : '',
+            'analogJoysticks' : '',
+            'buttonMapping' : '',
+            'lightingType' : '',
+            'illumination' : '',
+            'shareButton' : ''
+        },
+        'power' : {
+            'rechargeableBattery' : '',
+            'chargingInterfaces' : '',
+            'batterySize' : '',
+            'numBatteries' : '',
+            'batteriesIncluded' : '',
+        },
+        'dimensions' : {
+            'height' : '',
+            'width' : '',
+            'length' : '',
+            'weight' : '',
+            'cordLength' : '',
+        }
+    }
+
+    var specificationsArray = ['keySpecs', 'general', 'gameDetails', 'other']
+    buildSpecificationsLower(specificationsArray)
 }
 
 function buildATCCable() {
