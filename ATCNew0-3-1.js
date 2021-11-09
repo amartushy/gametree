@@ -1,5 +1,3 @@
-
-
 //HTML Elements
 let atcButton = document.getElementById('atc-button')
 let atcModal = document.getElementById('atc-modal')
@@ -733,10 +731,13 @@ function buildATCController() {
             'length' : '',
             'weight' : '',
             'cordLength' : '',
+        },
+        'other' : {
+            'UPC' : ''
         }
     }
 
-    var specificationsArray = ['keySpecs', 'general', 'gameDetails', 'other']
+    var specificationsArray = ['keySpecs', 'general', 'features', 'power', 'dimensions', 'other']
     buildSpecificationsLower(specificationsArray)
 }
 
