@@ -1,3 +1,5 @@
+
+
 //HTML Elements
 let atcButton = document.getElementById('atc-button')
 let atcModal = document.getElementById('atc-modal')
@@ -433,13 +435,6 @@ async function uploadAndCreateAdditionalImages() {
 }
 
 
-//Final Submit Button
-atcSubmit.addEventListener('click', () => {
-    console.log(productObject)
-    console.log(globalSpecsObject)
-})
-
-
 
 
 
@@ -774,7 +769,7 @@ function buildATCPC(data) {
 }
 
 
-//Helper functions
+//__________________________________________Helper functions__________________________________________
 function updateProductSpecs(header, spec) {
     globalSpecsObject[header][spec] = document.getElementById(`spec-${header}-${spec}`).value 
 
@@ -818,4 +813,61 @@ function buildSpecificationsLower(specificationsArray, isPrefilledData) {
             }
         }
     })
+}
+
+
+function prefillDataFromProduct(ID) {
+    $('#atc-autocomplete-results').fadeOut(200)
+    console.log(ID)
+    database.collection('catalog').doc(ID).get().then( (doc) => {
+    var data = doc.data()
+
+    productObject = {
+        'availability' : {},
+        'brand' : data.brand,
+        'category' : data.category,
+        'dateCreated' : new Date() / 1000,
+        'hazardWarnings' : {
+            'chokingHazard' : false
+        },
+        'isAvailable' : false,
+        'numItemsAvailable' : 0,
+        'overview' : {
+            'description' : data.overview.description,
+            'features' : data.overview.features,
+            'included' : data.overview.included,
+        },
+        'platform' : data.platform,
+        'productImage' : '',
+        'productImages' : {},
+        'productName' : data.productName,
+        'purchasePrices' : data.purchasePrices,
+        'salePrices' : data.salePrices,
+    }
+
+
+    //Prefill Top Container
+    resetCategoryOptions(`${data.category}-category`, data)
+
+    atcPurchaseAcceptable.value = data.purchasePrices.usedAcceptable
+    atcPurchaseGood.value = data.purchasePrices.usedGood
+    atcPurchaseExcellent.value = data.purchasePrices.usedExcellent
+    atcPurchaseNew.value = data.purchasePrices.new
+
+    atcSaleAcceptable.value = data.salePrices.usedAcceptable
+    atcSaleGood.value = data.salePrices.usedGood
+    atcSaleExcellent.value = data.salePrices.usedExcellent
+    atcSaleNew.value = data.salePrices.new
+
+    atcProductNameField.value = data.productName
+
+    //Prefill Overview Container
+    atcBrandField.value = data.brand
+    atcPlatformField.value = data.platform
+    atcDescriptionField.value = data.overview.description
+    buildATCFeatures()
+    buildATCIncluded()
+
+
+  })
 }
