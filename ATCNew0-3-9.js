@@ -1,3 +1,5 @@
+
+
 //HTML Elements
 let atcButton = document.getElementById('atc-button')
 let atcModal = document.getElementById('atc-modal')
@@ -614,7 +616,7 @@ function buildATCGame(data) {
         },
         'gameDetails' : {
             'genre' : data.gameDetails.genre ? data.gameDetails.genre : '',
-            'gameFranchise' : data.gameDetails.gameFranchise ? data.general.gameFranchise : '',
+            'gameFranchise' : data.gameDetails.gameFranchise ? data.gameDetails.gameFranchise : '',
             'gameSeries' : data.gameDetails.gameSeries ? data.gameDetails.gameSeries : '',
             'enhancedFor' : data.gameDetails.enhancedFor ? data.gameDetails.enhancedFor : '',
             'multiplayer' : data.gameDetails.multiplayer ? data.gameDetails.multiplayer : '',
