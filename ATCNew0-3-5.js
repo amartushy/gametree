@@ -585,17 +585,17 @@ function resetCategoryOptions(option) {
     }
 }
 
-function buildATCGame() {
+function buildATCGame(data) {
     productObject.category = 'Games'
 
     globalSpecsObject = {
         'keySpecs' : {
-            'edition' : '',
-            'ESRBRating' : '',
-            'ESRBDescriptors' : '',
-            'platform' : '',
-            'compatiblePlatforms' : '',
-            'softwareFormat' : '',
+            'edition' : data.keySpecs.edition ? data.keySpecs.edition : '',
+            'ESRBRating' : data.keySpecs.ESRBRating ? data.keySpecs.ESRBRating : '',
+            'ESRBDescriptors' : data.keySpecs.ESRBDescriptors ? data.keySpecs.ESRBDescriptors : '',
+            'platform' : data.keySpecs.platform ? data.keySpecs.platform : '',
+            'compatiblePlatforms' : data.keySpecs.compatiblePlatforms ? data.keySpecs.compatiblePlatforms : '',
+            'softwareFormat' : data.keySpecs.softwareFormat ? data.keySpecs.softwareFormat : '',
         },
         'general' : {
             'productName' : '',
@@ -618,7 +618,11 @@ function buildATCGame() {
     }
 
     var specificationsArray = ['keySpecs', 'general', 'gameDetails', 'other']
-    buildSpecificationsLower(specificationsArray)
+    if(data){
+        buildSpecificationsLower(specificationsArray, true)
+    } else {
+        buildSpecificationsLower(specificationsArray, false)
+    }
 }
 
 function buildATCConsole() {
@@ -765,7 +769,7 @@ function updateProductSpecs(header, spec) {
 }
 
 
-function buildSpecificationsLower(specificationsArray) {
+function buildSpecificationsLower(specificationsArray, isPrefilledData) {
     while(atcSpecificationsLower.firstChild) {
         atcSpecificationsLower.removeChild(atcSpecificationsLower.firstChild)
     }
@@ -780,7 +784,11 @@ function buildSpecificationsLower(specificationsArray) {
                 createDOMElement('text', 'atc-subsection-text', globalKeyDict[spec], atcSpecSubsection)
                 var atcSubsectionInput = createDOMElement('input', 'atc-subsection-input w-input', 'none', atcSpecSubsection)
                 atcSubsectionInput.setAttribute('type', 'text')
-                atcSubsectionInput.placeholder = 'Enter Text'
+                if(isPrefilledData) {
+                    atcSubsectionInput.value = globalSpecsObject[specificationHeader][spec] == '' ? 'Enter Text' : globalSpecsObject[specificationHeader][spec]
+                } else {
+                    atcSubsectionInput.placeholder = 'Enter Text'
+                }
                 atcSubsectionInput.setAttribute('id', `spec-${specificationHeader}-${spec}`)
                 atcSubsectionInput.setAttribute('onblur', `updateProductSpecs("${specificationHeader}", "${spec}")`)
             }
