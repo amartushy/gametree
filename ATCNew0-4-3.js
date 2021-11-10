@@ -1,5 +1,3 @@
-
-
 //HTML Elements
 let atcButton = document.getElementById('atc-button')
 let atcModal = document.getElementById('atc-modal')
@@ -288,7 +286,7 @@ function buildATCFeatures() {
     features.forEach((feature) => {
         let atcFeatureDiv = createDOMElement('div', 'atc-feature-div', 'none', atcFeaturesContainer)
         let atcFeatureDelete = createDOMElement('div', 'atc-feature-delete', '', atcFeatureDiv)
-        atcFeatureDelete.setAttribute('onClick', `deleteFeature(${feature})`)
+        atcFeatureDelete.setAttribute('onClick', `deleteFeature("${feature}")`)
 
         let atcFeatureInfo = createDOMElement('div', 'atc-feature-info', 'none', atcFeatureDiv)
 
