@@ -1,3 +1,5 @@
+
+
 //HTML Elements
 let atcButton = document.getElementById('atc-button')
 let atcModal = document.getElementById('atc-modal')
@@ -74,7 +76,7 @@ var productObject = {}
 var globalSpecsObject = {}
 var selectedPrimaryImageFile;
 var selectedAdditionalImageFile;
-let categoryOptionButtons = ['game-category', 'console-category', 'headset-category', 'controller-category', 'cable-category', 'power-category', 'pc-category' ]
+let categoryOptionButtons = ['Games-category', 'Consoles-category', 'Headsets-category', 'Controllers-category', 'Cables-category', 'Batteries/Power-category', 'PC-category' ]
 
 const specHeadersDict = {
     'connectivity' : 'Connectivity',
@@ -442,20 +444,24 @@ atcSubmit.addEventListener('click', () => {
 function setATCInitialState() {
     productID = createID(8)
     productObject = {
-        'category' : '',
+        'availability' : {},
         'brand' : '',
-        'platform' : '',
-        'productImage' : '',
+        'category' : '',
+        'dateCreated' : new Date() / 1000,
+        'hazardWarnings' : {
+            'chokingHazard' : false
+        },
         'isAvailable' : false,
         'numItemsAvailable' : 0,
-        'dateCreated' : new Date() / 1000,
-        'productImages' : {},
-        'availability' : {},
         'overview' : {
             'description' : '',
             'features' : [],
             'included' : [],
         },
+        'platform' : '',
+        'productImage' : '',
+        'productImages' : {},
+        'productName' : '',
         'purchasePrices' : {
             'usedAcceptable' :  0,
             'usedGood' : 0,
@@ -468,9 +474,6 @@ function setATCInitialState() {
             'usedExcellent' : 0,
             'new' : 0,
         },
-        'hazardWarnings' : {
-            'chokingHazard' : false
-        }
     }
 
     //Reset Image Buttons and Containers
