@@ -286,28 +286,21 @@ function buildATCFeatures() {
 
     let features = productObject.overview.features
     features.forEach((feature) => {
-        let atcFeatureDiv = document.createElement('div')
-        atcFeatureDiv.className = 'atc-feature-div'
-        atcFeaturesContainer.appendChild(atcFeatureDiv)
+        let atcFeatureDiv = createDOMElement('div', 'atc-feature-div', 'none', atcFeaturesContainer)
+        let atcFeatureDelete = createDOMElement('div', 'atc-feature-delete', '', atcFeatureDiv)
+        atcFeatureDelete.setAttribute('onClick', `deleteFeature(${feature})`)
+
+        let atcFeatureInfo = createDOMElement('div', 'atc-feature-info', 'none', atcFeatureDiv)
 
         if(feature.description) {
             if(feature.title != '') {
-                let atcFeatureTitle = document.createElement('div')
-                atcFeatureTitle.className = 'atc-feature-title'
-                atcFeatureTitle.innerHTML = feature.title 
-                atcFeatureDiv.appendChild(atcFeatureTitle)
+                createDOMElement('div', 'atc-feature-title', feature.title , atcFeatureInfo)
             }
 
-            let atcFeatureDescription = document.createElement('div')
-            atcFeatureDescription.className = 'atc-feature-description'
-            atcFeatureDescription.innerHTML = feature.description 
-            atcFeatureDiv.appendChild(atcFeatureDescription)
+            createDOMElement('div', 'atc-feature-description', feature.description , atcFeatureInfo)
 
         } else {
-            let atcFeature = document.createElement('div')
-            atcFeature.className = 'atc-feature-description'
-            atcFeature.innerHTML = feature 
-            atcFeatureDiv.appendChild(atcFeature)
+            let atcFeature = createDOMElement('div', 'atc-feature-description', feature, atcFeatureInfo)
         }
     })
 }
@@ -785,6 +778,9 @@ function updateProductSpecs(header, spec) {
     console.log(globalSpecsObject)
 }
 
+function deleteFeature(index) {
+    console.log(index)
+}
 
 function buildSpecificationsLower(specificationsArray, isPrefilledData) {
     while(atcSpecificationsLower.firstChild) {
