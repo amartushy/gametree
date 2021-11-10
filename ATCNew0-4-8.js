@@ -329,10 +329,11 @@ function buildATCIncluded() {
 
     let included = productObject.overview.included
     included.forEach((includedText) => {
-        let newIncluded = document.createElement('div')
-        newIncluded.setAttribute('class', 'atc-feature-text')
-        newIncluded.innerHTML = includedText
-        atcWhatsIncludedContainer.appendChild(newIncluded)
+        let atcIncludedTextDiv = createDOMElement('div', 'atc-included-text-div', 'none', atcWhatsIncludedContainer)
+        let deleteIncludedItem = createDOMElement('div', 'atc-feature-delete', '', atcIncludedTextDiv)
+        deleteIncludedItem.setAttribute('onClick', `deleteIncluded(${index})`)
+
+        createDOMElement('div', 'atc-feature-text', includedText, atcIncludedTextDiv)
     })
 }
 
@@ -779,6 +780,17 @@ function updateProductSpecs(header, spec) {
 }
 
 
+function deleteFeature(index) {
+    productObject.overview.features.splice(index, 1)
+    buildATCFeatures()
+}
+
+
+function deleteIncluded(index) {
+    productObject.overview.included.splice(index, 1)
+    buildATCIncluded()
+}
+
 function buildSpecificationsLower(specificationsArray, isPrefilledData) {
     while(atcSpecificationsLower.firstChild) {
         atcSpecificationsLower.removeChild(atcSpecificationsLower.firstChild)
@@ -804,172 +816,4 @@ function buildSpecificationsLower(specificationsArray, isPrefilledData) {
             }
         }
     })
-}
-
-
-
-
-
-
-
-//_______________________________Search Field__________________________________
-let atcAutocompleteResults = document.getElementById('atc-autocomplete-results')
-let atcSearchCancel = document.getElementById('atc-search-cancel')
-
-atcSearchCancel.addEventListener('click', () => {
-    atcSearchField.value = ''
-    $('#atc-autocomplete-results').fadeOut()
-})
-
-window.addEventListener('click', function(e){   
-    if (document.getElementById('atc-autocomplete-results').contains(e.target)){
-      // Clicked in box
-    } else{
-      // Clicked outside the box
-      $('#atc-autocomplete-results').fadeOut()
-    }
-});
-
-const atcSearch = instantsearch({
-    indexName: 'products_gametree',
-    searchClient,
-    getSearchParams() {
-        return {
-          hitsPerPage: 10,
-        }
-    }
-});
-
-function createATCAutocompleteResults(results) {
-
-    let hitsContainer = document.createElement('div')
-    hitsContainer.className = 'atc-autocomplete-results'
-
-    if(results.hits.length != 0) {
-        for (i = 0; i < (results.hits.length < 10 ? results.hits.length : 10); i++) {
-
-            var hit = results.hits[i]
-    
-            let atcAutocompleteResult = document.createElement('div')
-            atcAutocompleteResult.className = 'atc-autocomplete-result'
-            atcAutocompleteResult.setAttribute('onClick', `prefillDataFromProduct("${hit.objectID}")`)
-            hitsContainer.appendChild(atcAutocompleteResult)
-    
-            let atcResultImage = createDOMElement('img', 'atc-result-image', 'none', atcAutocompleteResult)
-            atcResultImage.src = hit.productImage
-    
-            let atcResultInfoDiv = createDOMElement('div', 'header-result-info-div', 'none', atcAutocompleteResult)
-            createDOMElement('div', 'header-result-title', hit.general.productName, atcResultInfoDiv)
-            createDOMElement('div', 'header-result-price',hit.category, atcResultInfoDiv)
-    
-            if (i != 9) {
-                createDOMElement('div', 'header-autocomplete-divider', 'none', hitsContainer)
-            }
-        }
-    } else {
-        atcAutocompleteResults.style.display = 'none'
-    }
-
-    return hitsContainer.outerHTML
-}
-
-// Create the render function
-const atcRenderAutocomplete = (renderOptions, isFirstRender) => {
-  const { indices, currentRefinement, refine, widgetParams } = renderOptions;
-
-  if (isFirstRender) {
-    const input = document.querySelector('#atc-search-field');
-
-    input.addEventListener('input', event => {
-        refine(event.currentTarget.value);
-        console.log('input changed')
-
-        if(atcAutocompleteResults.style.display == 'none') {
-            console.log('displaying results')
-            $('#atc-autocomplete-results').fadeIn(200).css('display', 'block')
-        }
-
-        if(event.currentTarget.value == '') {
-            $('#atc-autocomplete-results').fadeOut(200)
-        }
-    });
-  }
-
-  document.querySelector('#atc-search-field').value = currentRefinement;
-  widgetParams.container.innerHTML = indices
-    .map(createATCAutocompleteResults)
-    .join('');
-};
-
-// Create the custom widget
-const atcCustomAutocomplete = instantsearch.connectors.connectAutocomplete(
-    atcRenderAutocomplete
-);
-
-// Instantiate the custom widget
-atcSearch.addWidgets([
-    
-    atcCustomAutocomplete({
-        container: document.querySelector('#atc-autocomplete-results'),
-    })
-  
-]);
-
-atcSearch.start()
-
-
-function prefillDataFromProduct(ID) {
-    $('#atc-autocomplete-results').fadeOut(200)
-    console.log(ID)
-    database.collection('catalog').doc(ID).get().then( (doc) => {
-    var data = doc.data()
-
-    productObject = {
-        'availability' : {},
-        'brand' : data.brand,
-        'category' : data.category,
-        'dateCreated' : new Date() / 1000,
-        'hazardWarnings' : {
-            'chokingHazard' : false
-        },
-        'isAvailable' : false,
-        'numItemsAvailable' : 0,
-        'overview' : {
-            'description' : data.overview.description,
-            'features' : data.overview.features,
-            'included' : data.overview.included,
-        },
-        'platform' : data.platform,
-        'productImage' : '',
-        'productImages' : {},
-        'productName' : data.productName,
-        'purchasePrices' : data.purchasePrices,
-        'salePrices' : data.salePrices,
-    }
-
-
-    //Prefill Top Container
-    resetCategoryOptions(`${data.category}-category`, data)
-
-    atcPurchaseAcceptable.value = data.purchasePrices.usedAcceptable
-    atcPurchaseGood.value = data.purchasePrices.usedGood
-    atcPurchaseExcellent.value = data.purchasePrices.usedExcellent
-    atcPurchaseNew.value = data.purchasePrices.new
-
-    atcSaleAcceptable.value = data.salePrices.usedAcceptable
-    atcSaleGood.value = data.salePrices.usedGood
-    atcSaleExcellent.value = data.salePrices.usedExcellent
-    atcSaleNew.value = data.salePrices.new
-
-    atcProductNameField.value = data.productName
-
-    //Prefill Overview Container
-    atcBrandField.value = data.brand
-    atcPlatformField.value = data.platform
-    atcDescriptionField.value = data.overview.description
-    buildATCFeatures()
-    buildATCIncluded()
-
-
-  })
 }
