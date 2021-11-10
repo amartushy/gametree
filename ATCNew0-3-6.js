@@ -538,7 +538,7 @@ function setATCInitialState() {
 
 
 
-function resetCategoryOptions(option) {
+function resetCategoryOptions(option, data) {
 
     categoryOptionButtons.forEach( (categoryOption) => {
         document.getElementById(categoryOption).className = 'accessory-option-unselected'
@@ -546,37 +546,37 @@ function resetCategoryOptions(option) {
 
     switch (option) {
         case 'Games-category' :
-            buildATCGame()
+            buildATCGame(data)
             document.getElementById(option).className = 'accessory-option-selected'
             break;
 
         case 'Consoles-category' :
-            buildATCConsole()
+            buildATCConsole(data)
             document.getElementById(option).className = 'accessory-option-selected'
             break;
 
         case 'Headsets-category' :
-            buildATCHeadset()
+            buildATCHeadset(data)
             document.getElementById(option).className = 'accessory-option-selected'
             break;
 
         case 'Controllers-category' :
-            buildATCController()
+            buildATCController(data)
             document.getElementById(option).className = 'accessory-option-selected'
             break;
 
         case 'Cables-category' :
-            buildATCCable()
+            buildATCCable(data)
             document.getElementById(option).className = 'accessory-option-selected'
             break;
 
         case 'Batteries-category' :
-            buildATCPower()
+            buildATCPower(data)
             document.getElementById(option).className = 'accessory-option-selected'
             break;
 
         case 'PC-category' :
-            buildATCPC()
+            buildATCPC(data)
             document.getElementById(option).className = 'accessory-option-selected'
             break;
         
