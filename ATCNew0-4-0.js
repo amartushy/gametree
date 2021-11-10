@@ -634,7 +634,7 @@ function buildATCGame(data) {
     }
 }
 
-function buildATCConsole() {
+function buildATCConsole(data) {
     productObject.category = 'Consoles'
 
     globalSpecsObject = {
@@ -704,11 +704,11 @@ function buildATCConsole() {
     buildSpecificationsLower(specificationsArray)
 }
 
-function buildATCHeadset() {
+function buildATCHeadset(data) {
     console.log('headset')
 }
 
-function buildATCController() {
+function buildATCController(data) {
     productObject.category = 'Controllers'
 
     globalSpecsObject = {
@@ -757,15 +757,15 @@ function buildATCController() {
     buildSpecificationsLower(specificationsArray)
 }
 
-function buildATCCable() {
+function buildATCCable(data) {
     console.log('cable')
 }
 
-function buildATCPower() {
+function buildATCPower(data) {
     console.log('power')
 }
 
-function buildATCPC() {
+function buildATCPC(data) {
     console.log('pc')
 }
 
