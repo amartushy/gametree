@@ -76,7 +76,7 @@ var productObject = {}
 var globalSpecsObject = {}
 var selectedPrimaryImageFile;
 var selectedAdditionalImageFile;
-let categoryOptionButtons = ['Games-category', 'Consoles-category', 'Headsets-category', 'Controllers-category', 'Cables-category', 'Batteries/Power-category', 'PC-category' ]
+let categoryOptionButtons = ['Games-category', 'Consoles-category', 'Headsets-category', 'Controllers-category', 'Cables-category', 'Batteries-category', 'PC-category' ]
 
 const specHeadersDict = {
     'connectivity' : 'Connectivity',
