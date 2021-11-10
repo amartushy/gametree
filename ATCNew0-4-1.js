@@ -701,7 +701,11 @@ function buildATCConsole(data) {
     }
 
     var specificationsArray = ['keySpecs', 'general', 'features', 'display', 'storage', 'dimensions', 'connectivity', 'gameplay', 'included', 'other']
-    buildSpecificationsLower(specificationsArray)
+    if(data){
+        buildSpecificationsLower(specificationsArray, true)
+    } else {
+        buildSpecificationsLower(specificationsArray, false)
+    }
 }
 
 function buildATCHeadset(data) {
@@ -754,7 +758,11 @@ function buildATCController(data) {
     }
 
     var specificationsArray = ['keySpecs', 'general', 'features', 'power', 'dimensions', 'other']
-    buildSpecificationsLower(specificationsArray)
+    if(data){
+        buildSpecificationsLower(specificationsArray, true)
+    } else {
+        buildSpecificationsLower(specificationsArray, false)
+    }
 }
 
 function buildATCCable(data) {
