@@ -1,5 +1,3 @@
-
-
 //HTML Elements
 let atcButton = document.getElementById('atc-button')
 let atcModal = document.getElementById('atc-modal')
@@ -69,6 +67,15 @@ let atcHazardWarning = document.getElementById('atc-hazard-warning')
 
 let atcSubmit = document.getElementById('atc-submit')
 
+let adminProcessingScreen = document.getElementById('admin-processing-screen')
+let adminConfirmationCheck = document.getElementById('admin-confirmation-check')
+let adminProcessingTextContainer = document.getElementById('admin-processing-text-container')
+let adminConfirmationContainer = document.getElementById('admin-confirmation-container')
+let adminProductID = document.getElementById('admin-product-id')
+let adminProductTitleText = document.getElementById('product-title-text')
+let adminConfirmationButton = document.getElementById('admin-confirmation-button')
+
+
 //Global Variables
 var productID
 var storageRef = firebase.storage().ref()
@@ -77,6 +84,7 @@ var globalSpecsObject = {}
 var selectedPrimaryImageFile;
 var selectedAdditionalImageFile;
 let categoryOptionButtons = ['Games-category', 'Consoles-category', 'Headsets-category', 'Controllers-category', 'Cables-category', 'Batteries-category', 'PC-category' ]
+var isDoneSubmitting = false
 
 const specHeadersDict = {
     'connectivity' : 'Connectivity',
@@ -347,8 +355,8 @@ atcHazardWarning.addEventListener('click', () => {
     atcHazardWarning.className = previousHazardBool ? 'atc-hazard-warning' : 'atc-hazard-warning-selected'
 })
 
+//End Overview Event Listeners
 
-//Specifications toggle
 atcSpecificationsDropdown.addEventListener('click', () => {
     $('#atc-specifications-lower').toggle()
 
@@ -358,6 +366,44 @@ atcSpecificationsDropdown.addEventListener('click', () => {
         atcSpecificationsChevron.className = 'atc-chevron-down'
     }
 })
+
+adminConfirmationButton.addEventListener('click', () => {
+    $('#admin-processing-screen').hide( () => {
+        $('#admin-nav-section').fadeIn()
+    })
+})
+
+
+//Final Submit Button
+atcSubmit.addEventListener('click', () => {
+    loadATCProcessingState()
+
+    let finalProductObject = {...productObject, ...globalSpecsObject}
+    console.log(productID)
+    console.log(finalProductObject)
+
+    database.collection("catalog").doc(productID).set(finalProductObject).then(function() {
+        isDoneSubmitting = true
+
+        adminConfirmationCheck.style.display = 'flex'
+        adminProcessingTextContainer.style.display = 'none'
+        adminConfirmationContainer.style.display = 'flex'
+        adminProductID.innerHTML = productID
+        adminProductTitleText.innerHTML = productObject['productName']
+
+    }).catch(function(error) {
+        $('#admin-processing-screen').hide( () => {
+            $('#atc-modal').fadeIn()
+        })
+        alert(error.message)
+    })
+})
+
+
+
+
+
+
 
 
 
@@ -870,4 +916,17 @@ function prefillDataFromProduct(ID) {
 
 
   })
+}
+
+
+function loadATCProcessingState() {
+    $('#atc-modal').fadeOut(200, () => {
+        $('#admin-processing-screen').fadeIn()
+
+        if(!isDoneSubmitting) {
+            adminConfirmationCheck.style.display = 'none'
+            adminProcessingTextContainer.style.display = 'flex'
+            adminConfirmationContainer.style.display = 'none'
+        }
+    })
 }
