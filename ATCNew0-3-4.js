@@ -545,37 +545,37 @@ function resetCategoryOptions(option) {
     })
 
     switch (option) {
-        case 'game-category' :
+        case 'Games-category' :
             buildATCGame()
             document.getElementById(option).className = 'accessory-option-selected'
             break;
 
-        case 'console-category' :
+        case 'Consoles-category' :
             buildATCConsole()
             document.getElementById(option).className = 'accessory-option-selected'
             break;
 
-        case 'headset-category' :
+        case 'Headsets-category' :
             buildATCHeadset()
             document.getElementById(option).className = 'accessory-option-selected'
             break;
 
-        case 'controller-category' :
+        case 'Controllers-category' :
             buildATCController()
             document.getElementById(option).className = 'accessory-option-selected'
             break;
 
-        case 'cable-category' :
+        case 'Cables-category' :
             buildATCCable()
             document.getElementById(option).className = 'accessory-option-selected'
             break;
 
-        case 'power-category' :
+        case 'Batteries-category' :
             buildATCPower()
             document.getElementById(option).className = 'accessory-option-selected'
             break;
 
-        case 'pc-category' :
+        case 'PC-category' :
             buildATCPC()
             document.getElementById(option).className = 'accessory-option-selected'
             break;
