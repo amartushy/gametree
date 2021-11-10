@@ -329,6 +329,8 @@ function buildATCIncluded() {
 
     let included = productObject.overview.included
     included.forEach((includedText) => {
+        var index = included.findIndex(item => item == includedText);
+
         let atcIncludedTextDiv = createDOMElement('div', 'atc-included-text-div', 'none', atcWhatsIncludedContainer)
         let deleteIncludedItem = createDOMElement('div', 'atc-feature-delete', '', atcIncludedTextDiv)
         deleteIncludedItem.setAttribute('onClick', `deleteIncluded(${index})`)
