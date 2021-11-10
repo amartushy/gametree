@@ -1,5 +1,3 @@
-
-
 //HTML Elements
 let atcButton = document.getElementById('atc-button')
 let atcModal = document.getElementById('atc-modal')
@@ -290,15 +288,25 @@ function buildATCFeatures() {
         atcFeatureDiv.className = 'atc-feature-div'
         atcFeaturesContainer.appendChild(atcFeatureDiv)
 
-        let atcFeatureTitle = document.createElement('div')
-        atcFeatureTitle.className = 'atc-feature-title'
-        atcFeatureTitle.innerHTML = feature.title 
-        atcFeatureDiv.appendChild(atcFeatureTitle)
+        if(feature.description) {
+            if(feature.title != '') {
+                let atcFeatureTitle = document.createElement('div')
+                atcFeatureTitle.className = 'atc-feature-title'
+                atcFeatureTitle.innerHTML = feature.title 
+                atcFeatureDiv.appendChild(atcFeatureTitle)
+            }
 
-        let atcFeatureDescription = document.createElement('div')
-        atcFeatureDescription.className = 'atc-feature-description'
-        atcFeatureDescription.innerHTML = feature.description 
-        atcFeatureDiv.appendChild(atcFeatureDescription)
+            let atcFeatureDescription = document.createElement('div')
+            atcFeatureDescription.className = 'atc-feature-description'
+            atcFeatureDescription.innerHTML = feature.description 
+            atcFeatureDiv.appendChild(atcFeatureDescription)
+
+        } else {
+            let atcFeature = document.createElement('div')
+            atcFeature.className = 'atc-feature-description'
+            atcFeature.innerHTML = feature 
+            atcFeatureDiv.appendChild(atcFeature)
+        }
     })
 }
 
