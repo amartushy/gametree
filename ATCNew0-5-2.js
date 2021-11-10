@@ -549,6 +549,7 @@ function setATCInitialState() {
     })
 
     //Load Search Field
+    atcAutocompleteResults.style.display = 'none'
 
     //Reset product name field
     atcProductNameField.value = ''
@@ -580,6 +581,7 @@ function setATCInitialState() {
     while(atcSpecificationsLower.firstChild) {
         atcSpecificationsLower.removeChild(atcSpecificationsLower.firstChild)
     }
+
 }
 
 
@@ -819,7 +821,6 @@ function buildATCPC(data) {
 function updateProductSpecs(header, spec) {
     globalSpecsObject[header][spec] = document.getElementById(`spec-${header}-${spec}`).value 
 
-    console.log(globalSpecsObject)
 }
 
 
