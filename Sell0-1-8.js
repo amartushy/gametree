@@ -263,22 +263,22 @@ var itemObject = {}
 //Event Listeners
 scsNewButton.addEventListener('click', () => {
     itemObject.itemCondition = 'new'
-    itemObject.itemPrice = scsNewPrice.value
+    itemObject.itemPrice = parseFloat(scsNewPrice.innerHTML.substring(1))
     resetPriceButtons(scsNewButton)
 })
 scsExcellentButton.addEventListener('click', () => {
     itemObject.itemCondition = 'usedExcellent'
-    itemObject.itemPrice = scsExcellentPrice.value
+    itemObject.itemPrice = parseFloat(scsExcellentPrice.innerHTML.substring(1))
     resetPriceButtons(scsExcellentButton)
 })
 scsGoodButton.addEventListener('click', () => {
     itemObject.itemCondition = 'usedGood'
-    itemObject.itemPrice = scsGoodPrice.value
+    itemObject.itemPrice = parseFloat(scsGoodPrice.innerHTML.substring(1))
     resetPriceButtons(scsGoodButton)
 })
 scsAcceptableButton.addEventListener('click', () => {
     itemObject.itemCondition = 'usedAcceptable'
-    itemObject.itemPrice = scsAcceptablePrice.value
+    itemObject.itemPrice = parseFloat(scsAcceptablePrice.innerHTML.substring(1))
     resetPriceButtons(scsAcceptableButton)
 })
 
@@ -407,15 +407,15 @@ requestLocationButton.addEventListener('click', () => {
 })
 
 requestPhoneField.onblur = function() {
-    sellObject.contactPhoneNumber = scsPhoneField.value
+    sellObject.contactPhoneNumber = requestPhoneField.value
 }
 
 requestNameField.onblur = function() {
-    sellObject.contactName = scsNameField.value
+    sellObject.contactName = requestNameField.value
 }
 
 requestNotesField.onblur = function() {
-    sellObject.additionalNotes = scsNotesField.value
+    sellObject.additionalNotes = requestNotesField.value
 }
 
 requestNavBack.addEventListener('click', () => {
@@ -567,8 +567,11 @@ function changePaymentClasses(targetElement) {
     let paymentOptions = [requestPaymentZelle, requestPaymentVenmo, requestPaymentPaypal, requestPaymentCash]
 
     paymentOptions.forEach(element => {
-        element.setAttribute('class', 'scs-payment-button')
+        if(targetElement == element) {
+            targetElement.setAttribute('class', 'scs-payment-button-selected')
+        } else {
+            element.setAttribute('class', 'scs-payment-button')
+
+        }
     })
-    targetElement.setAttribute('class', 'scs-payment-button-selected')
-    $('#scs-bottom-div').fadeIn()
 }
