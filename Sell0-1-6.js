@@ -289,6 +289,7 @@ scsAddMore.addEventListener('click', () => {
 scsContinueButton.addEventListener('click', () => {
     $('#scs-section').fadeOut(function() {$('#request-pickup-screen').fadeIn()})
     sellObject.items.push(itemObject)
+    loadRequestPickupScreen()
 })
 
 
@@ -403,11 +404,6 @@ requestTimeToggleSchedule.addEventListener('click', () => {
 
 requestLocationButton.addEventListener('click', () => {
     getMapLocation()
-})
-
-//TODO
-requestLocationField.addEventListener('onblur', () => {
-
 })
 
 requestPhoneField.onblur = function() {
