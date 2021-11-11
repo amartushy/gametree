@@ -518,7 +518,7 @@ window.initMap = function() {
   infoWindow = new google.maps.InfoWindow();
 
   //initialize autocomplete
-  addressField = document.querySelector("#pickup-location");
+  addressField = document.querySelector("#request-location-field");
 
   autocomplete = new google.maps.places.Autocomplete(addressField, {
     componentRestrictions: { country: ["us"] },
