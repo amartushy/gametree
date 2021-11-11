@@ -1,10 +1,11 @@
 //HTML Elements
 const sellSearchPage = document.getElementById('sell-search-page')
+const scsSection = document.getElementById('scs-section')
+const requestPickupScreen = document.getElementById('request-pickup-screen')
+
 const showMoreBrands = document.getElementById('show-more-brands')
 const searchCancel = document.getElementById('search-cancel')
 const searchField = document.getElementById('store-search-field')
-
-
 
 //Event Listeners and Initial States
 showMoreBrands.style.display = 'none'
@@ -13,7 +14,6 @@ searchCancel.addEventListener('click', () => {
     searchField.value = ''
 })
 
-
 //Global Variables
 var database = firebase.firestore()
 var globalProductData
@@ -21,6 +21,8 @@ var globalUserId
 
 
 window.onload = () => {
+
+    loadInitialState()
 
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
@@ -32,6 +34,12 @@ window.onload = () => {
         console.log('No authenticated user')
     }
   })
+}
+
+function loadInitialState() {
+    sellSearchPage.style.display = 'flex'
+    scsSection.style.display = 'none'
+    requestPickupScreen.style.display = 'none'
 }
 
 
