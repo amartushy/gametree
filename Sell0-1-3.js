@@ -341,20 +341,20 @@ function resetPriceButtons(button) {
 //HTML Elements
 const requestItemTotal = document.getElementById('request-item-total')
 
-const scsPaymentZelle = document.getElementById('scs-payment-zelle')
-const scsPaymentVenmo = document.getElementById('scs-payment-venmo')
-const scsPaymentPaypal = document.getElementById('scs-payment-paypal')
-const scsPaymentCash = document.getElementById('scs-payment-cash')
+const requestPaymentZelle = document.getElementById('request-payment-zelle')
+const requestPaymentVenmo = document.getElementById('request-payment-venmo')
+const requestPaymentPaypal = document.getElementById('request-payment-paypal')
+const requestPaymentCash = document.getElementById('request-payment-cash')
 
 const requestLocationButton = document.getElementById('request-confirmation-button')
 const requestLocationField = document.getElementById('request-confirmation-field')
 
-const scsTimeToggleAsap = document.getElementById('scs-time-toggle-asap')
-const scsTimeToggleSchedule = document.getElementById('scs-time-toggle-schedule')
+const requestTimeToggleAsap = document.getElementById('scs-time-toggle-asap')
+const requestTimeToggleSchedule = document.getElementById('scs-time-toggle-schedule')
 
-const scsPhoneField = document.getElementById('scs-phone-field')
-const scsNameField = document.getElementById('scs-name-field')
-const scsNotesField = document.getElementById('scs-notes-field')
+const requestPhoneField = document.getElementById('request-phone-field')
+const requestNameField = document.getElementById('request-name-field')
+const requestNotesField = document.getElementById('request-notes-field')
 
 const requestNavBack = document.getElementById('request-nav-back')
 const requestConfirmButton = document.getElementById('request-confirm-button')
@@ -373,31 +373,31 @@ var sellObject = {
 //Event Listeners
 requestPaymentZelle.addEventListener('click', () => {
     sellObject.paymentType = 'zelle'
-    changePaymentClasses(scsPaymentZelle)
+    changePaymentClasses(requestPaymentZelle)
 })
 requestPaymentVenmo.addEventListener('click', () => {
     sellObject.paymentType = 'venmo'
-    changePaymentClasses(scsPaymentVenmo)
+    changePaymentClasses(requestPaymentVenmo)
 })
 requestPaymentPaypal.addEventListener('click', () => {
     sellObject.paymentType = 'paypal'
-    changePaymentClasses(scsPaymentPaypal)
+    changePaymentClasses(requestPaymentPaypal)
 })
 requestPaymentCash.addEventListener('click', () => {
     sellObject.paymentType = 'cash'
-    changePaymentClasses(scsPaymentCash)
+    changePaymentClasses(requestPaymentCash)
 })
 
 requestTimeToggleAsap.addEventListener('click', () => {
     sellObject.pickupTime = 'asap'
-    scsTimeToggleAsap.setAttribute('class', 'scs-toggle-left-selected')
-    scsTimeToggleSchedule.setAttribute('class', 'scs-toggle-right')
+    requestTimeToggleAsap.setAttribute('class', 'scs-toggle-left-selected')
+    requestTimeToggleSchedule.setAttribute('class', 'scs-toggle-right')
 })
 
 requestTimeToggleSchedule.addEventListener('click', () => {
     sellObject.pickupTime = 'schedule'
-    scsTimeToggleAsap.setAttribute('class', 'scs-toggle-left')
-    scsTimeToggleSchedule.setAttribute('class', 'scs-toggle-right-selected')
+    requestTimeToggleAsap.setAttribute('class', 'scs-toggle-left')
+    requestTimeToggleSchedule.setAttribute('class', 'scs-toggle-right-selected')
 })
 
 
