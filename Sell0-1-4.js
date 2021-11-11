@@ -346,8 +346,8 @@ const requestPaymentVenmo = document.getElementById('request-payment-venmo')
 const requestPaymentPaypal = document.getElementById('request-payment-paypal')
 const requestPaymentCash = document.getElementById('request-payment-cash')
 
-const requestLocationButton = document.getElementById('request-confirmation-button')
-const requestLocationField = document.getElementById('request-confirmation-field')
+const requestLocationButton = document.getElementById('request-location-button')
+const requestLocationField = document.getElementById('request-location-field')
 
 const requestTimeToggleAsap = document.getElementById('scs-time-toggle-asap')
 const requestTimeToggleSchedule = document.getElementById('scs-time-toggle-schedule')
