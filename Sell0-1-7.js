@@ -564,7 +564,7 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 //___________________________Helper functions___________________________
 
 function changePaymentClasses(targetElement) {
-    let paymentOptions = [scsPaymentZelle, scsPaymentVenmo, scsPaymentPaypal, scsPaymentCash]
+    let paymentOptions = [requestPaymentZelle, requestPaymentVenmo, requestPaymentPaypal, requestPaymentCash]
 
     paymentOptions.forEach(element => {
         element.setAttribute('class', 'scs-payment-button')
