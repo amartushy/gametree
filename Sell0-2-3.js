@@ -295,6 +295,7 @@ scsAddMore.addEventListener('click', () => {
 scsContinueButton.addEventListener('click', () => {
     $('#scs-section').fadeOut(function() {$('#request-pickup-screen').fadeIn()})
     sellObject.items.push(itemObject)
+    console.log(itemObject)
     loadRequestPickupScreen()
 })
 
