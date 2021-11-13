@@ -57,7 +57,7 @@ function createSellSearchResults(results) {
     results.hits.forEach(function(hit, hitIndex) {
 
         let productDiv = createDOMElement('div', 'sell-product-div', 'none', hitsContainer)
-        productDiv.setAttribute('onClick', `openConfirmationScreen("${hit.objectID}", "${hit.productImage}")`)
+        productDiv.setAttribute('onClick', `openConfirmationScreen("${hit.objectID}", "${hit.general,productName}", "${hit.productImage}")`)
 
         let productBackground = createDOMElement('div', 'sell-product-background', 'none', productDiv)
 
@@ -225,10 +225,10 @@ search.start()
 
 
 
-function openConfirmationScreen(productID, productImage) {
+function openConfirmationScreen(productID, productName,productImage) {
     console.log(productID)
 
-    loadSaleConfirmationScreen(productID, productImage)
+    loadSaleConfirmationScreen(productID, productName, productImage)
 }
 
 
@@ -301,7 +301,7 @@ scsContinueButton.addEventListener('click', () => {
 
 
 
-function loadSaleConfirmationScreen(productID, productImage) {
+function loadSaleConfirmationScreen(productID, productName, productImage) {
     scsNavigationDiv.style.display = 'none'
     $('#sell-search-page').fadeOut(function() {$('#scs-section').fadeIn()})
 
@@ -309,6 +309,7 @@ function loadSaleConfirmationScreen(productID, productImage) {
 
     itemObject = {
         'productID' : productID,
+        'productName' : productName,
         'productImage' : productImage,
         'itemPrice' : 0,
         'itemCondition' : '',
