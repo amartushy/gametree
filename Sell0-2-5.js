@@ -480,11 +480,11 @@ function buildSummmaryItems(itemData) {
         const sellSummaryLeftDiv = createDOMElement('div', 'sell-summary-left-div', 'none', sellSummaryItemDiv)
         const summaryItemImage = createDOMElement('img', 'sell-summary-image', 'none', sellSummaryLeftDiv)
         summaryItemImage.src = item.productImage
-        createDOMElement('div', 'sell-summary-left-title', item.productName, sellSummaryItemDiv)
+        createDOMElement('div', 'sell-summary-item-title', item.productName, sellSummaryLeftDiv)
     
         const sellSummaryPriceDiv = createDOMElement('div', 'order-summary-price-div', 'none', sellSummaryItemDiv)
         createDOMElement('div', 'order-summary-item-price', '$' + item.itemPrice, sellSummaryPriceDiv)
-        const removeItemButton = createDOMElement('div', 'order-summary-remove-item', 'Remove', sellSummaryItemDiv)
+        const removeItemButton = createDOMElement('div', 'order-summary-remove-item', 'Remove', sellSummaryPriceDiv)
         var itemIndex = sellObject.items.indexOf(item)
         removeItemButton.setAttribute('onClick', `removeItem("${itemIndex}")`)
 
