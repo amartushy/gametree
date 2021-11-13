@@ -494,8 +494,8 @@ function buildSummmaryItems(itemData) {
 
 }
 
-function removeItem(item) {
-    itemArray.splice(itemIndex, 1)
+function removeItem(itemIndex) {
+    sellObject.items.splice(itemIndex, 1)
     buildSummmaryItems()
 }
 
