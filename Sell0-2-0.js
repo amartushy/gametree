@@ -452,6 +452,7 @@ requestConfirmButton.addEventListener('click', () => {
 })
 
 function loadRequestPickupScreen() {
+    buildSummmaryItems()
     requestPickupTimeContainer.style.display = 'none'
 
     changePaymentClasses()
@@ -468,7 +469,7 @@ function buildSummmaryItems(itemData) {
         sellSummaryItemsContainer.removeChild(sellSummaryItemsContainer.firstChild)
     }
 
-    
+
     var totalItemValue = 0
     sellObject.items.forEach( (item) => {
         totalItemValue += parseFloat(item.itemPrice)
