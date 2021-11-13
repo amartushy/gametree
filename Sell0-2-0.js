@@ -464,7 +464,11 @@ function loadRequestPickupScreen() {
 }
 
 function buildSummmaryItems(itemData) {
+    while(sellSummaryItemsContainer.firstChild) {
+        sellSummaryItemsContainer.removeChild(sellSummaryItemsContainer.firstChild)
+    }
 
+    
     var totalItemValue = 0
     sellObject.items.forEach( (item) => {
         totalItemValue += parseFloat(item.itemPrice)
