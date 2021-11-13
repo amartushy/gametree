@@ -57,7 +57,7 @@ function createSellSearchResults(results) {
     results.hits.forEach(function(hit, hitIndex) {
 
         let productDiv = createDOMElement('div', 'sell-product-div', 'none', hitsContainer)
-        productDiv.setAttribute('onClick', `openConfirmationScreen("${hit.objectID}", "${hit.general,productName}", "${hit.productImage}")`)
+        productDiv.setAttribute('onClick', `openConfirmationScreen("${hit.objectID}", "${hit.general.productName}", "${hit.productImage}")`)
 
         let productBackground = createDOMElement('div', 'sell-product-background', 'none', productDiv)
 
