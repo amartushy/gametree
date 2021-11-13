@@ -57,7 +57,7 @@ function createSellSearchResults(results) {
     results.hits.forEach(function(hit, hitIndex) {
 
         let productDiv = createDOMElement('div', 'sell-product-div', 'none', hitsContainer)
-        productDiv.setAttribute('onClick', `openConfirmationScreen("${hit.objectID}")`)
+        productDiv.setAttribute('onClick', `openConfirmationScreen("${hit.objectID}", "${hit.productImage}")`)
 
         let productBackground = createDOMElement('div', 'sell-product-background', 'none', productDiv)
 
@@ -225,10 +225,10 @@ search.start()
 
 
 
-function openConfirmationScreen(productID) {
+function openConfirmationScreen(productID, productImage) {
     console.log(productID)
 
-    loadSaleConfirmationScreen(productID)
+    loadSaleConfirmationScreen(productID, productImage)
 }
 
 
@@ -254,6 +254,8 @@ const scsExcellentButton = document.getElementById('scs-excellent-button')
 const scsGoodButton = document.getElementById('scs-good-button')
 const scsAcceptableButton = document.getElementById('scs-acceptable-button')
 
+const scsNavigationDiv = document.getElementById('scs-nav-div')
+const scsBack = document.getElementById('scs-back')
 const scsAddMore = document.getElementById('scs-add-more')
 const scsContinueButton = document.getElementById('scs-continue-button')
 
@@ -282,6 +284,10 @@ scsAcceptableButton.addEventListener('click', () => {
     resetPriceButtons(scsAcceptableButton)
 })
 
+scsBack.addEventListener('click', () => {
+    $('#scs-section').fadeOut(function() {$('#sell-search-page').fadeIn()})
+})
+
 scsAddMore.addEventListener('click', () => {
     $('#scs-section').fadeOut(function() {$('#sell-search-page').fadeIn()})
 })
@@ -294,13 +300,15 @@ scsContinueButton.addEventListener('click', () => {
 
 
 
-function loadSaleConfirmationScreen(productID) {
+function loadSaleConfirmationScreen(productID, productImage) {
+    scsNavigationDiv.style.display = 'none'
     $('#sell-search-page').fadeOut(function() {$('#scs-section').fadeIn()})
 
     resetPriceButtons()
 
     itemObject = {
         'productID' : productID,
+        'productImage' : productImage,
         'itemPrice' : 0,
         'itemCondition' : '',
     }
@@ -329,9 +337,10 @@ function resetPriceButtons(button) {
         if(btn == button) {
             btn.className = 'pp-add-to-cart'
             btn.innerHTML = 'Selected'
+            $('#scs-nav-div').fadeIn()
         } else {
             btn.className = 'pp-unavailable'
-            btn.innerHTML = 'Select'
+            btn.innerHTML = 'Add to sale'
         }
     })
 }
@@ -341,6 +350,7 @@ function resetPriceButtons(button) {
 //____________________________Request Pickup Screen____________________________
 //HTML Elements
 const requestItemTotal = document.getElementById('request-item-total')
+const sellSummaryItemsContainer = document.getElementById('sell-summary-items-container')
 
 const requestPaymentZelle = document.getElementById('request-payment-zelle')
 const requestPaymentVenmo = document.getElementById('request-payment-venmo')
@@ -350,6 +360,7 @@ const requestPaymentCash = document.getElementById('request-payment-cash')
 const requestLocationButton = document.getElementById('request-location-button')
 const requestLocationField = document.getElementById('request-location-field')
 
+const requestPickupTimeContainer = document.getElementById('request-pickup-time-container')
 const requestTimeToggleAsap = document.getElementById('scs-time-toggle-asap')
 const requestTimeToggleSchedule = document.getElementById('scs-time-toggle-schedule')
 
@@ -441,11 +452,7 @@ requestConfirmButton.addEventListener('click', () => {
 })
 
 function loadRequestPickupScreen() {
-    var totalItemValue = 0
-    sellObject.items.forEach( (item) => {
-        totalItemValue += parseFloat(item.itemPrice)
-    })
-    requestItemTotal.innerHTML = '$' + totalItemValue
+    requestPickupTimeContainer.style.display = 'none'
 
     changePaymentClasses()
 
@@ -454,6 +461,35 @@ function loadRequestPickupScreen() {
     requestNameField.value = ''
     requestPhoneField.value = ''
     requestNotesField.value = ''
+}
+
+function buildSummmaryItems(itemData) {
+
+    var totalItemValue = 0
+    sellObject.items.forEach( (item) => {
+        totalItemValue += parseFloat(item.itemPrice)
+        buildSummmaryItem(item)
+        const sellSummaryItemDiv = createDOMElement('div', 'sell-summary-item-div', 'none', sellSummaryItemsContainer)
+
+        const sellSummaryLeftDiv = createDOMElement('div', 'sell-summary-left-div', 'none', sellSummaryItemDiv)
+        const summaryItemImage = createDOMElement('img', 'sell-summary-image', 'none', sellSummaryLeftDiv)
+        summaryItemImage.src = itemData.productImage
+        createDOMElement('div', 'sell-summary-left-title', itemData.productName, sellSummaryItemDiv)
+    
+        const sellSummaryPriceDiv = createDOMElement('div', 'order-summary-price-div', 'none', sellSummaryItemDiv)
+        createDOMElement('div', 'order-summary-item-price', '$' + itemData.itemPrice, sellSummaryPriceDiv)
+        const removeItemButton = createDOMElement('div', 'order-summary-remove-item', 'Remove', sellSummaryItemDiv)
+        var itemIndex = sellObject.items.indexOf(item)
+        removeItemButton.setAttribute('onClick', `removeItem("${itemIndex}")`)
+
+    })
+    requestItemTotal.innerHTML = '$' + totalItemValue
+
+}
+
+function removeItem(item) {
+    itemArray.splice(itemIndex, 1)
+    buildSummmaryItems()
 }
 
 
