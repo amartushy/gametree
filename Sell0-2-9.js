@@ -432,7 +432,7 @@ requestNotesField.onblur = function() {
 }
 
 requestNavBack.addEventListener('click', () => {
-    $('#request-pickup-screen').fadeOut(function() {$('#scs-section').fadeIn()})
+    $('#request-pickup-screen').fadeOut(function() {$('#sell-search-page').fadeIn()})
 })
 
 requestConfirmButton.addEventListener('click', () => {
