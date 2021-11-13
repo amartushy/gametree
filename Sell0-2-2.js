@@ -473,7 +473,7 @@ function buildSummmaryItems(itemData) {
     var totalItemValue = 0
     sellObject.items.forEach( (item) => {
         totalItemValue += parseFloat(item.itemPrice)
-        buildSummmaryItem(item)
+
         const sellSummaryItemDiv = createDOMElement('div', 'sell-summary-item-div', 'none', sellSummaryItemsContainer)
 
         const sellSummaryLeftDiv = createDOMElement('div', 'sell-summary-left-div', 'none', sellSummaryItemDiv)
