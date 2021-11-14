@@ -500,6 +500,8 @@ requestNavBack.addEventListener('click', () => {
 //
 
 function loadRequestPickupScreen() {
+    window.scrollTo(0, 0);
+    
     buildSummmaryItems()
     requestPickupTimeContainer.style.display = 'none'
 
