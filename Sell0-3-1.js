@@ -303,7 +303,7 @@ scsContinueButton.addEventListener('click', () => {
 
 function loadSaleConfirmationScreen(productID, productName, productImage) {
     scsNavigationDiv.style.display = 'none'
-    $('#sell-search-page').fadeOut(function() {$('#scs-section').fadeIn()})
+    $('#sell-search-page').fadeOut(function() {$('#scs-section').fadeIn().css('style', 'flex')})
 
     resetPriceButtons()
 
@@ -590,6 +590,155 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 
 
 
+
+//___________________________________________Processing Screen___________________________________________
+
+requestConfirmButton.addEventListener('click', () => {
+    console.log(sellObject)
+
+    if(sellObject.paymentType == '') {
+        showErrorMessage('Please choose how you want to be paid')
+    } else if (sellObject.location.formatted_address == undefined) {
+        showErrorMessage('Please select a valid pickup location')
+    } else if (sellObject.contactPhoneNumber == '') {
+        showErrorMessage('Please enter a valid phone number') 
+    } else if (sellObject.contactName == '') {
+        showErrorMessage('Please enter your name')
+    } else {
+        loadRequestProcessingScreen()
+
+        var saleID = createID(10)
+
+        updateDatabaseAndUser(saleID)
+
+    }
+})
+
+
+const requestProcessingScreen = document.getElementById('request-processing-screen')
+const requestCheckMark = document.getElementById('request-check-mark')
+const requestProcessingText = document.getElementById('request-processing-text')
+const requestCompleteDiv = document.getElementById('request-complete-div')
+const requestCompleteAccountDiv = document.getElementById('request-complete-account-div')
+const trackRequestButton = document.getElementById('track-request-button')
+const requestAccountCreateButton = document.getElementById('request-account-create-button')
+
+trackRequestButton.addEventListener('click', () => {
+    location.href = 'https://thegametree.io/account'
+})
+
+requestAccountCreateButton.addEventListener('click', () => {
+    location.href = 'https://thegametree.io/account-creation'
+})
+
+function loadRequestProcessingScreen() {
+    $('#request-pickup-screen').fadeOut( 200, () => {
+        $('#request-processing-screen').fadeIn().css('style', 'flex')
+    })
+
+    requestCheckMark.style.display = 'none'
+    requestProcessingText.style.display = 'block'
+    requestCompleteDiv.style.display = 'none'
+    requestCompleteAccountDiv.style.display = 'none'
+}
+
+function loadUserCompleteScreen() {
+    requestProcessingScreen.style.display = 'flex'
+
+    requestCheckMark.style.display = 'block'
+    requestProcessingText.style.display = 'none'
+    requestCompleteDiv.style.display = 'flex'
+    requestCompleteAccountDiv.style.display = 'none'
+}
+
+function loadAnonymousAccountCompleteScreen() {
+    requestProcessingScreen.style.display = 'flex'
+
+    requestCheckMark.style.display = 'block'
+    requestProcessingText.style.display = 'none'
+    requestCompleteDiv.style.display = 'none'
+    requestCompleteAccountDiv.style.display = 'flex'
+}
+
+function updateDatabaseAndUser(saleID) {
+    const user = firebase.auth().currentUser;
+
+    if (user) {
+        // User is signed in.
+        sellObject['customerID'] = user.uid
+
+        database.collection("users").doc(user.uid).collection('sales').doc(saleID).set(sellObject).then(function() {
+
+            console.log('Added to users sales')
+
+        }).catch(function(error) {
+            console.log(error)
+        })
+
+        //Update Sale Collection
+        database.collection('sales').doc(saleID).set(sellObject).then( () => {
+            loadUserCompleteScreen()
+
+            sendAdminSellMessage(saleID)
+        })
+
+    } else {
+        // No user is signed in, create an anonymous account and update sales
+
+        firebase.auth().signInAnonymously()
+        .then(() => {
+            // Anonymous account dict
+            var userID = firebase.auth().currentUser.uid
+            var userAccountDict = {
+                'name' : '',
+                'email' : '',
+                'dateCreated' : 0,
+                'referralCode' : '',
+                'isAdmin' : false,
+                'availableBalance' : 0,
+                'cart' : {},
+                'isAnonymous' : true
+            }
+            sellObject['customerID'] = userID
+
+            database.collection("users").doc(userID).set(userAccountDict).then(function() {
+
+                //Update Users Sales Collection
+                database.collection("users").doc(userID).collection('sales').doc(saleID).set(sellObject).then(function() {
+
+                    console.log('Added to users sales')
+        
+                }).catch(function(error) {
+                    console.log(error)
+                })
+
+                console.log('Created user and updated sales')
+
+            }).catch(function(error) {
+                console.log(error)
+            })
+
+            //Update Global Sales Collection
+            database.collection('sales').doc(saleID).set(sellObject).then( () => {
+                loadAnonymousAccountCompleteScreen()
+
+                sendAdminSellMessage(saleID)
+            })
+        })
+        .catch((error) => {
+            console.log("Error code: " +  error.code + ", " + error.message)
+        });
+    }
+}
+
+
+
+
+
+
+
+
+
 //___________________________Helper functions___________________________
 
 function changePaymentClasses(targetElement) {
@@ -603,4 +752,16 @@ function changePaymentClasses(targetElement) {
 
         }
     })
+}
+
+
+
+
+function sendAdminSellMessage(saleID) {
+    var message = `New Sale Request %0D%0ARequest ID: ${saleID} %0D%0ACustomer Name: ${sellObject.contactName} %0D%0ACustomer Phone Number: ${sellObject.contactPhoneNumber} %0D%0A%0D%0AItems:`
+    sellObject.items.forEach( (item) => {
+        message += `%0D%0AProduct Name: ${item.productName} %0D%0AProduct Condition: ${item.itemCondition} %0D%0APurchase Price: ${item.itemPrice}`
+    })
+
+    sendSMSTo('4582108156', message)
 }
