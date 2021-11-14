@@ -59,7 +59,7 @@ function loadSearchSummaryItems() {
     }
 
     if(sellObject.items.length > 0) {
-        $('search-summary-block').fadeIn()
+        searchSummaryBlock.style.display = 'flex'
 
         var totalItemValue = 0
         sellObject.items.forEach( (item) => {
