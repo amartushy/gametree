@@ -23,6 +23,8 @@ searchRequestButton.addEventListener('click', () => {
     $('#sell-search-page').fadeOut(200, () => {
         $('#request-pickup-screen').fadeIn().css('display', 'flex')
     })
+
+    loadRequestPickupScreen()
 })
 
 //Global Variables
