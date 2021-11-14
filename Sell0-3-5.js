@@ -290,6 +290,8 @@ scsBack.addEventListener('click', () => {
 
 scsAddMore.addEventListener('click', () => {
     $('#scs-section').fadeOut(function() {$('#sell-search-page').fadeIn()})
+    
+    sellObject.items.push(itemObject)
 })
 
 scsContinueButton.addEventListener('click', () => {
