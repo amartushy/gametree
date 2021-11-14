@@ -435,23 +435,9 @@ requestNavBack.addEventListener('click', () => {
     $('#request-pickup-screen').fadeOut(function() {$('#sell-search-page').fadeIn()})
 })
 
-requestConfirmButton.addEventListener('click', () => {
-    console.log(sellObject)
+//Insert here
 
-    if(sellObject.paymentType == '') {
-        showErrorMessage('Please choose how you want to be paid')
-    } else if (sellObject.location.formatted_address == undefined) {
-        showErrorMessage('Please select a valid pickup location')
-    } else if (sellObject.pickupTime == '') {
-        showErrorMessage('Please select your pickup time')
-    } else if (sellObject.contactPhoneNumber == '') {
-        showErrorMessage('Please enter a valid phone number') 
-    } else if (sellObject.contactName == '') {
-        showErrorMessage('Please enter your name')
-    } else {
-        console.log('all fields good')
-    }
-})
+//
 
 function loadRequestPickupScreen() {
     buildSummmaryItems()
