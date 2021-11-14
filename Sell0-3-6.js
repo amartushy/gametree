@@ -7,11 +7,22 @@ const showMoreBrands = document.getElementById('show-more-brands')
 const searchCancel = document.getElementById('search-cancel')
 const searchField = document.getElementById('store-search-field')
 
+const searchSummaryBlock = document.getElementById('search-summary-block')
+const searchSummaryItemsContainer = document.getElementById('search-summary-items-container')
+const searchTotal = document.getElementById('search-total')
+const searchRequestButton = document.getElementById('search-request-button')
+
 //Event Listeners and Initial States
 showMoreBrands.style.display = 'none'
 
 searchCancel.addEventListener('click', () => {
     searchField.value = ''
+})
+
+searchRequestButton.addEventListener('click', () => {
+    $('#sell-search-page').fadeOut(200, () => {
+        $('#request-pickup-screen').fadeIn().css('display', 'flex')
+    })
 })
 
 //Global Variables
@@ -21,25 +32,58 @@ var globalUserId
 
 
 window.onload = () => {
-
     loadInitialState()
 
-  firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-        // Customer is logged in.
-        globalUserId = user.uid
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            // Customer is logged in.
+            globalUserId = user.uid
 
-    } else {
-        // No user is logged in.
-        console.log('No authenticated user')
-    }
-  })
+        } else {
+            // No user is logged in.
+            console.log('No authenticated user')
+        }
+    })
 }
 
 function loadInitialState() {
     sellSearchPage.style.display = 'flex'
     scsSection.style.display = 'none'
     requestPickupScreen.style.display = 'none'
+    searchSummaryBlock.style.display = 'none'
+}
+
+function loadSearchSummaryItems() {
+    while(searchSummaryItemsContainer.firstChild) {
+        searchSummaryItemsContainer.removeChild(searchSummaryItemsContainer.firstChild)
+    }
+
+    if(sellObject.items.length > 0) {
+        $('search-summary-block').fadeIn()
+
+        var totalItemValue = 0
+        sellObject.items.forEach( (item) => {
+            totalItemValue += parseFloat(item.itemPrice)
+    
+            const sellSummaryItemDiv = createDOMElement('div', 'sell-summary-item-div', 'none', searchSummaryItemsContainer)
+    
+            const sellSummaryLeftDiv = createDOMElement('div', 'sell-summary-left-div', 'none', sellSummaryItemDiv)
+            const summaryItemImage = createDOMElement('img', 'sell-summary-image', 'none', sellSummaryLeftDiv)
+            summaryItemImage.src = item.productImage
+            createDOMElement('div', 'sell-summary-item-title', item.productName, sellSummaryLeftDiv)
+        
+            const sellSummaryPriceDiv = createDOMElement('div', 'order-summary-price-div', 'none', sellSummaryItemDiv)
+            createDOMElement('div', 'order-summary-item-price', '$' + item.itemPrice, sellSummaryPriceDiv)
+            const removeItemButton = createDOMElement('div', 'order-summary-remove-item', 'Remove', sellSummaryPriceDiv)
+            var itemIndex = sellObject.items.indexOf(item)
+            removeItemButton.setAttribute('onClick', `removeItem("${itemIndex}")`)
+    
+        })
+        searchTotal.innerHTML = '$' + totalItemValue
+    } else {
+        searchSummaryBlock.style.display = 'none'
+    }
+
 }
 
 
@@ -285,13 +329,17 @@ scsAcceptableButton.addEventListener('click', () => {
 })
 
 scsBack.addEventListener('click', () => {
+    loadSearchSummaryItems()
+
     $('#scs-section').fadeOut(function() {$('#sell-search-page').fadeIn()})
 })
 
 scsAddMore.addEventListener('click', () => {
+
     $('#scs-section').fadeOut(function() {$('#sell-search-page').fadeIn()})
-    
+
     sellObject.items.push(itemObject)
+    loadSearchSummaryItems()
 })
 
 scsContinueButton.addEventListener('click', () => {
@@ -299,6 +347,8 @@ scsContinueButton.addEventListener('click', () => {
         $('#request-pickup-screen').fadeIn().css('display', 'flex')
     })
     sellObject.items.push(itemObject)
+
+    loadSearchSummaryItems()
 
     loadRequestPickupScreen()
 })
@@ -339,6 +389,7 @@ function loadSaleConfirmationScreen(productID, productName, productImage) {
 }
 
 function resetPriceButtons(button) {
+    loadSearchSummaryItems()
     var priceButtonsArray = [scsNewButton, scsExcellentButton, scsGoodButton, scsAcceptableButton]
 
     priceButtonsArray.forEach( (btn) => {
@@ -439,6 +490,7 @@ requestNotesField.onblur = function() {
 
 requestNavBack.addEventListener('click', () => {
     $('#request-pickup-screen').fadeOut(function() {$('#sell-search-page').fadeIn()})
+    loadSearchSummaryItems()
 })
 
 //Insert here
