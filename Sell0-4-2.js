@@ -501,7 +501,7 @@ requestNavBack.addEventListener('click', () => {
 
 function loadRequestPickupScreen() {
     window.scrollTo(0, 0);
-    
+
     buildSummmaryItems()
     requestPickupTimeContainer.style.display = 'none'
 
@@ -690,7 +690,7 @@ requestAccountCreateButton.addEventListener('click', () => {
 
 function loadRequestProcessingScreen() {
     $('#request-pickup-screen').fadeOut( 200, () => {
-        $('#request-processing-screen').fadeIn().css('style', 'flex')
+        $('#request-processing-screen').fadeIn().css('display', 'flex')
     })
 
     requestCheckMark.style.display = 'none'
