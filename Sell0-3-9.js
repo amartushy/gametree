@@ -538,11 +538,6 @@ function buildSummmaryItems(itemData) {
 
 }
 
-function removeItem(itemIndex) {
-    sellObject.items.splice(itemIndex, 1)
-    buildSummmaryItems()
-}
-
 
 
 //___________________________________________Map Functions___________________________________________
@@ -822,4 +817,11 @@ function sendAdminSellMessage(saleID) {
     })
 
     sendSMSTo('4582108156', message)
+}
+
+
+function removeItem(itemIndex) {
+    sellObject.items.splice(itemIndex, 1)
+    buildSummmaryItems()
+    loadSearchSummaryItems()
 }
