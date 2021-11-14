@@ -65,12 +65,12 @@ window.onload = function() {
 //Helper functions
 function downloadProductsCSV() {
     const rows = [
-        ["ProductID", "Product Name", "URL"]
+        ["ProductID", "Product Name", "Platform(s)", "URL"]
     ];
     database.collection('catalog').get().then( (querySelector) => {
         querySelector.forEach ( (doc) => {
             var data = doc.data()
-            var productRow = [doc.id, data.general.productName, doc.id]
+            var productRow = [doc.id, data.general.productName, data.platform, doc.id]
             rows.push(productRow)
         })
 
