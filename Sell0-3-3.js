@@ -303,7 +303,9 @@ scsContinueButton.addEventListener('click', () => {
 
 function loadSaleConfirmationScreen(productID, productName, productImage) {
     scsNavigationDiv.style.display = 'none'
-    $('#sell-search-page').fadeOut(function() {$('#scs-section').fadeIn().css('style', 'flex')})
+    $('#sell-search-page').fadeOut( () => {
+        $('#scs-section').fadeIn().css('display', 'flex')
+    })
 
     resetPriceButtons()
 
