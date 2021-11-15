@@ -15,10 +15,6 @@ const searchRequestButton = document.getElementById('search-request-button')
 //Event Listeners and Initial States
 showMoreBrands.style.display = 'none'
 
-searchCancel.addEventListener('click', () => {
-    searchField.value = ''
-})
-
 searchRequestButton.addEventListener('click', () => {
     $('#sell-search-page').fadeOut(200, () => {
         $('#request-pickup-screen').fadeIn().css('display', 'flex')
@@ -127,6 +123,11 @@ const renderAutocomplete = (renderOptions, isFirstRender) => {
     searchField.addEventListener('input', event => {
       refine(event.currentTarget.value);
     });
+
+    searchCancel.addEventListener('click', () => {
+        searchField.value = ''
+        refine(searchField.value);
+    })
   }
 
   searchField.value = currentRefinement;
@@ -156,6 +157,8 @@ const renderCategoryMenu = (renderOptions, isFirstRender) => {
       event.preventDefault();
       refine(item.value);
     });
+
+    
   })
 
 };
