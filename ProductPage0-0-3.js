@@ -150,7 +150,7 @@ function loadProductPage(GTIN) {
 
         loadMainImage(data.productImage)
         loadAlternateImages(data.productImage, data.productImages)
-        loadPricesAndAvailability(GTIN, data.salePrices, data.availability)
+        loadPricesAndAvailability(GTIN, data.salePrices, data.availability, data.category, data.platform)
 
         loadProductMainInfo(data.general.productName, data.overview.description, data.keySpecs)
         loadProductPageTabs()
