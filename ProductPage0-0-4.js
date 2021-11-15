@@ -199,6 +199,123 @@ function loadAlternateImages(mainImage, images) {
 
 //Insert Here_________________
 
+const ppNewDiv = document.getElementById('pp-new-div')
+const ppExcellentDiv = document.getElementById('pp-excellent-div')
+const ppGoodDiv = document.getElementById('pp-good-div')
+const ppAcceptableDiv = document.getElementById('pp-acceptable-div')
+
+const ppListExcellent = document.getElementById('pp-list-excellent')
+const ppListGood = document.getElementById('pp-list-good')
+const ppListAcceptable = document.getElementById('pp-list-acceptable')
+
+const ppNewHeader = document.getElementById('pp-new-header')
+const ppExcellentHeader = document.getElementById('pp-excellent-header')
+const ppGoodHeader = document.getElementById('pp-good-header')
+const ppAcceptableHeader= document.getElementById('pp-acceptable-header')
+
+
+const cartridgeOnlyArray = ['Game Boy', 'Game Boy Color', 'Game Boy Advance', 'Nintendo GameCube', 'Nintendo 64', 'NES', 'Nintendo DS', 'Nintendo 3DS', 'Nintendo Switch']
+
+function loadPricesAndAvailability(GTIN, saleData, availability, category, platform) {
+    if(category == 'Games') {
+        ppGoodDiv.style.display = 'none'
+
+        ppExcellentHeader.innerHTML = 'Pre-Owned'
+        if(cartridgeOnlyArray.includes(platform)) {
+            ppAcceptableHeader.innerHTML = 'Cartridge Only'
+        } else {
+            ppAcceptableHeader.innerHTML = 'Disc(s) Only'
+        }
+
+        while(ppListExcellent.firstChild) {
+            ppListExcellent.removeChild(ppListExcellent.firstChild)
+        }
+        createDOMElement('div', 'list-item', '• Includes original case and insert(s), if applicable', ppListExcellent)
+        createDOMElement('div', 'list-item', '• Fully tested and backed by the GameTree Guarantee', ppListExcellent)
+
+        while(ppListAcceptable.firstChild) {
+            ppListAcceptable.removeChild(ppListAcceptable.firstChild)
+        }
+        createDOMElement('div', 'list-item', '• Does not include original case', ppListAcceptable)
+        createDOMElement('div', 'list-item', '• Fully tested and backed by the GameTree Guarantee', ppListAcceptable)
+
+        ppNewPriceText.innerHTML = '$' + parseFloat(saleData.new).toFixed(2)
+        ppExcellentPriceText.innerHTML = '$' + parseFloat(saleData.usedExcellent).toFixed(2)
+        ppAcceptablePriceText.innerHTML = '$' + parseFloat(saleData.loose).toFixed(2)
+
+    } else {
+        ppNewPriceText.innerHTML = '$' + parseFloat(saleData.new).toFixed(2)
+        ppExcellentPriceText.innerHTML = '$' + parseFloat(saleData.usedExcellent).toFixed(2)
+        ppGoodPriceText.innerHTML = '$' + parseFloat(saleData.usedGood).toFixed(2)
+        ppAcceptablePriceText.innerHTML = '$' + parseFloat(saleData.usedAcceptable).toFixed(2)
+    }
+
+    ppNewButton.className = 'pp-unavailable'
+    ppExcellentButton.className = 'pp-unavailable'
+    ppGoodButton.className = 'pp-unavailable'
+    ppAcceptableButton.className = 'pp-unavailable'
+
+    ppNewButton.innerHTML = 'UNAVAILABLE'
+    ppExcellentButton.innerHTML = 'UNAVAILABLE'
+    ppGoodButton.innerHTML = 'UNAVAILABLE'
+    ppAcceptableButton.innerHTML = 'UNAVAILABLE'
+
+    if(category == 'Games') {
+        for (var item in availability) {
+            if (availability.hasOwnProperty(item)) {
+            switch(availability[item]) {
+                case 'new' : 
+                ppNewButton.className = 'pp-add-to-cart'
+                ppNewButton.innerHTML = 'Add to Cart'
+                ppNewButton.setAttribute('onClick', `addItemToCart("${GTIN}", "${item}")`)
+                break
+    
+                case 'usedExcellent' : 
+                ppExcellentButton.className = 'pp-add-to-cart'
+                ppExcellentButton.innerHTML = 'Add to Cart'
+                ppExcellentButton.setAttribute('onClick', `addItemToCart("${GTIN}", "${item}")`)
+                break
+    
+                case 'loose' : 
+                ppAcceptableButton.className = 'pp-add-to-cart'
+                ppAcceptableButton.innerHTML = 'Add to Cart'
+                ppAcceptableButton.setAttribute('onClick', `addItemToCart("${GTIN}", "${item}")`)
+                break
+            }
+            }
+        }
+    } else {
+        for (var item in availability) {
+            if (availability.hasOwnProperty(item)) {
+            switch(availability[item]) {
+                case 'new' : 
+                ppNewButton.className = 'pp-add-to-cart'
+                ppNewButton.innerHTML = 'Add to Cart'
+                ppNewButton.setAttribute('onClick', `addItemToCart("${GTIN}", "${item}")`)
+                break
+    
+                case 'usedExcellent' : 
+                ppExcellentButton.className = 'pp-add-to-cart'
+                ppExcellentButton.innerHTML = 'Add to Cart'
+                ppExcellentButton.setAttribute('onClick', `addItemToCart("${GTIN}", "${item}")`)
+                break
+    
+                case 'usedGood' : 
+                ppGoodButton.className = 'pp-add-to-cart'
+                ppGoodButton.innerHTML = 'Add to Cart'
+                ppGoodButton.setAttribute('onClick', `addItemToCart("${GTIN}", "${item}")`)
+                break
+    
+                case 'usedAcceptable' : 
+                ppAcceptableButton.className = 'pp-add-to-cart'
+                ppAcceptableButton.innerHTML = 'Add to Cart'
+                ppAcceptableButton.setAttribute('onClick', `addItemToCart("${GTIN}", "${item}")`)
+                break
+            }
+            }
+        }
+    }
+}
 //
   
 
