@@ -1,3 +1,4 @@
+
 //HTML Elements
 
 //Product Page
@@ -123,9 +124,6 @@ function loadProductPage(GTIN) {
     console.log('Loading product: ' + GTIN)
 
     //Navigation and Event Listeners
-    productPageBack.addEventListener('click', () => {
-        location.href = 'https://www.thegametree.io/shop/store'
-    })
     
     storeCartCloseModal.addEventListener('click', () => {
         $('#cart-modal').fadeOut()
@@ -141,7 +139,7 @@ function loadProductPage(GTIN) {
     storeCartCheckoutButton.addEventListener('click', () => {
         location.href = 'https://www.thegametree.io/shop/cart'
     })
-    
+
     database.collection('catalog').doc(GTIN).onSnapshot(function(product) {
         var data = product.data()
         globalProductData = data
@@ -201,7 +199,7 @@ function loadAlternateImages(mainImage, images) {
   
 function loadPricesAndAvailability(GTIN, saleData, availability) {
     ppNewPriceText.innerHTML = '$' + parseFloat(saleData.new).toFixed(2)
-    ppExcellentPriceText.innerHTML = '$' + parseFloat(saleData.usedFantastic).toFixed(2)
+    ppExcellentPriceText.innerHTML = '$' + parseFloat(saleData.usedExcellent).toFixed(2)
     ppGoodPriceText.innerHTML = '$' + parseFloat(saleData.usedGood).toFixed(2)
     ppAcceptablePriceText.innerHTML = '$' + parseFloat(saleData.usedAcceptable).toFixed(2)
 
