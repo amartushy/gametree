@@ -196,54 +196,17 @@ function loadAlternateImages(mainImage, images) {
     }
 }
   
+
+//Insert Here_________________
+
+//
   
-function loadPricesAndAvailability(GTIN, saleData, availability) {
-    ppNewPriceText.innerHTML = '$' + parseFloat(saleData.new).toFixed(2)
-    ppExcellentPriceText.innerHTML = '$' + parseFloat(saleData.usedExcellent).toFixed(2)
-    ppGoodPriceText.innerHTML = '$' + parseFloat(saleData.usedGood).toFixed(2)
-    ppAcceptablePriceText.innerHTML = '$' + parseFloat(saleData.usedAcceptable).toFixed(2)
 
-    ppNewButton.className = 'pp-unavailable'
-    ppExcellentButton.className = 'pp-unavailable'
-    ppGoodButton.className = 'pp-unavailable'
-    ppAcceptableButton.className = 'pp-unavailable'
 
-    ppNewButton.innerHTML = 'UNAVAILABLE'
-    ppExcellentButton.innerHTML = 'UNAVAILABLE'
-    ppGoodButton.innerHTML = 'UNAVAILABLE'
-    ppAcceptableButton.innerHTML = 'UNAVAILABLE'
 
-    for (var item in availability) {
-        if (availability.hasOwnProperty(item)) {
-        switch(availability[item]) {
-            case 'new' : 
-            ppNewButton.className = 'pp-add-to-cart'
-            ppNewButton.innerHTML = 'Add to Cart'
-            ppNewButton.setAttribute('onClick', `addItemToCart("${GTIN}", "${item}")`)
-            break
 
-            case 'usedFantastic' : 
-            ppExcellentButton.className = 'pp-add-to-cart'
-            ppExcellentButton.innerHTML = 'Add to Cart'
-            ppExcellentButton.setAttribute('onClick', `addItemToCart("${GTIN}", "${item}")`)
-            break
 
-            case 'usedGood' : 
-            ppGoodButton.className = 'pp-add-to-cart'
-            ppGoodButton.innerHTML = 'Add to Cart'
-            ppGoodButton.setAttribute('onClick', `addItemToCart("${GTIN}", "${item}")`)
-            break
 
-            case 'usedAcceptable' : 
-            ppAcceptableButton.className = 'pp-add-to-cart'
-            ppAcceptableButton.innerHTML = 'Add to Cart'
-            ppAcceptableButton.setAttribute('onClick', `addItemToCart("${GTIN}", "${item}")`)
-            break
-        }
-        }
-    }
-}
-  
 function loadProductMainInfo(productTitle, description, keySpecs) {
     ppProductTitle.innerHTML = productTitle
     ppProductDescription.innerHTML = description
