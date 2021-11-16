@@ -166,7 +166,7 @@ const renderRefinementList = (renderOptions, isFirstRender) => {
       case 'brand':
         globalBrand = sessionStorage.getItem("brand")
         console.log(globalBrand); 
-        
+
         if(globalBrand) {
           refine(globalBrand)
           sessionStorage.removeItem('brand')
@@ -333,6 +333,6 @@ function openProductPage(productID) {
 
   var lowerCaseID = productID.toLowerCase()
 
-  location.href = `https://www.thegametree.io/products/${lowerCaseID}`
+  window.open(`https://www.thegametree.io/products/${lowerCaseID}`)
 
 }
