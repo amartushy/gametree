@@ -20,12 +20,21 @@ window.onload = () => {
     if (user) {
         // Customer is logged in.
         globalUserId = user.uid
-
+        get()
     } else {
         // No user is logged in.
         console.log('No authenticated user')
     }
   })
+}
+
+function get () {
+  var brand = sessionStorage.getItem("brand")
+
+  console.log(brand); 
+
+  sessionStorage.removeItem("brand");
+  // sessionStorage.clear();
 }
 
 //Algolia  
