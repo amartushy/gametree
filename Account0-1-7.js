@@ -280,7 +280,7 @@ function showUsersProductDetails(orderID, data) {
         var currentDate = new Date()
         var currentDateSeconds = currentDate.getTime() / 1000
 
-        const returnDate = purchaseDate + 1209600
+        const returnDate = purchaseDate + 1209600*5
         const returnDateObject = getFormattedDate(returnDate)
 
         productReturnText.innerHTML = `Returnable until ${returnDateObject[0]} ${returnDateObject[1]}, ${returnDateObject[2]}`
@@ -318,8 +318,8 @@ function requestReturn(orderID, productData, orderData) {
     console.log(returnDict)
     var returnID = createID(8)
     database.collection('returns').doc().set(returnDict).then( () => {
-        var message = `Return Requested %0D%0ARequest ID: ${returnID} %0D%0ATotal: $${returnDict.price} %0D%0ACustomer Email: ${returnDict.customerEmail} %0D%0A%0D%0AProduct Name: ${returnDict.productName}`
-    
+        var message = `Return Requested %0D%0ARequest ID: ${returnID} %0D%0ACustomer Email: ${returnDict.customerEmail} `
+        message += `%0D%0A%0D%0AProduct Name: ${returnDict.productName} %0D%0ATotal: $${returnDict.price} `
         sendSMSTo('4582108156', message)
     })
 }
