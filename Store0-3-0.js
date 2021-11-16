@@ -12,29 +12,21 @@ showMoreGenres.style.display = 'none'
 var database = firebase.firestore()
 var globalProductData
 var globalUserId
-
+var globalBrand
 
 window.onload = () => {
+  globalBrand = sessionStorage.getItem("brand")
 
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
         // Customer is logged in.
         globalUserId = user.uid
-        get()
+
     } else {
         // No user is logged in.
         console.log('No authenticated user')
     }
   })
-}
-
-function get () {
-  var brand = sessionStorage.getItem("brand")
-
-  console.log(brand); 
-
-  sessionStorage.removeItem("brand");
-  // sessionStorage.clear();
 }
 
 //Algolia  
@@ -173,6 +165,14 @@ const renderRefinementList = (renderOptions, isFirstRender) => {
     switch (widgetParams.attribute) {
 
       case 'brand':
+        if(globalBrand) {
+          refine(globalBrand)
+          sessionStorage.removeItem('brand')
+
+          var brand = sessionStorage.getItem("brand")
+
+          console.log(brand); 
+        }
         showMoreBrands.style.display = 'flex'
         showMoreBrands.addEventListener('click', () => {
           toggleShowMore()
