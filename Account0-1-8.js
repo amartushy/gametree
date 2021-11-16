@@ -319,7 +319,7 @@ function requestReturn(orderID, productData, orderData) {
     var returnID = createID(8)
     database.collection('returns').doc().set(returnDict).then( () => {
         var message = `Return Requested %0D%0ARequest ID: ${returnID} %0D%0ACustomer Email: ${returnDict.customerEmail} `
-        message += `%0D%0A%0D%0AProduct Name: ${returnDict.productName} %0D%0ATotal: $${returnDict.price} `
+        message += `%0D%0A%0D%0AProduct Name: ${returnDict.productData.productName} %0D%0ATotal: $${returnDict.productData.price} `
         sendSMSTo('4582108156', message)
     })
 }
