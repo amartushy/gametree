@@ -15,7 +15,6 @@ var globalUserId
 var globalBrand
 
 window.onload = () => {
-  globalBrand = sessionStorage.getItem("brand")
 
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
@@ -165,13 +164,12 @@ const renderRefinementList = (renderOptions, isFirstRender) => {
     switch (widgetParams.attribute) {
 
       case 'brand':
+        globalBrand = sessionStorage.getItem("brand")
+        console.log(globalBrand); 
+        
         if(globalBrand) {
           refine(globalBrand)
           sessionStorage.removeItem('brand')
-
-          var brand = sessionStorage.getItem("brand")
-
-          console.log(brand); 
         }
         showMoreBrands.style.display = 'flex'
         showMoreBrands.addEventListener('click', () => {
