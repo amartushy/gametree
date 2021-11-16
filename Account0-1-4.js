@@ -204,7 +204,7 @@ function buildUsersProducts(orderID, productData, deliveredDate) {
         createDOMElement('div', 'users-product-pending-text', 'Pending Delivery', usersProductBlock)
     }
 
-    usersProductBlock.setAttribute('onClick', `showUsersProductDetails("${orderID}")`)
+    usersProductBlock.setAttribute('onClick', `showUsersProductDetails("${orderID}", "${JSON.stringify(productData)}")`)
 }
 
 
@@ -220,10 +220,9 @@ function showAllItemsInOrder(orderID) {
 }
 
 
-function showUsersProductDetails(orderID) {
-    //TODO: All of it
-    console.log(`Showing product details ${orderID}`)
-}
+//Insert here
+
+///
 
 
 
@@ -546,14 +545,6 @@ function deleteUsersAddress(userID, address) {
 
     database.collection('users').doc(userID).update(updateDict)
 }
-
-
-
-
-
-
-
-
 
 
 
