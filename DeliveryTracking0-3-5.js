@@ -66,15 +66,17 @@ window.onload = () => {
 
                     globalOrderID = doc.id
 
-                    if(globalUserID == orderData.deliveryInfo.driverID) {
-                        isUserDriver = true
-                        watchDriverLocation()
-                        updateDatabaseWithDriverLocation()
-
-                        markDeliveredButton.style.display = 'flex'
-                        markDeliveredButton.addEventListener('click', () => {
-                            markOrderDelivered(orderData)
-                        })
+                    if(orderData.deliveryInfo) {
+                        if(globalUserID == orderData.deliveryInfo.driverID) {
+                            isUserDriver = true
+                            watchDriverLocation()
+                            updateDatabaseWithDriverLocation()
+    
+                            markDeliveredButton.style.display = 'flex'
+                            markDeliveredButton.addEventListener('click', () => {
+                                markOrderDelivered(orderData)
+                            })
+                        }
                     }
 
                     loadDeliveryPage(doc.id, orderData)
