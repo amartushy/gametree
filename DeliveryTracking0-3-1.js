@@ -1,6 +1,9 @@
 
 
 //HTML Elements
+const loadingScreen = document.getElementById('loading-screen')
+loadingScreen.style.display = 'flex'
+
 const driverInfoContainer = document.getElementById('driver-info-container')
 const estimatedDeliveryTime = document.getElementById('estimated-delivery-time')
 const markDeliveredButton = document.getElementById('mark-delivered-button')
@@ -49,13 +52,13 @@ window.onload = () => {
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
             globalUserID = user.uid 
+            var orderID = sessionStorage.getItem('orderID')
 
-            var ordersRef = database.collection('orders').where('customerID', '==', globalUserID).where('orderStatus', 'in', ['processing', 'in-transit'])
-
-            ordersRef.get().then((querySnapshot) => {
+            if(orderID) {
+                sessionStorage.removeItem('orderID')
                 
-
-                querySnapshot.forEach((doc) => {       
+                database.collection('orders').doc(orderID).get().then( (doc) => {
+                
                     let orderData = doc.data()
                     getTravelTime()
 
@@ -74,9 +77,12 @@ window.onload = () => {
 
                     loadDeliveryPage(doc.id, orderData)
 
-                    
-                });
-            })
+                    loadingScreen.style.display = 'none'
+                })
+            } else {
+                //No order selected
+            }
+
         } else {
             location.href = 'https://www.thegametree.io/login'
         }
@@ -411,4 +417,49 @@ function markOrderDelivered(orderData) {
         }
     })
 
+}
+
+
+
+
+function getFormattedDate(timeEpoch) {
+    var time = parseFloat(timeEpoch)
+    var d = new Date(0);
+    d.setUTCSeconds(time);
+  
+    var month = d.toLocaleDateString("en-US", {month: "short"});
+    var dayInt = d.toLocaleDateString("en-US", {day: "numeric"});
+    var yearLong = d.toLocaleDateString("en-US", {year: "numeric"});
+
+    var suffix
+    if (dayInt == 1 || dayInt == 21 ||dayInt == 31) {
+        suffix = "st"
+    } else if( dayInt == 2 || dayInt == 22) {
+        suffix = "nd"
+    } else if (dayInt == 3 || dayInt == 23) {
+        suffix = "rd"
+    } else {
+        suffix = "th"
+    }
+    dayWithSuffix = dayInt + suffix
+
+    var timeHour = d.getHours()
+    var ampm = 'am'
+    var timeMinutes = '00'
+
+    if (timeHour > 12) {
+        timeHour = timeHour - 12
+        ampm = 'pm'
+    }
+    var minutes = d.getMinutes()
+
+    if (minutes > 0) {
+        if(minutes.toString().length == 1)
+        timeMinutes = d.getMinutes()
+    }
+    var timeString = timeHour + ":" + timeMinutes + ampm
+
+
+    var dateObject = [month, dayWithSuffix, yearLong, timeString]
+    return (dateObject)
 }
