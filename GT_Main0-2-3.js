@@ -97,7 +97,7 @@ function createAutocompleteResults(results) {
     
             let headerResultInfoDiv = createDOMElement('div', 'header-result-info-div', 'none', headerAutocompleteResult)
             createDOMElement('div', 'header-result-title', hit.general.productName, headerResultInfoDiv)
-            createDOMElement('div', 'header-result-price','$' + hit.salePrices.usedFantastic, headerResultInfoDiv)
+            createDOMElement('div', 'header-result-price','$' + hit.salePrices.usedExcellent, headerResultInfoDiv)
     
             if (i != 4) {
                 createDOMElement('div', 'header-autocomplete-divider', 'none', hitsContainer)
