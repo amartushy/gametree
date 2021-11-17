@@ -2,7 +2,6 @@
 
 //HTML Elements
 const loadingScreen = document.getElementById('loading-screen')
-loadingScreen.style.display = 'flex'
 
 const driverInfoContainer = document.getElementById('driver-info-container')
 const estimatedDeliveryTime = document.getElementById('estimated-delivery-time')
@@ -46,6 +45,8 @@ function CustomMarker(latlng, map, imageSrc) {
 
 
 window.onload = () => {
+    loadingScreen.style.display = 'flex'
+    
     initializeMap()
     markDeliveredButton.style.display = 'none'
 
@@ -56,7 +57,7 @@ window.onload = () => {
 
             if(orderID) {
                 sessionStorage.removeItem('orderID')
-                
+
                 database.collection('orders').doc(orderID).get().then( (doc) => {
                 
                     let orderData = doc.data()
