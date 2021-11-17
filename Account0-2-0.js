@@ -209,8 +209,11 @@ function buildUsersProducts(orderID, productData, deliveredDate) {
 
 
 function showOrderTracking(orderID) {
+    console.log(orderID)
     sessionStorage.setItem("orderID", orderID);
-    location.href = 'https://www.thegametree.io/track-delivery'
+    var orderID = sessionStorage.getItem('orderID')
+    console.log(orderID)
+    //location.href = 'https://www.thegametree.io/track-delivery'
 }
 
 
