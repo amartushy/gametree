@@ -133,6 +133,14 @@ const renderCategoryMenu = (renderOptions, isFirstRender) => {
     });
   })
 
+  if(isFirstRender) {
+    var sessionCategory = sessionStorage.getItem('category')
+
+    if(sessionCategory) {
+      refine(sessionCategory)
+      sessionStorage.removeItem('category')
+    }
+  }
 };
 
 
