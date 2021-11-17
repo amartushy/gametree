@@ -46,7 +46,7 @@ function CustomMarker(latlng, map, imageSrc) {
 
 window.onload = () => {
     loadingScreen.style.display = 'flex'
-    
+
     initializeMap()
     markDeliveredButton.style.display = 'none'
 
@@ -54,7 +54,8 @@ window.onload = () => {
         if (user) {
             globalUserID = user.uid 
             var orderID = sessionStorage.getItem('orderID')
-
+            console.log(orderID)
+            
             if(orderID) {
                 sessionStorage.removeItem('orderID')
 
