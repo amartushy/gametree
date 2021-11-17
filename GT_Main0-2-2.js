@@ -20,24 +20,16 @@ firebase.auth().onAuthStateChanged(function(user) {
             if(isAdmin) {
     
                 var adminNavElement = document.getElementById("admin-nav-element");
-                console.log(adminNavElement)
+
                 if(adminNavElement) {
                     adminNavElement.style.display = 'flex'
-                } else {
-                    console.log('no element')
                 }
             }
         })
-
-    } else {
-        //No authenticated user, hide cart items icon
-        console.log('No user logged in')
     }
 })
 
 function beginListeningForUpdates(userID) {
-    console.log('listening')
-    console.log(userID)
 
     firebase.firestore().collection('users').doc(userID).onSnapshot( (doc) => {
         let data = doc.data()
@@ -86,7 +78,6 @@ const headerSearch = instantsearch({
 });
 
 function createAutocompleteResults(results) {
-    console.log(results)
 
     let hitsContainer = document.createElement('div')
     hitsContainer.className = 'header-autocomplete-results'
@@ -161,6 +152,16 @@ headerSearch.addWidgets([
 
 headerSearch.start()
 
+
+//Hide results if clicked outside
+window.addEventListener('click', function(e){   
+    if (document.getElementById('header-autocomplete-results').contains(e.target)){
+      // Clicked in box
+    } else{
+      // Clicked outside the box
+      $('#header-autocomplete-results').fadeOut()
+    }
+});
 
 function headerOpenProductPage(productID) {
 
