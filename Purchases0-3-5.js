@@ -1,6 +1,10 @@
 //Initialize database
 var database = firebase.firestore()
 
+//HTML Elements
+const purchasesPage = document.getElementById('hidePurchases')
+purchasesPage.classList.add('hidePurchases')
+
 //FILTERS
 var tabFilters = ["in transit", "processing", "listed", "needs repair", "sold", "itemized"]
 var purchaseFilters = "All prices"
@@ -721,4 +725,5 @@ function addItemToPurchase(GTIN, productTitle, productImage) {
       })
     }
 }
+
 
