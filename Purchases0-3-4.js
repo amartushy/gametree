@@ -437,7 +437,7 @@ function buildInfoBlock(purchaseID, index) {
 		    addItemContainer.setAttribute('onClick', `showAITPModal("${purchaseID}", "${data.time}")`)
         addItemContainer.appendChild(addItemText)
 
-        const printInvoiceButton = createDOMElement('div', 'print-purchase-button', 'Print Purchase Invoice', purchaseBlockBottomMiddle)
+        const printInvoiceButton = createDOMElement('div', 'purchase-invoice-button', 'Print Purchase Invoice', purchaseBlockBottomMiddle)
         printInvoiceButton.setAttribute('onClick', `loadPurchaseInvoiceScreen("${purchaseID}")`)
         //Right Container
         let purchaseBlockBottomRight = document.createElement('div')
@@ -721,3 +721,4 @@ function addItemToPurchase(GTIN, productTitle, productImage) {
       })
     }
 }
+
