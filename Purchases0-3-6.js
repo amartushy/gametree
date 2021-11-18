@@ -2,7 +2,7 @@
 var database = firebase.firestore()
 
 //HTML Elements
-const purchasesPage = document.getElementById('hidePurchases')
+const purchasesPage = document.getElementById('purchases-page')
 purchasesPage.classList.add('hidePurchases')
 
 //FILTERS
