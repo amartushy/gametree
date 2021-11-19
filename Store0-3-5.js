@@ -67,7 +67,7 @@ function createStoreSearchResults(results) {
         createDOMElement('div', 'store-product-brand', hit.platform, storeProductInfo)
 
         var storeAvailabilityDiv = createDOMElement('div', 'store-availability-div', 'none', storeProductBackground)
-        createDOMElement('div', 'store-product-price', '$' + hit.salePrices.new, storeAvailabilityDiv)
+        createDOMElement('div', 'store-product-price', '$' + hit.salePrices.usedExcellent, storeAvailabilityDiv)
 
         if(hit.isAvailable) {
           createDOMElement('div', 'store-product-available', 'Available', storeAvailabilityDiv)
