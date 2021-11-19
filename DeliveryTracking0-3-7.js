@@ -60,7 +60,6 @@ window.onload = () => {
             console.log(orderID)
 
             if(orderID) {
-                sessionStorage.removeItem('orderID')
 
                 database.collection('orders').doc(orderID).get().then( (doc) => {
                 
