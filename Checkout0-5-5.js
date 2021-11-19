@@ -222,6 +222,9 @@ window.onload = () => {
 }
 
 function loadInitialCheckoutState() {
+    //TODO: Add payment options
+    document.getElementById('payment-options-block').style.display = 'none'
+
     backToCartButton.addEventListener('click', () => {
         location.href = 'https://www.thegametree.io/shop/cart'
     })
@@ -331,22 +334,12 @@ function loadInitialCheckoutState() {
         })
     })
 
-    placeOrderButton.addEventListener('click', () => {
-
-        if(checkForBillingInfoErrors()) {
-            submitOrderAndProcessPayment()
-
-        } else {
-            showErrorMessage("There's an issue with your billing information")
-        }
-    })
-
     checkoutTrackOrderButton.addEventListener('click', () => {
         location.href = 'https://www.thegametree.io/account'
     })
 
     checkoutAccountCreateButton.addEventListener('click', () => {
-        location.href = 'https://www.thegametree.io/account-creation'
+        location.href = 'https://www.thegametree.io/track-delivery'
     })
 }
 
@@ -725,9 +718,11 @@ function displayAndUpdateBillingAddress() {
 
 
 
-function submitOrderAndProcessPayment() {
+function submitOrderAndProcessPayment(braintreeID) {
     console.log(checkoutDict)
     console.log(globalUserId)
+
+    sessionStorage.setItem('orderID', braintreeID)
 
     //Load Processing Screen
     checkoutCheckMark.style.display = 'none'
@@ -741,9 +736,8 @@ function submitOrderAndProcessPayment() {
 
     var promises = []
 
-    //TODO: Check Payment Valididty
     //var paymentPromise
-    var transactionID = createID(8)
+    var transactionID = braintreeID
 
     //Update Global Orders
     var usersPromise = database.collection('orders').doc(transactionID).set(checkoutDict).then(function() {
@@ -891,9 +885,7 @@ braintree.client.create({
             return;
         }
 
-        var testCheckoutButton = document.getElementById('test-checkout-button')
-
-        testCheckoutButton.addEventListener('click', function (event) {
+        placeOrderButton.addEventListener('click', function (event) {
             event.preventDefault();
 
             hostedFieldsInstance.tokenize(function (tokenizeErr, payload) {
@@ -901,10 +893,19 @@ braintree.client.create({
                     console.error(tokenizeErr);
 
                     return;
+                } else {
+
+                    if(checkForBillingInfoErrors()) {
+
+                        var nonce = payload.nonce
+                        var amount = checkoutDict.checkoutTotal
+                        checkoutWithNonceAndAmount(nonce, amount)
+
+                    } else {
+
+                        showErrorMessage("There's an issue with your billing information")
+                    }
                 }
-                var nonce = payload.nonce
-                var amount = checkoutDict.checkoutTotal
-                checkoutWithNonceAndAmount(nonce, amount)
             });
         }, false);
     })
@@ -922,7 +923,7 @@ async function checkoutWithNonceAndAmount(nonce, amount) {
 
             } else {
                 console.log('Transaction Successful:' + response)
-
+                submitOrderAndProcessPayment(response)
             }
         }
     }
