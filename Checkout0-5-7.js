@@ -920,6 +920,10 @@ async function checkoutWithNonceAndAmount(nonce, amount) {
             var response = xhttp.responseText
             console.log(response)
             if(response == 'Declined') {
+                showErrorMessage("Your financial institution declined your transaction")
+
+            } else if(response.length != 8) {
+                showErrorMessage("Something went wrong, please contact support")
 
             } else {
                 console.log('Transaction Successful:' + response)
@@ -932,9 +936,6 @@ async function checkoutWithNonceAndAmount(nonce, amount) {
 
     return(xhttp.response)
 }
-
-
-
 
 
 
