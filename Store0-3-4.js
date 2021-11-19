@@ -3,6 +3,10 @@ var showMoreBrands = document.getElementById('show-more-brands')
 var showMorePlatforms = document.getElementById('show-more-platforms')
 var showMoreGenres = document.getElementById('show-more-genres')
 
+const mobileFilterButton = document.getElementById('mobile-filter-button')
+const categoriesContainer = document.getElementById('categories-container')
+const closeFiltersMobile = document.getElementById('close-filters-mobile')
+
 showMoreBrands.style.display = 'none'
 showMorePlatforms.style.display = 'none'
 showMoreGenres.style.display = 'none'
@@ -13,6 +17,8 @@ var database = firebase.firestore()
 var globalProductData
 var globalUserId
 var globalBrand
+
+//Event Listeners and Onload
 
 window.onload = () => {
 
@@ -27,6 +33,14 @@ window.onload = () => {
     }
   })
 }
+
+mobileFilterButton.addEventListener('click', () => {
+  $('#categories-container').fadeIn()
+})
+
+closeFiltersMobile.addEventListener('click', () => {
+  $('#categories-container').fadeOut()()
+})
 
 //Algolia  
 const search = instantsearch({
