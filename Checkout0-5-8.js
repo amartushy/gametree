@@ -769,6 +769,8 @@ function submitOrderAndProcessPayment(braintreeID) {
 
             var removeItemDict = {}
             removeItemDict[`availability.${item}`] = firebase.firestore.FieldValue.delete()
+            
+            checkAndUpdateProductAvailability(cartData[item]['GTIN'])
 
             var catalogPromise = database.collection('catalog').doc(cartData[item]['GTIN']).update(removeItemDict).then(function() {
                 console.log(`Item: ${cartData[item]['GTIN']} removed with purchaseID: ${item}`)
@@ -786,6 +788,7 @@ function submitOrderAndProcessPayment(braintreeID) {
     promises.push(usersPromise, usersCartPromise, globalPromise)
 
     Promise.all(promises).then(results => {
+        
         console.log('All documents written successfully')
 
         //Notify Admins
@@ -936,6 +939,4 @@ async function checkoutWithNonceAndAmount(nonce, amount) {
 
     return(xhttp.response)
 }
-
-
 
