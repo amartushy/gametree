@@ -1,3 +1,5 @@
+
+
 //HTML Elements
 const accountHeaderMain = document.getElementById('account-header-main')
 const accountSignOutButton = document.getElementById('sign-out-button')
@@ -56,6 +58,17 @@ const addressStateError = document.getElementById('address-state-error')
 const addressZipcodeError = document.getElementById('address-zipcode-error')
 
 const submitAddressButton = document.getElementById('submit-address-button')
+
+
+//Customer Support and Referrals
+const contactSupportButton = document.getElementById('contact-support-button')
+const orderingTopicButton = document.getElementById('ordering-topic-button')
+const billingTopicButton = document.getElementById('billing-topic-button')
+const guaranteeTopicButton = document.getElementById('guarantee-topic-button')
+
+
+//Event Listeners
+
 
 //Global Variables
 var database = firebase.firestore()
@@ -185,7 +198,11 @@ function buildUpcomingOrder(orderID, orderData) {
     createDOMElement('div', 'account-text-small', `$${firstProduct.price}`, upcomingOrderItemTextContainer)
 
     const trackOrderButton = createDOMElement('div', 'track-order-button', 'TRACK ORDER', upcomingOrderContainer)
-    trackOrderButton.setAttribute('onClick', `showOrderTracking("${orderID}")`)
+    if(orderData.status == 'shipped') {
+        trackOrderButton.setAttribute('onClick', `showOrderTracking("${orderID}", "${orderData.shippingInfo.trackingProvider}")`)
+    } else {
+        trackOrderButton.setAttribute('onClick', `showOrderTracking("${orderID}")`)
+    }
 
 }
 
@@ -204,14 +221,17 @@ function buildUsersProducts(orderID, productData, deliveredDate) {
         createDOMElement('div', 'users-product-pending-text', 'Pending Delivery', usersProductBlock)
     }
 
-    usersProductBlock.setAttribute('onClick', `showUsersProductDetails("${orderID}", ${JSON.stringify(productData)})`)
+    usersProductBlock.setAttribute('onClick', `showUsersProductDetails("${orderID}")`)
 }
 
 
-function showOrderTracking(orderID) {
-    sessionStorage.setItem("orderID", `${orderID}`);
-
-    location.href = 'https://www.thegametree.io/track-delivery'
+function showOrderTracking(orderID, trackingURL) {
+    //TODO: All of it
+    if(orderStatus == 'shipped') {
+        location.href = trackingURL
+    } else {
+        location.href = 'https://www.thegametree.io/track-delivery'
+    }
 }
 
 
@@ -221,108 +241,9 @@ function showAllItemsInOrder(orderID) {
 }
 
 
-//______________________________Product and Return Modal______________________________
-const productModal = document.getElementById('product-modal')
-const closeProductModal = document.getElementById('close-product-modal')
-const productModalContainer = document.getElementById('product-modal-container')
-const productImageContainer = document.getElementById('product-image-container')
-const productTitle = document.getElementById('product-title')
-const productPurchaseDate = document.getElementById('product-purchase-date')
-const productPurchasePrice = document.getElementById('product-purchase-price')
-const productOrderNumber = document.getElementById('product-order-number')
-const productCondition = document.getElementById('product-condition')
-const productSupportButton = document.getElementById('product-support-button')
-const productReturnText = document.getElementById('product-return-text')
-const productReturnButton = document.getElementById('product-return-button')
-const returnCompletionScreen = document.getElementById('return-completion-screen')
-
-closeProductModal.addEventListener('click', () => {
-    $('#product-modal').fadeOut()
-})
-
-productSupportButton.addEventListener('click', () => {
-    location.href = 'https://www.thegametree.io/customer-service'
-})
-
-
-const conditionFormattingTable = {
-    'new' : 'Brand New',
-    'usedExcellent' : 'Used - Excellent',
-    'usedGood' : 'Used - Good',
-    'usedAcceptable' : 'Used - Acceptable',
-    'loose' : 'Disc/Cartridge Only',
-
-    'usedFantastic' : 'Used - Fantastic'
-}
-
-function showUsersProductDetails(orderID, data) {
-
-
-    returnCompletionScreen.style.display = 'none'
-    productModalContainer.style.display = 'block'
-    $('#product-modal').fadeIn().css('display', 'flex')
-    
-    productImageContainer.removeChild(productImageContainer.firstChild)
-    var productImage = createDOMElement('img', 'account-product-image', 'none', productImageContainer)
-    productImage.src = data.productImage
-
-    productTitle.innerHTML = data.productName
-
-    productPurchasePrice.innerHTML = 'Purchase Price: ' + data.price
-    productOrderNumber.innerHTML = 'Order Number: ' + orderID
-    productCondition.innerHTML = 'Condition: ' + conditionFormattingTable[data.condition]
-    database.collection('orders').doc(orderID).get().then( (doc) => {
-        const purchaseDate = doc.data().orderDate / 1000
-        const dateObject = getFormattedDate(purchaseDate)
-
-        productPurchaseDate.innerHTML = `${dateObject[0]} ${dateObject[1]}, ${dateObject[2]}`
-
-        //14 day return policy
-        var currentDate = new Date()
-        var currentDateSeconds = currentDate.getTime() / 1000
-
-        const returnDate = purchaseDate + 1209600*5
-        const returnDateObject = getFormattedDate(returnDate)
-
-        productReturnText.innerHTML = `Returnable until ${returnDateObject[0]} ${returnDateObject[1]}, ${returnDateObject[2]}`
-
-        if(returnDate > currentDateSeconds) {
-            //Return is valid
-            productReturnButton.className = 'account-support-button'
-            productReturnButton.innerHTML = 'Request Return'
-            productReturnButton.setAttribute('onClick', `requestReturn("${orderID}", ${JSON.stringify(data)}, ${JSON.stringify(doc.data())})`)
-        } else {
-            productReturnButton.className = 'account-support-button-invalid'
-            productReturnButton.innerHTML = 'Unavailable'
-        }
-    })
-}
-
-
-function requestReturn(orderID, productData, orderData) {
-    console.log(productData)
-
-    $('#product-modal-container').fadeOut(400, () => {
-        $('#return-completion-screen').fadeIn()
-    })
-
-    const returnDict = {
-        'orderID' : orderID,
-        productData,
-        'returnInitiated' : new Date() / 1000,
-        'customerID' : firebase.auth().currentUser.uid,
-        'status' : 'processing',
-        'customerEmail' : orderData.emailAddress,
-        'shippingAddress' : orderData.shippingAddress,
-        'customerPhone' : orderData.phoneNumber
-    }
-    console.log(returnDict)
-    var returnID = createID(8)
-    database.collection('returns').doc().set(returnDict).then( () => {
-        var message = `Return Requested %0D%0ARequest ID: ${returnID} %0D%0ACustomer Email: ${returnDict.customerEmail} `
-        message += `%0D%0A%0D%0AProduct Name: ${returnDict.productData.productName} %0D%0ATotal: $${returnDict.productData.price} `
-        sendSMSTo('4582108156', message)
-    })
+function showUsersProductDetails(orderID) {
+    //TODO: All of it
+    console.log(`Showing product details ${orderID}`)
 }
 
 
@@ -646,6 +567,14 @@ function deleteUsersAddress(userID, address) {
 
     database.collection('users').doc(userID).update(updateDict)
 }
+
+
+
+
+
+
+
+
 
 
 
