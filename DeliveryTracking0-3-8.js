@@ -193,7 +193,7 @@ function loadDeliveryPage(orderID, orderData) {
         deliveryAvailableBlock.style.display = 'none'
         deliveryUnavailableBlock.style.display = 'flex'
 
-        contactButton.setAttribute('href', `sms://+1${orderData.deliveryInfo.driverPhoneNumber}`)
+        contactButton.setAttribute('href', `sms://+15419919898`)
     }
 
     let addressData = orderData.shippingAddress
