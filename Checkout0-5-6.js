@@ -335,11 +335,11 @@ function loadInitialCheckoutState() {
     })
 
     checkoutTrackOrderButton.addEventListener('click', () => {
-        location.href = 'https://www.thegametree.io/account'
+        location.href = 'https://www.thegametree.io/track-delivery'
     })
 
     checkoutAccountCreateButton.addEventListener('click', () => {
-        location.href = 'https://www.thegametree.io/track-delivery'
+        location.href = 'https://www.thegametree.io/account-creation'
     })
 }
 
