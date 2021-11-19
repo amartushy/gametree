@@ -12,6 +12,10 @@ const searchSummaryItemsContainer = document.getElementById('search-summary-item
 const searchTotal = document.getElementById('search-total')
 const searchRequestButton = document.getElementById('search-request-button')
 
+const mobileFilterButton = document.getElementById('mobile-filter-button')
+const categoriesContainer = document.getElementById('categories-container')
+const closeFiltersMobile = document.getElementById('close-filters-mobile')
+
 //Event Listeners and Initial States
 showMoreBrands.style.display = 'none'
 
@@ -22,6 +26,15 @@ searchRequestButton.addEventListener('click', () => {
 
     loadRequestPickupScreen()
 })
+
+mobileFilterButton.addEventListener('click', () => {
+    $('#categories-container').fadeIn()
+  })
+  
+closeFiltersMobile.addEventListener('click', () => {
+    $('#categories-container').fadeOut()()
+})
+
 
 //Global Variables
 var database = firebase.firestore()
