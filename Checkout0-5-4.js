@@ -56,18 +56,12 @@ const continueToPaymentButton = document.getElementById('continue-to-payment-but
 //Payment Screen
 const orderPaymentFormBlock = document.getElementById('order-payment-form-block')
 const orderPaymentBack = document.getElementById('order-payment-back')
+const cardNameField = document.getElementById('card-name-field')
+const cardNameFieldError = document.getElementById('card-name-field-error')
 const creditCardField = document.getElementById('credit-card-field')
 const creditCardFieldError = document.getElementById('credit-card-field-error')
-const expirationMonthDropdown = document.getElementById('expiration-month-dropdown')
-const expirationMonthDropdownText = document.getElementById('expiration-month-dropdown-text')
-const expirationMonthDropdownChevron = document.getElementById('expiration-month-chevron')
-const expirationMonthDropdownOptions = document.getElementById('expiration-month-dropdown-options')
-const expirationMonthError = document.getElementById('expiration-month-error')
-const expirationYearDropdown = document.getElementById('expiration-year-dropdown')
-const expirationYearDropdownText = document.getElementById('expiration-year-dropdown-text')
-const expirationYearDropdownChevron = document.getElementById('expiration-year-chevron')
-const expirationYearDropdownOptions = document.getElementById('expiration-year-dropdown-options')
-const expirationYearError = document.getElementById('expiration-year-error')
+const expirationField = document.getElementById('credit-card-field')
+const expirationFieldError = document.getElementById('expiration-field-error')
 const cvcField = document.getElementById('cvc-field')
 const cvcFieldError = document.getElementById('cvc-field-error')
 const paymentOptionsButton = document.getElementById('payment-options-button')
@@ -360,12 +354,10 @@ function loadInitialCheckoutState() {
 
 function loadDropdownInitialStates() {
     shippingStateDropdown.className = 'checkout-state-dropdown'
-    expirationMonthDropdown.className = 'checkout-dropdown-button'
-    expirationYearDropdown.className = 'checkout-dropdown-button'
     billingStateDropdown.className = 'checkout-state-dropdown'
 
-    var dropdownIDs = ['shipping-state-dropdown', 'expiration-month-dropdown', 'expiration-year-dropdown', 'billing-state-dropdown']
-    var dropdownOptionIDs = ['shipping-state-dropdown-options', 'expiration-month-dropdown-options', 'expiration-year-dropdown-options', 'billing-state-dropdown-options']
+    var dropdownIDs = ['shipping-state-dropdown', 'billing-state-dropdown']
+    var dropdownOptionIDs = ['shipping-state-dropdown-options', 'billing-state-dropdown-options']
 
     dropdownIDs.forEach( (id) => {
         var dropdownOptionID = dropdownOptionIDs[dropdownIDs.indexOf(id)]
@@ -388,9 +380,6 @@ function loadDropdownInitialStates() {
     })
 
 
-    
-    const monthOptions = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
-    const yearOptions = ['2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030', '2031']
     const stateOptions = [ "AK","AL","AR","AS","AZ","CA","CO","CT","DC","DE","FL","GA","GU","HI","IA","ID","IL",
                         "IN","KS","KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM",
                         "NV","NY","OH","OK","OR","PA","PR","RI","SC","SD","TN","TX","UT","VA","VI","VT","WA","WI","WV","WY"]
@@ -415,27 +404,6 @@ function loadDropdownInitialStates() {
         billingStateDropdownOptions.appendChild(billingStateOption)
     })
 
-    monthOptions.forEach( (month) => {
-        let monthOption = document.createElement('div')
-        monthOption.className = 'dropdown-option'
-        monthOption.innerHTML = month
-        monthOption.addEventListener('click', () => {
-            expirationMonthDropdownText.innerHTML = month
-            $('#expiration-month-dropdown-options').fadeOut()
-        })
-        expirationMonthDropdownOptions.appendChild(monthOption)
-    })
-
-    yearOptions.forEach( (year) => {
-        let yearOption = document.createElement('div')
-        yearOption.className = 'dropdown-option'
-        yearOption.innerHTML = year
-        yearOption.addEventListener('click', () => {
-            expirationYearDropdownText.innerHTML = year
-            $('#expiration-year-dropdown-options').fadeOut()
-        })
-        expirationYearDropdownOptions.appendChild(yearOption)
-    })
 }
 
 
@@ -709,7 +677,7 @@ function resetDeliveryInfoErrorFields() {
 
 
 function resetBillingInfoErrorFields() {
-    let errorMessagesArray = [creditCardFieldError, expirationMonthError, expirationYearError, cvcFieldError, billingFirstError, billingLastError, billingAddressError, billingCityError, billingStateError, billingZipError]
+    let errorMessagesArray = [cardNameFieldError, creditCardFieldError,expirationFieldError, cvcFieldError, billingFirstError, billingLastError, billingAddressError, billingCityError, billingStateError, billingZipError]
     let inputFieldsArray = [creditCardField, cvcField, billingFirstField, billingLastField, billingAddressField, billingCityField, billingZipField]
 
     errorMessagesArray.forEach( (errorElement) => {
@@ -801,11 +769,9 @@ function submitOrderAndProcessPayment() {
     });
 
     //Update Catalog Availability
-    
     var cartData = checkoutDict.checkoutItems
     for (let item in cartData) {
         if (cartData.hasOwnProperty(item)) {
-            checkAndUpdateProductAvailability(cartData[item]['GTIN'])
 
             var removeItemDict = {}
             removeItemDict[`availability.${item}`] = firebase.firestore.FieldValue.delete()
@@ -821,7 +787,6 @@ function submitOrderAndProcessPayment() {
 
         }
     }
-
 
 
     promises.push(usersPromise, usersCartPromise, globalPromise)
@@ -872,6 +837,100 @@ function submitOrderAndProcessPayment() {
 
 
 
+
+
+
+
+//Braintree
+braintree.client.create({
+    authorization: 'sandbox_gp8zdny2_63fm4zhyh7dy6qzr'
+    }, function (clientErr, clientInstance) {
+    if (clientErr) {
+        console.error(clientErr);
+        return;
+    }
+
+    // This example shows Hosted Fields, but you can also use this
+    // client instance to create additional components here, such as
+    // PayPal or Data Collector.
+
+    braintree.hostedFields.create({
+        client: clientInstance,
+        styles: {
+            'input': {
+                'font-size': '14px'
+            },
+            'input.invalid': {
+                'color': '#ec7764'
+            },
+            'input.valid': {
+                'color': '#addccb'
+            }
+        },
+        fields: {
+            cardholderName: {
+                selector: '#card-name-field',
+                placeholder: 'Name as it appears on your card'
+            },
+            number: {
+                selector: '#credit-card-field',
+                placeholder: '4111 1111 1111 1111'
+            },
+            cvv: {
+                selector: '#cvc-field',
+                placeholder: '###'
+            },
+            expirationDate: {
+                selector: '#expiration-field',
+                placeholder: 'MM/YYYY'
+            }
+        }
+    }, function (hostedFieldsErr, hostedFieldsInstance) {
+        if (hostedFieldsErr) {
+            console.error(hostedFieldsErr);
+            return;
+        }
+
+        var testCheckoutButton = document.getElementById('test-checkout-button')
+
+        testCheckoutButton.addEventListener('click', function (event) {
+            event.preventDefault();
+
+            hostedFieldsInstance.tokenize(function (tokenizeErr, payload) {
+                if (tokenizeErr) {
+                    console.error(tokenizeErr);
+
+                    return;
+                }
+                var nonce = payload.nonce
+                var amount = checkoutDict.checkoutTotal
+                checkoutWithNonceAndAmount(nonce, amount)
+            });
+        }, false);
+    })
+})
+
+async function checkoutWithNonceAndAmount(nonce, amount) {
+    var xhttp = new XMLHttpRequest();
+    var herokuURL = "https://gametree-web.herokuapp.com/checkoutWithNonceAndAmount/"+nonce+"/"+amount
+            
+    xhttp.onreadystatechange = function() {
+        if (xhttp.readyState == XMLHttpRequest.DONE) {
+            var response = xhttp.responseText
+            console.log(response)
+            if(response == 'Declined') {
+
+            } else {
+                console.log('Transaction Successful:' + response)
+
+            }
+        }
+    }
+    xhttp.open("GET", herokuURL, true);
+    xhttp.send();
+
+    return(xhttp.response)
+}
 
 
 
