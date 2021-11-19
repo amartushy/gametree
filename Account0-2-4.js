@@ -198,7 +198,7 @@ function buildUpcomingOrder(orderID, orderData) {
     createDOMElement('div', 'account-text-small', `$${firstProduct.price}`, upcomingOrderItemTextContainer)
 
     const trackOrderButton = createDOMElement('div', 'track-order-button', 'TRACK ORDER', upcomingOrderContainer)
-    if(orderData.status == 'shipped') {
+    if(orderData.orderStatus == 'shipped') {
         trackOrderButton.setAttribute('onClick', `showOrderTracking("${orderID}", "${orderData.shippingInfo.trackingProvider}")`)
     } else {
         trackOrderButton.setAttribute('onClick', `showOrderTracking("${orderID}")`)
@@ -685,4 +685,3 @@ function verifyPasswordFields() {
         return true
     }
 }
-
