@@ -111,7 +111,6 @@ updateSalePrices.addEventListener('click', () => {
             }
             xhttp.open("GET", priceChartingURL, true);
             xhttp.send();
-
         })
     })
 })
@@ -121,12 +120,12 @@ updateSalePrices.addEventListener('click', () => {
 //Helper functions
 function downloadProductsCSV() {
     const rows = [
-        ["ProductID", "Product Name", "URL"]
+        ["Product Name", "GTIN", 'Pricecharting ID', "Platform", "Webflow URL", 'Product Image',]
     ];
     database.collection('catalog').get().then( (querySelector) => {
         querySelector.forEach ( (doc) => {
             var data = doc.data()
-            var productRow = [doc.id, data.general.productName, doc.id]
+            var productRow = [data.productName, doc.id, data.priceChartingID, doc.platform, doc.id, data.productImage]
             rows.push(productRow)
         })
 
@@ -162,3 +161,71 @@ function roundToNearestCent(price) {
         return Math.round( price / 100 * 2 )/2 - 0.01
     }
 }
+
+
+
+
+
+
+
+
+// let uploadCSV = document.getElementById('csvUpload');
+// uploadCSV.addEventListener('change', function() {
+
+//     if (this.files && this.files[0]) {
+  
+//         var myFile = this.files[0];
+//         var reader = new FileReader();
+        
+//         reader.addEventListener('load', function (e) {
+            
+//             let csvdata = e.target.result; 
+//             readCSV(csvdata); // calling function for parse csv data 
+//         });
+        
+//         reader.readAsBinaryString(myFile);
+//     }
+// })
+
+
+// document.getElementById('update-purchases').addEventListener('click', () => {
+//     uploadCSV.click()
+// })
+
+
+
+// /*------- Method for parse csv data and display --------------*/
+// function readCSV(data) {
+
+//     let parsedata = [];
+
+//     let newLinebrk = data.split("\n");
+//     for(let i = 0; i < newLinebrk.length; i++) {
+//         var itemArray = newLinebrk[i].split(",")
+
+//         var purchaseID = String(itemArray[1]).substring(0,8)
+
+//         var itemDict = {
+//             'ebayTitle' : itemArray[0],
+//             'status': 'active'
+//         }
+//         var updateDict = {}
+//         updateDict[`items.${createID(4)}`] = itemDict
+//         console.log(purchaseID)
+//         if(purchaseID && purchaseID != 'NO LABEL') {
+//             database.collection('purchases').doc(purchaseID).update(updateDict)
+//         }
+//     }
+// }
+
+
+  
+// var updateDatabase = document.getElementById('update-database')
+// updateDatabase.addEventListener('click', () => {
+//     database.collection('purchases').get().then( (querySelectorAll) => {
+//         querySelectorAll.forEach( (purchase) => {
+//             var ID = purchase.id
+//             database.collection('purchases').doc(ID).update( {'items' : {}})
+//         })
+//     })
+// })
