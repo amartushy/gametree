@@ -227,7 +227,7 @@ function buildUsersProducts(orderID, productData, deliveredDate) {
 
 function showOrderTracking(orderID, trackingURL) {
     //TODO: All of it
-    if(orderStatus == 'shipped') {
+    if(trackingURL) {
         location.href = trackingURL
     } else {
         location.href = 'https://www.thegametree.io/track-delivery'
