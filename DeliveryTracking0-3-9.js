@@ -208,7 +208,7 @@ function loadDeliveryPage(orderID, orderData) {
 
         } else {
 
-            driverProfilePhoto = 'https://firebasestorage.googleapis.com/v0/b/gametree-43702.appspot.com/o/GT-Logo.png?alt=media&token=4b4ceb87-9070-4648-b39e-120330e6a585'
+            driverProfilePhoto = 'https://firebasestorage.googleapis.com/v0/b/gametree-43702.appspot.com/o/GT-Logo-White.png?alt=media&token=30f96572-44bf-43c8-9b3b-136eccb6ffc3'
             driverLatLng = { lat: 44.049720, lng: -123.093170}
 
             drawDriverMarker(driverLatLng)
