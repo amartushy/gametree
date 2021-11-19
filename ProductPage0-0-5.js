@@ -130,10 +130,7 @@ function loadProductPage(GTIN) {
     })
     
     storeCartContinueButton.addEventListener('click', () => {
-        $('#product-page').fadeOut()
-        $('#cart-modal').fadeOut(400, () => {
-            $('#store-page').fadeIn()
-        })
+        location.href = 'https://thegametree.io/shop/store'
     })
     
     storeCartCheckoutButton.addEventListener('click', () => {
