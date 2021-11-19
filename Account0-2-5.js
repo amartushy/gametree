@@ -72,6 +72,7 @@ const guaranteeTopicButton = document.getElementById('guarantee-topic-button')
 
 //Global Variables
 var database = firebase.firestore()
+var globalUserID
 
 //Onload
 window.onload = () => {
@@ -79,7 +80,8 @@ window.onload = () => {
         if (user) {
             database.collection('users').doc(user.uid).get().then(function(doc) {
                 let data = doc.data()
-
+                globalUserID = user.uid
+                
                 loadAccountPage(user.uid, data)
 
                 accountHeaderMain.innerHTML = `Welcome back, ${getFirstName(data.name)}`
@@ -124,7 +126,7 @@ function loadProductsAndOrders(userID, userData) {
     var hasUpcomingOrders = false
     var hasPastOrders = false
 
-    database.collection('users').doc(userID).collection('orders').get().then((querySnapshot) => {
+    database.collection('orders').where('customerID', '==', globalUserID).get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             hasPastOrders = true
 
