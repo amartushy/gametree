@@ -81,7 +81,7 @@ window.onload = () => {
             database.collection('users').doc(user.uid).get().then(function(doc) {
                 let data = doc.data()
                 globalUserID = user.uid
-                
+
                 loadAccountPage(user.uid, data)
 
                 accountHeaderMain.innerHTML = `Welcome back, ${getFirstName(data.name)}`
@@ -229,6 +229,7 @@ function buildUsersProducts(orderID, productData, deliveredDate) {
 
 function showOrderTracking(orderID, trackingURL) {
     //TODO: All of it
+    sessionStorage.setItem('orderID', orderID)
     if(trackingURL) {
         location.href = trackingURL
     } else {
