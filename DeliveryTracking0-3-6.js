@@ -15,6 +15,9 @@ const customerAddressCity = document.getElementById('customer-address-city')
 const customerAddressNumber = document.getElementById('customer-address-number')
 const customerNotifications = document.getElementById('customer-notifications')
 
+const deliveryAvailableBlock = document.getElementById('delivery-available-block')
+const deliveryUnavailableBlock = document.getElementById('delivery-unavailable-block')
+const contactButton = document.getElementById('contact-button')
 const deliveryOrderDate = document.getElementById('delivery-order-date')
 const deliveryOrderNumber = document.getElementById('delivery-order-number')
 const deliveryItemsArea = document.getElementById('delivery-items-area')
@@ -65,6 +68,7 @@ window.onload = () => {
                     getTravelTime()
 
                     globalOrderID = doc.id
+
 
                     if(orderData.deliveryInfo) {
                         if(globalUserID == orderData.deliveryInfo.driverID) {
@@ -170,6 +174,9 @@ function loadDeliveryPage(orderID, orderData) {
         driverInfoContainer.removeChild(driverInfoContainer.firstChild)
     }
     if(orderData.deliveryInfo) {
+        deliveryAvailableBlock.style.display = 'flex'
+        deliveryUnavailableBlock.style.display = 'none'
+
         const driverPhotoElement = createDOMElement('img', 'driver-photo', 'none', driverInfoContainer)
         driverPhotoElement.src = orderData.deliveryInfo.driverPhoto 
         const driverInfoDiv = createDOMElement('div', 'driver-info-div', 'none', driverInfoContainer )
@@ -182,6 +189,12 @@ function loadDeliveryPage(orderID, orderData) {
             contactDriverButton.setAttribute('href', `sms://+1${orderData.deliveryInfo.driverPhoneNumber}`)
         }
         contactDriverButton.setAttribute('style', 'text-decoration:none')
+
+    } else {
+        deliveryAvailableBlock.style.display = 'none'
+        deliveryUnavailableBlock.style.display = 'flex'
+
+        contactButton.setAttribute('href', `sms://+1${orderData.deliveryInfo.driverPhoneNumber}`)
     }
 
     let addressData = orderData.shippingAddress
