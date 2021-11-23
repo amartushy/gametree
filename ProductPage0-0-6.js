@@ -406,12 +406,12 @@ function loadDetailsAndSpecs() {
 
     let specsHeader = createDOMElement('div', 'pp-subsection-main-header', 'Specifications', ppSubsectionContainer)
 
-    if (globalProductData.category == 'game') {
+    if (globalProductData.category == 'Games') {
         createSpecificationsBlock('Key Specs', 'keySpecs')
         createSpecificationsBlock('General', 'general')
         createSpecificationsBlock('Game Details', 'gameDetails')
 
-    } else if (globalProductData.category == 'console') {
+    } else if (globalProductData.category == 'Consoles') {
         createSpecificationsBlock('Key Specs', 'keySpecs')
         createSpecificationsBlock('General', 'general')
         createSpecificationsBlock('Features', 'features')
