@@ -474,24 +474,23 @@ function buildSubPurchases(purchaseID, DOMElement) {
 		DOMElement.removeChild(DOMElement.firstChild)
 	}
 
-    //TODO: Loop through sub purchase collection
-    database.collection("purchases").doc(purchaseID).collection("subPurchases").get().then(function(subpurchases) {
+  database.collection("purchases").doc(purchaseID).collection("items").get().then(function(subpurchases) {
 
-        subpurchases.forEach(function(doc)  {
-            var data = doc.data()
-            let subPurchaseArray = [doc.id, data.productTitle, data.purchasePrice, data.status, data.revenue]
-            let purchaseItemizationBlock = document.createElement('div')
-            purchaseItemizationBlock.setAttribute('class', 'purchase-itemization-block')
-            DOMElement.appendChild(purchaseItemizationBlock)
+      subpurchases.forEach(function(doc)  {
+          var data = doc.data()
+          let subPurchaseArray = [doc.id, data.productTitle, data.purchasePrice, data.status, data.revenue]
+          let purchaseItemizationBlock = document.createElement('div')
+          purchaseItemizationBlock.setAttribute('class', 'purchase-itemization-block')
+          DOMElement.appendChild(purchaseItemizationBlock)
 
-            for (i=0; i<5; i++) {
-                let itemizationSubtext = document.createElement('div')
-                itemizationSubtext.setAttribute('class', 'itemization-subtext')
-                itemizationSubtext.innerHTML = subPurchaseArray[i]
-                purchaseItemizationBlock.appendChild(itemizationSubtext)
-            }
-        })
-    })
+          for (i=0; i<5; i++) {
+              let itemizationSubtext = document.createElement('div')
+              itemizationSubtext.setAttribute('class', 'itemization-subtext')
+              itemizationSubtext.innerHTML = subPurchaseArray[i]
+              purchaseItemizationBlock.appendChild(itemizationSubtext)
+          }
+      })
+  })
 }
 
 
@@ -686,7 +685,7 @@ function addItemToPurchase(GTIN, productTitle, productImage) {
           'revenue' : 0,
           'status' : 'processing'
         }
-        var subPurchasePromise = database.collection('purchases').doc(globalAITPID).collection('subPurchases').doc(newID).set(subPurchaseDict).then(function() {
+        var subPurchasePromise = database.collection('purchases').doc(globalAITPID).collection('items').doc(newID).set(subPurchaseDict).then(function() {
           console.log('Sub-Purchase successfully updated')
         }).catch(function(error) {
           showErrorMessage(error)
@@ -724,6 +723,83 @@ function addItemToPurchase(GTIN, productTitle, productImage) {
         })
       })
     }
+}
+
+
+
+
+
+
+//Purchase Invoices
+//HTML Elements
+const purchaseInvoiceScreen = document.getElementById('purchase-invoice-screen')
+purchaseInvoiceScreen.classList.add('printPurchaseInvoice')
+
+const PIName = document.getElementById('pi-name')
+const PIAddress1 = document.getElementById('pi-address1')
+const PIAddress2 = document.getElementById('pi-address2')
+const PICityStateZip = document.getElementById('pi-city-state-zip')
+
+const PIPurchaseID = document.getElementById('pi-purchase-id')
+const PIDate = document.getElementById('pi-date')
+const PIItemsArea = document.getElementById('pi-items-area')
+
+const PISubtotal = document.getElementById('pi-subtotal')
+const PIFees = document.getElementById('pi-fees')
+const PIDiscount = document.getElementById('pi-discount')
+const PITotal = document.getElementById('pi-total')
+
+
+//Global Variables
+
+function loadPurchaseInvoiceScreen(purchaseID) {
+    while(PIItemsArea.firstChild) {
+      PIItemsArea.removeChild(PIItemsArea.firstChild)
+    }
+
+    database.collection('purchases').doc(purchaseID).get().then( (doc) => {
+
+        var purchaseData = doc.data()
+
+        if(purchaseData.seller == '' || purchaseData.seller == 'Unknown') {
+          PIName.innerHTML = 'Customer #' + createID(8)
+        } else {
+          PIName.innerHTML = purchaseData.seller
+        }
+
+        var purchaseAddress = purchaseData.location['formatted_address'].split(',')
+        PIAddress1.innerHTML = purchaseAddress[0]
+        PIAddress2.style.display = 'none'
+        PICityStateZip.innerHTML = purchaseAddress[1] + ', ' + purchaseAddress[2]
+
+        PIPurchaseID.innerHTML = `PURCHASE ID: ${purchaseID}`
+        var dateObject = getFormattedDate(parseFloat(purchaseData.time) / 1000)
+        var dateString = `${dateObject[0]} ${dateObject[1]}, ${dateObject[2]} ${dateObject[3]}`
+        PIDate.innerHTML = `Purchase Date: ${dateString}`
+
+        var purchaseItems = purchaseData.items
+        for (var item in purchaseItems) {
+            if (purchaseItems.hasOwnProperty(item)) {
+                var PIItemBlock = createDOMElement('div', 'packing-slip-item-block', 'none', PIItemsArea)
+                var PITextBlock = createDOMElement('div', 'packing-slip-item-text-block', 'none', PIItemBlock)
+                if(purchaseItems[item].itemTitle) {
+                  createDOMElement('div', 'packing-slip-item-text', `${purchaseItems[item].itemTitle} - ${purchaseItems[item].condition}`, PITextBlock)
+                } else {
+                  createDOMElement('div', 'packing-slip-item-text', `${purchaseItems[item].ebayTitle}`, PITextBlock)
+                }
+                createDOMElement('div', 'packing-slip-item-text', `Item ID: ${item}`, PITextBlock)
+                createDOMElement('div', 'packing-slip-item-text-small', '', PIItemBlock)
+                createDOMElement('div', 'packing-slip-item-text-small', '1', PIItemBlock)
+            }
+        }
+
+        PISubtotal.innerHTML = '$' + parseFloat(purchaseData.purchasePrice).toFixed(2)
+        PIFees.innerHTML = '$0.00'
+        PIDiscount.innerHTML = '$0.00' 
+        PITotal.innerHTML = '$' + parseFloat(purchaseData.purchasePrice).toFixed(2)
+
+        window.print()
+    })
 }
 
 
