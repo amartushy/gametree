@@ -41,6 +41,7 @@ let atcOverviewChevron = document.getElementById('atc-overview-chevron')
 let atcOverviewLower = document.getElementById('atc-overview-lower')
 let atcBrandField = document.getElementById('atc-brand-field')
 let atcPlatformField = document.getElementById('atc-platform-field')
+let atcPriceChartingField = document.getElementById('atc-pricecharting-field')
 let atcDescriptionField = document.getElementById('atc-description-field')
 
 let atcFeaturesContainer = document.getElementById('atc-features-container')
@@ -258,6 +259,10 @@ atcBrandField.addEventListener('blur', () => {
 
 atcPlatformField.addEventListener('blur', () => {
     productObject['platform'] = atcPlatformField.value
+})
+
+atcPriceChartingField.addEventListener('blur', () => {
+    productObject['priceChartingID'] = atcPriceChartingField.value
 })
 
 atcDescriptionField.addEventListener('blur', () => {
@@ -509,6 +514,7 @@ function setATCInitialState() {
         'productImage' : '',
         'productImages' : {},
         'productName' : '',
+        'priceChartingID' : '',
         'purchasePrices' : {
             'usedAcceptable' :  0,
             'usedGood' : 0,
