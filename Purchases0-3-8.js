@@ -589,7 +589,7 @@ function createProductSearchResult(results) {
         aitpActionsWrapper.appendChild(aitpPurchasePriceField)
 
         const conditionOptions = ['Acceptable', 'Good', 'Fantastic', 'New']
-        const conditionPaths = ['usedAcceptable', 'usedGood', 'usedFantastic', 'new']
+        const conditionPaths = ['usedAcceptable', 'usedGood', 'usedExcellent', 'new']
 
         let aitpDropdown = document.createElement('select')
         aitpDropdown.className = 'aitp-dropdown'
@@ -663,8 +663,7 @@ function addItemToPurchase(GTIN, productTitle, productImage) {
     } else {
       database.collection('purchases').doc(globalAITPID).get().then(function(doc) {
         var data = doc.data()
-        var numItems = data.numItems + 1
-        let newID = `${globalAITPID}-${numItems}`
+        let newID = `${globalAITPID}-${createID(4)}`
   
         var promises = []
         //Update counter
@@ -720,6 +719,7 @@ function addItemToPurchase(GTIN, productTitle, productImage) {
           showErrorMessage(`Item successfully added to purchase: ${globalAITPID}`)
           let subPurchasesArea = document.getElementById(`sub-purchases-area-${globalAITPID}`)
           buildSubPurchases(globalAITPID, subPurchasesArea)
+          aitpCloseModal.click()
         })
       })
     }
