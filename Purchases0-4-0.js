@@ -588,7 +588,7 @@ function createProductSearchResult(results) {
         aitpPurchasePriceField.placeholder = '$00.00'
         aitpActionsWrapper.appendChild(aitpPurchasePriceField)
 
-        const conditionOptions = ['Acceptable', 'Good', 'Fantastic', 'New']
+        const conditionOptions = ['Acceptable', 'Good', 'Excellent', 'New']
         const conditionPaths = ['usedAcceptable', 'usedGood', 'usedExcellent', 'new']
 
         let aitpDropdown = document.createElement('select')
