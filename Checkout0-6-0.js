@@ -56,18 +56,12 @@ const continueToPaymentButton = document.getElementById('continue-to-payment-but
 //Payment Screen
 const orderPaymentFormBlock = document.getElementById('order-payment-form-block')
 const orderPaymentBack = document.getElementById('order-payment-back')
+const cardNameField = document.getElementById('card-name-field')
+const cardNameFieldError = document.getElementById('card-name-field-error')
 const creditCardField = document.getElementById('credit-card-field')
 const creditCardFieldError = document.getElementById('credit-card-field-error')
-const expirationMonthDropdown = document.getElementById('expiration-month-dropdown')
-const expirationMonthDropdownText = document.getElementById('expiration-month-dropdown-text')
-const expirationMonthDropdownChevron = document.getElementById('expiration-month-chevron')
-const expirationMonthDropdownOptions = document.getElementById('expiration-month-dropdown-options')
-const expirationMonthError = document.getElementById('expiration-month-error')
-const expirationYearDropdown = document.getElementById('expiration-year-dropdown')
-const expirationYearDropdownText = document.getElementById('expiration-year-dropdown-text')
-const expirationYearDropdownChevron = document.getElementById('expiration-year-chevron')
-const expirationYearDropdownOptions = document.getElementById('expiration-year-dropdown-options')
-const expirationYearError = document.getElementById('expiration-year-error')
+const expirationField = document.getElementById('credit-card-field')
+const expirationFieldError = document.getElementById('expiration-field-error')
 const cvcField = document.getElementById('cvc-field')
 const cvcFieldError = document.getElementById('cvc-field-error')
 const paymentOptionsButton = document.getElementById('payment-options-button')
@@ -228,6 +222,9 @@ window.onload = () => {
 }
 
 function loadInitialCheckoutState() {
+    //TODO: Add payment options
+    document.getElementById('payment-options-block').style.display = 'none'
+
     backToCartButton.addEventListener('click', () => {
         location.href = 'https://www.thegametree.io/shop/cart'
     })
@@ -280,8 +277,7 @@ function loadInitialCheckoutState() {
     })
 
     continueToPaymentButton.addEventListener('click', () => {
-        window.scrollTo(0, 0);
-        
+
         if (checkForDeliveryInfoErrors()) {
             if(!userHasShippingAddress) {
                 checkoutDict.shippingAddress.firstName = shippingFirstNameField.value
@@ -338,18 +334,8 @@ function loadInitialCheckoutState() {
         })
     })
 
-    placeOrderButton.addEventListener('click', () => {
-
-        if(checkForBillingInfoErrors()) {
-            submitOrderAndProcessPayment()
-
-        } else {
-            showErrorMessage("There's an issue with your billing information")
-        }
-    })
-
     checkoutTrackOrderButton.addEventListener('click', () => {
-        location.href = 'https://www.thegametree.io/account'
+        location.href = 'https://www.thegametree.io/track-delivery'
     })
 
     checkoutAccountCreateButton.addEventListener('click', () => {
@@ -361,12 +347,10 @@ function loadInitialCheckoutState() {
 
 function loadDropdownInitialStates() {
     shippingStateDropdown.className = 'checkout-state-dropdown'
-    expirationMonthDropdown.className = 'checkout-dropdown-button'
-    expirationYearDropdown.className = 'checkout-dropdown-button'
     billingStateDropdown.className = 'checkout-state-dropdown'
 
-    var dropdownIDs = ['shipping-state-dropdown', 'expiration-month-dropdown', 'expiration-year-dropdown', 'billing-state-dropdown']
-    var dropdownOptionIDs = ['shipping-state-dropdown-options', 'expiration-month-dropdown-options', 'expiration-year-dropdown-options', 'billing-state-dropdown-options']
+    var dropdownIDs = ['shipping-state-dropdown', 'billing-state-dropdown']
+    var dropdownOptionIDs = ['shipping-state-dropdown-options', 'billing-state-dropdown-options']
 
     dropdownIDs.forEach( (id) => {
         var dropdownOptionID = dropdownOptionIDs[dropdownIDs.indexOf(id)]
@@ -389,9 +373,6 @@ function loadDropdownInitialStates() {
     })
 
 
-    
-    const monthOptions = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
-    const yearOptions = ['2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030', '2031']
     const stateOptions = [ "AK","AL","AR","AS","AZ","CA","CO","CT","DC","DE","FL","GA","GU","HI","IA","ID","IL",
                         "IN","KS","KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM",
                         "NV","NY","OH","OK","OR","PA","PR","RI","SC","SD","TN","TX","UT","VA","VI","VT","WA","WI","WV","WY"]
@@ -416,27 +397,6 @@ function loadDropdownInitialStates() {
         billingStateDropdownOptions.appendChild(billingStateOption)
     })
 
-    monthOptions.forEach( (month) => {
-        let monthOption = document.createElement('div')
-        monthOption.className = 'dropdown-option'
-        monthOption.innerHTML = month
-        monthOption.addEventListener('click', () => {
-            expirationMonthDropdownText.innerHTML = month
-            $('#expiration-month-dropdown-options').fadeOut()
-        })
-        expirationMonthDropdownOptions.appendChild(monthOption)
-    })
-
-    yearOptions.forEach( (year) => {
-        let yearOption = document.createElement('div')
-        yearOption.className = 'dropdown-option'
-        yearOption.innerHTML = year
-        yearOption.addEventListener('click', () => {
-            expirationYearDropdownText.innerHTML = year
-            $('#expiration-year-dropdown-options').fadeOut()
-        })
-        expirationYearDropdownOptions.appendChild(yearOption)
-    })
 }
 
 
@@ -710,7 +670,7 @@ function resetDeliveryInfoErrorFields() {
 
 
 function resetBillingInfoErrorFields() {
-    let errorMessagesArray = [creditCardFieldError, expirationMonthError, expirationYearError, cvcFieldError, billingFirstError, billingLastError, billingAddressError, billingCityError, billingStateError, billingZipError]
+    let errorMessagesArray = [cardNameFieldError, creditCardFieldError,expirationFieldError, cvcFieldError, billingFirstError, billingLastError, billingAddressError, billingCityError, billingStateError, billingZipError]
     let inputFieldsArray = [creditCardField, cvcField, billingFirstField, billingLastField, billingAddressField, billingCityField, billingZipField]
 
     errorMessagesArray.forEach( (errorElement) => {
@@ -758,9 +718,11 @@ function displayAndUpdateBillingAddress() {
 
 
 
-function submitOrderAndProcessPayment() {
+function submitOrderAndProcessPayment(braintreeID) {
     console.log(checkoutDict)
     console.log(globalUserId)
+
+    sessionStorage.setItem('orderID', braintreeID)
 
     //Load Processing Screen
     checkoutCheckMark.style.display = 'none'
@@ -775,7 +737,7 @@ function submitOrderAndProcessPayment() {
     var promises = []
 
     //var paymentPromise
-    var transactionID = createID(8)
+    var transactionID = braintreeID
 
     //Update Global Orders
     var usersPromise = database.collection('orders').doc(transactionID).set(checkoutDict).then(function() {
@@ -800,16 +762,15 @@ function submitOrderAndProcessPayment() {
         console.error("Error writing document: ", error);
     });
 
-    //TODO: Update Inventory
-
     //Update Catalog Availability
     var cartData = checkoutDict.checkoutItems
     for (let item in cartData) {
         if (cartData.hasOwnProperty(item)) {
-            checkAndUpdateProductAvailability(cartData[item]['GTIN'])
 
             var removeItemDict = {}
             removeItemDict[`availability.${item}`] = firebase.firestore.FieldValue.delete()
+            
+            checkAndUpdateProductAvailability(cartData[item]['GTIN'])
 
             var catalogPromise = database.collection('catalog').doc(cartData[item]['GTIN']).update(removeItemDict).then(function() {
                 console.log(`Item: ${cartData[item]['GTIN']} removed with purchaseID: ${item}`)
@@ -824,10 +785,10 @@ function submitOrderAndProcessPayment() {
     }
 
 
-
     promises.push(usersPromise, usersCartPromise, globalPromise)
 
     Promise.all(promises).then(results => {
+        
         console.log('All documents written successfully')
 
         //Notify Admins
@@ -870,6 +831,7 @@ function submitOrderAndProcessPayment() {
         }
     })
 }
+
 
 
 
@@ -926,9 +888,7 @@ braintree.client.create({
             return;
         }
 
-        var testCheckoutButton = document.getElementById('test-checkout-button')
-
-        testCheckoutButton.addEventListener('click', function (event) {
+        placeOrderButton.addEventListener('click', function (event) {
             event.preventDefault();
 
             hostedFieldsInstance.tokenize(function (tokenizeErr, payload) {
@@ -936,10 +896,19 @@ braintree.client.create({
                     console.error(tokenizeErr);
 
                     return;
+                } else {
+
+                    if(checkForBillingInfoErrors()) {
+
+                        var nonce = payload.nonce
+                        var amount = checkoutDict.checkoutTotal
+                        checkoutWithNonceAndAmount(nonce, amount)
+
+                    } else {
+
+                        showErrorMessage("There's an issue with your billing information")
+                    }
                 }
-                var nonce = payload.nonce
-                var amount = checkoutDict.checkoutTotal
-                checkoutWithNonceAndAmount(nonce, amount)
             });
         }, false);
     })
@@ -954,10 +923,14 @@ async function checkoutWithNonceAndAmount(nonce, amount) {
             var response = xhttp.responseText
             console.log(response)
             if(response == 'Declined') {
+                showErrorMessage("Your financial institution declined your transaction")
+
+            } else if(response.length != 8) {
+                showErrorMessage("Something went wrong, please contact support")
 
             } else {
                 console.log('Transaction Successful:' + response)
-
+                submitOrderAndProcessPayment(response)
             }
         }
     }
@@ -966,4 +939,3 @@ async function checkoutWithNonceAndAmount(nonce, amount) {
 
     return(xhttp.response)
 }
-
