@@ -9,8 +9,10 @@ cartButton.addEventListener('click', () => {
 })
 
 
-//Check if user is an admin, load admin header option
+//Check if user is admin or anonmyous, load header options
 firebase.auth().onAuthStateChanged(function(user) {
+    const accountNavElement = document.getElementById('account-nav-element')
+
     if (user) {
 
         beginListeningForUpdates(user.uid)
@@ -25,6 +27,22 @@ firebase.auth().onAuthStateChanged(function(user) {
                     adminNavElement.style.display = 'flex'
                 }
             }
+
+            var isAnonymous = doc.data().isAnonymous
+
+            if(isAnonymous) {
+                accountNavElement.addEventListener('click', () => {
+                    location.href = 'https://www.thegametree.io/account-creation'
+                })
+            } else {
+                accountNavElement.addEventListener('click', () => {
+                    location.href = 'https://www.thegametree.io/account'
+                })
+            }
+        })
+    } else {
+        accountNavElement.addEventListener('click', () => {
+            location.href = 'https://www.thegametree.io/login'
         })
     }
 })
