@@ -548,7 +548,7 @@ $('#cart-modal').fadeIn().css('display', 'flex')
                 var itemPrice = itemData.salePrices[itemCondition]
 
                 subtotalAmount += parseFloat(itemPrice)
-                storeCartSubtotal.innerHTML = '$' + subtotalAmount
+                storeCartSubtotal.innerHTML = '$' + subtotalAmount.toFixed(2)
             })
         }
         }
