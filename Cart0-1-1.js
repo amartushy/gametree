@@ -242,7 +242,7 @@ function changeCartItem(GTIN, purchaseID) {
         if(itemCondition == 'loose') {
             changeItemGoodDiv.style.display = 'none'
 
-            if(cartridgeOnlyArray.includes(itemData.platform)) {
+            if(cartridgeOnlyArray.includes(data.platform)) {
                 changeItemAcceptableHeader.innerHTML = 'Cartridge Only'
             } else {
                 changeItemAcceptableHeader.innerHTML = 'Disc(s) Only'     
