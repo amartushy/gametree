@@ -84,14 +84,10 @@ function loadAuthUserCart(userID) {
         } else {
             //TODO: display no cart items
 
-            orderSubtotal.innerHTML = '$0.00'
-            if(orderSubtotal >= 50 ) {
-                orderShippingPrice.innerHTML = 'FREE'
-            } else {
-                orderShippingPrice.innerHTML = '$4.99'
-            }
-            orderTax.innerHTML = '$0.00'
-            orderTotal.innerHTML = '$0.00'
+            orderSubtotal.innerHTML = '$-.--'
+            orderShippingPrice.innerHTML = '$-.--'
+            orderTax.innerHTML = '$-.--'
+            orderTotal.innerHTML = '$-.--'
         }
     })
 }
@@ -160,7 +156,7 @@ function updateOrderTotal(cartItems) {
 
                 subtotalAmount += parseFloat(itemPrice)
 
-                if(orderSubtotal >= 50 ) {
+                if(subtotalAmount >= 50 ) {
                     orderShippingPrice.innerHTML = 'FREE'
                 } else {
                     orderShippingPrice.innerHTML = '$4.99'
