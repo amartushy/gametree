@@ -100,7 +100,7 @@ function buildCartItem(purchaseID, GTIN) {
 
         const itemConditionDict = {
             'new' : 'New',
-            'usedFantastic' : 'Used - Excellent',
+            'usedExcellent' : 'Used - Excellent',
             'usedGood' : 'Used - Good',
             'usedAcceptable' : 'Used - Acceptable'
         }
@@ -194,7 +194,7 @@ function changeCartItem(GTIN, purchaseID) {
 
         const itemConditionDict = {
             'new' : 'New',
-            'usedFantastic' : 'Used - Excellent',
+            'usedExcellent' : 'Used - Excellent',
             'usedGood' : 'Used - Good',
             'usedAcceptable' : 'Used - Acceptable'
         }
@@ -217,7 +217,7 @@ function changeCartItem(GTIN, purchaseID) {
         createDOMElement('div', 'cart-item-price', itemPrice, changeItemCartInfo)
 
         changeItemNewPrice.innerHTML = '$' + parseFloat(saleData.new).toFixed(2)
-        changeItemExcellentPrice.innerHTML = '$' + parseFloat(saleData.usedFantastic).toFixed(2)
+        changeItemExcellentPrice.innerHTML = '$' + parseFloat(saleData.usedExcellent).toFixed(2)
         changeItemGoodPrice.innerHTML = '$' + parseFloat(saleData.usedGood).toFixed(2)
         changeItemAcceptablePrice.innerHTML = '$' + parseFloat(saleData.usedAcceptable).toFixed(2)
       
@@ -240,7 +240,7 @@ function changeCartItem(GTIN, purchaseID) {
                 changeItemNewButton.setAttribute('onClick', `changeItemCondition("${GTIN}", "${item}", "${purchaseID}")`)
                 break
       
-              case 'usedFantastic' : 
+              case 'usedExcellent' : 
                 changeItemExcellentButton.className = 'pp-add-to-cart'
                 changeItemExcellentButton.innerHTML = 'Available'
                 changeItemExcellentButton.setAttribute('onClick', `changeItemCondition("${GTIN}", "${item}", "${purchaseID}")`)
