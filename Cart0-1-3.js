@@ -26,6 +26,7 @@ const changeItemGoodPrice = document.getElementById('change-item-good-price')
 const changeItemAcceptablePrice = document.getElementById('change-item-acceptable-price')
 const changeItemGoodDiv = document.getElementById('change-item-good-div')
 const changeItemAcceptableHeader = document.getElementById('change-item-acceptable-header')
+const changeItemExcellentHeader = document.getElementById('change-item-excellent-header')
 
 //Global Variables
 var database = firebase.firestore()
@@ -123,15 +124,18 @@ function buildCartItem(purchaseID, GTIN) {
             const cartItemInfoLeft = createDOMElement('div', 'cart-item-info-left', 'none', cartItemInfoTop)
             createDOMElement('div', 'cart-item-title', itemData.general.productName, cartItemInfoLeft)
 
-            if(itemCondition == 'loose') {
-                if(cartridgeOnlyArray.includes(itemData.platform)) {
-                    createDOMElement('div', 'cart-item-condition', 'Cartridge Only', cartItemInfoLeft)
+            if(itemData.category == 'Games') {
+                if(itemCondition == 'loose') {
+                    if(cartridgeOnlyArray.includes(itemData.platform)) {
+                        createDOMElement('div', 'cart-item-condition', 'Cartridge Only', cartItemInfoLeft)
+    
+                    } else {
+                        createDOMElement('div', 'cart-item-condition', 'Disc(s) Only', cartItemInfoLeft)
 
+                    }
                 } else {
-                    createDOMElement('div', 'cart-item-condition', 'Disc(s) Only', cartItemInfoLeft)
-
+                    createDOMElement('div', 'cart-item-condition', 'Pre-Owned', cartItemInfoLeft)
                 }
-
             } else {
                 createDOMElement('div', 'cart-item-condition', itemConditionDict[itemCondition], cartItemInfoLeft)
             }
@@ -239,21 +243,33 @@ function changeCartItem(GTIN, purchaseID) {
         changeItemNewPrice.innerHTML = '$' + parseFloat(saleData.new).toFixed(2)
         changeItemExcellentPrice.innerHTML = '$' + parseFloat(saleData.usedExcellent).toFixed(2)
 
-        if(itemCondition == 'loose') {
+        if(data.category == 'Games') {
+            changeItemExcellentHeader.innerHTML = 'Pre-Owned'
+
             changeItemGoodDiv.style.display = 'none'
             changeItemAcceptablePrice.innerHTML = '$' + parseFloat(saleData.loose).toFixed(2)
-            const itemPrice = '$' + saleData['loose']
-            createDOMElement('div', 'cart-item-price', itemPrice, changeItemCartInfo)
+
+            if(itemCondition == 'loose') {
+                const itemPrice = '$' + saleData['loose']
+                createDOMElement('div', 'cart-item-price', itemPrice, changeItemCartInfo)
+
+            } else {
+                const itemPrice = '$' + saleData['usedExcellent']
+                createDOMElement('div', 'cart-item-price', itemPrice, changeItemCartInfo)
+            }
 
             if(cartridgeOnlyArray.includes(data.platform)) {
                 changeItemAcceptableHeader.innerHTML = 'Cartridge Only'
                 createDOMElement('div', 'cart-item-condition', 'Cartridge Only', changeItemCartInfo)
+
             } else {
                 changeItemAcceptableHeader.innerHTML = 'Disc(s) Only'     
                 createDOMElement('div', 'cart-item-condition', 'Disc(s) Only', changeItemCartInfo)
             }
 
         } else {
+            changeItemExcellentHeader.innerHTML = 'Used-Excellent'
+
             createDOMElement('div', 'cart-item-condition', itemConditionDict[itemCondition], changeItemCartInfo)
             changeItemAcceptablePrice.innerHTML = '$' + parseFloat(saleData.usedAcceptable).toFixed(2)
 
