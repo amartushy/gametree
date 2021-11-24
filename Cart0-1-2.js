@@ -241,22 +241,29 @@ function changeCartItem(GTIN, purchaseID) {
 
         if(itemCondition == 'loose') {
             changeItemGoodDiv.style.display = 'none'
+            changeItemAcceptablePrice.innerHTML = '$' + parseFloat(saleData.loose).toFixed(2)
+            const itemPrice = '$' + saleData['loose']
+            createDOMElement('div', 'cart-item-price', itemPrice, changeItemCartInfo)
 
             if(cartridgeOnlyArray.includes(data.platform)) {
                 changeItemAcceptableHeader.innerHTML = 'Cartridge Only'
+                createDOMElement('div', 'cart-item-condition', 'Cartridge Only', changeItemCartInfo)
             } else {
                 changeItemAcceptableHeader.innerHTML = 'Disc(s) Only'     
+                createDOMElement('div', 'cart-item-condition', 'Disc(s) Only', changeItemCartInfo)
             }
 
         } else {
+            createDOMElement('div', 'cart-item-condition', itemConditionDict[itemCondition], changeItemCartInfo)
+            changeItemAcceptablePrice.innerHTML = '$' + parseFloat(saleData.usedAcceptable).toFixed(2)
+
+            const itemPrice = '$' + saleData[itemCondition]
+            createDOMElement('div', 'cart-item-price', itemPrice, changeItemCartInfo)
+
             changeItemGoodDiv.style.display = 'flex'
         }
 
-        const itemPrice = '$' + saleData[itemCondition]
-        createDOMElement('div', 'cart-item-price', itemPrice, changeItemCartInfo)
-
         changeItemGoodPrice.innerHTML = '$' + parseFloat(saleData.usedGood).toFixed(2)
-        changeItemAcceptablePrice.innerHTML = '$' + parseFloat(saleData.usedAcceptable).toFixed(2)
       
         changeItemNewButton.className = 'pp-unavailable'
         changeItemExcellentButton.className = 'pp-unavailable'
