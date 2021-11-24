@@ -167,7 +167,7 @@ function updateOrderTotal(cartItems) {
 
                 orderSubtotal.innerHTML = '$' + subtotalAmount
                 orderTax.innerHTML = '$' + taxAmount
-                orderTotal.innerHTML = '$' + totalAmount
+                orderTotal.innerHTML = '$' + totalAmount.toFixed(2)
 
             })
         }
