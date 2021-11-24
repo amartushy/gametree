@@ -562,7 +562,7 @@ $('#cart-modal').fadeIn().css('display', 'flex')
 
         const itemConditionDict = {
             'new' : 'New',
-            'usedFantastic' : 'Used - Excellent',
+            'usedExcellent' : 'Used - Excellent',
             'usedGood' : 'Used - Good',
             'usedAcceptable' : 'Used - Acceptable'
         }
