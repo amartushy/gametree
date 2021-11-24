@@ -619,7 +619,7 @@ function updateOrderTotal(cartItems) {
                 var itemPrice = itemData.salePrices[itemCondition]
 
                 subtotalAmount += parseFloat(itemPrice)
-                
+
                 //TODO: Calculate Sales Tax
                 if(subtotalAmount >= 50 ) {
                     orderShippingPrice.innerHTML = 'FREE'
@@ -628,7 +628,7 @@ function updateOrderTotal(cartItems) {
                     orderShipping = 3.79
                 }
 
-                totalAmount = subtotalAmount + taxAmount
+                totalAmount = subtotalAmount + taxAmount + orderShipping
 
                 orderSubtotal.innerHTML = '$' + subtotalAmount.toFixed(2)
                 orderTax.innerHTML = '$' + taxAmount.toFixed(2)
@@ -642,6 +642,8 @@ function updateOrderTotal(cartItems) {
         }
     }
 }
+
+
 function removeItemFromOrder(purchaseID) {
     var cartUpdateDict = {}
     cartUpdateDict[`cart.${purchaseID}`] = firebase.firestore.FieldValue.delete()
@@ -745,7 +747,6 @@ function submitOrderAndProcessPayment(braintreeID) {
 
     var promises = []
 
-    //var paymentPromise
     var transactionID = braintreeID
 
     //Update Global Orders
@@ -820,7 +821,6 @@ function submitOrderAndProcessPayment(braintreeID) {
 
         sendSMSTo('4582108156', message)
 
-        //TODO: Send Receipt
         var orderDateObject = getFormattedDate(checkoutDict.orderDate)
         orderDateString = `${orderDateObject[0]} ${orderDateObject[1]}, ${orderDateObject[2]} `
         sendReceiptTo(transactionID, checkoutDict.billingAddress.firstName, checkoutDict.billingAddress.lastName, orderDateString, checkoutDict.checkoutTotal, checkoutDict.emailAddress)
@@ -849,7 +849,7 @@ function submitOrderAndProcessPayment(braintreeID) {
 
 //Braintree
 braintree.client.create({
-    authorization: 'sandbox_gp8zdny2_63fm4zhyh7dy6qzr'
+    authorization: 'production_bn2zwjst_yqykkqdtj5xvwh84'
     }, function (clientErr, clientInstance) {
     if (clientErr) {
         console.error(clientErr);
