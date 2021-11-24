@@ -250,8 +250,6 @@ function changeCartItem(GTIN, purchaseID) {
             changeItemAcceptablePrice.innerHTML = '$' + parseFloat(saleData.loose).toFixed(2)
 
             if(itemCondition == 'loose') {
-                const itemPrice = '$' + saleData['loose']
-                createDOMElement('div', 'cart-item-price', itemPrice, changeItemCartInfo)
 
                 if(cartridgeOnlyArray.includes(data.platform)) {
                     createDOMElement('div', 'cart-item-condition', 'Cartridge Only', changeItemCartInfo)
@@ -260,10 +258,14 @@ function changeCartItem(GTIN, purchaseID) {
                     createDOMElement('div', 'cart-item-condition', 'Disc(s) Only', changeItemCartInfo)
                 }
 
+                const itemPrice = '$' + saleData['loose']
+                createDOMElement('div', 'cart-item-price', itemPrice, changeItemCartInfo)
+
             } else {
+                createDOMElement('div', 'cart-item-condition', 'Pre-Owned', changeItemCartInfo)
+
                 const itemPrice = '$' + saleData['usedExcellent']
                 createDOMElement('div', 'cart-item-price', itemPrice, changeItemCartInfo)
-                createDOMElement('div', 'cart-item-condition', 'Pre-Owned', changeItemCartInfo)
             }
 
             if(cartridgeOnlyArray.includes(data.platform)) {
