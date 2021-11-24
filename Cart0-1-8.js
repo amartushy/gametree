@@ -188,8 +188,8 @@ function updateOrderTotal(cartItems) {
 
                 totalAmount = subtotalAmount + taxAmount + orderShipping
 
-                orderSubtotal.innerHTML = '$' + subtotalAmount
-                orderTax.innerHTML = '$' + taxAmount
+                orderSubtotal.innerHTML = '$' + subtotalAmount.toFixed(2)
+                orderTax.innerHTML = '$' + taxAmount.toFixed(2)
                 orderTotal.innerHTML = '$' + totalAmount.toFixed(2)
 
             })
