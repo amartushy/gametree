@@ -126,8 +126,8 @@ function buildCartItem(purchaseID, GTIN) {
                     createDOMElement('div', 'cart-item-condition', 'Cartridge Only', cartItemInfoLeft)
 
                 } else {
-                    ppAcceptableHeader.innerHTML = 'Disc(s) Only'
                     createDOMElement('div', 'cart-item-condition', 'Disc(s) Only', cartItemInfoLeft)
+                    
                 }
 
             } else {
