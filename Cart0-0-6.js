@@ -159,10 +159,11 @@ function updateOrderTotal(cartItems) {
                 if(subtotalAmount >= 50 ) {
                     orderShippingPrice.innerHTML = 'FREE'
                 } else {
-                    orderShippingPrice.innerHTML = '$4.99'
+                    orderShippingPrice.innerHTML = '$3.79'
+                    orderShipping = 3.79
                 }
 
-                totalAmount = subtotalAmount + taxAmount
+                totalAmount = subtotalAmount + taxAmount + orderShipping
 
                 orderSubtotal.innerHTML = '$' + subtotalAmount
                 orderTax.innerHTML = '$' + taxAmount
