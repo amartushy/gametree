@@ -24,6 +24,8 @@ const changeItemNewPrice = document.getElementById('change-item-new-price')
 const changeItemExcellentPrice = document.getElementById('change-item-excellent-price')
 const changeItemGoodPrice = document.getElementById('change-item-good-price')
 const changeItemAcceptablePrice = document.getElementById('change-item-acceptable-price')
+const changeItemGoodDiv = document.getElementById('change-item-good-div')
+const changeItemAcceptableHeader = document.getElementById('change-item-acceptable-header')
 
 //Global Variables
 var database = firebase.firestore()
@@ -127,7 +129,7 @@ function buildCartItem(purchaseID, GTIN) {
 
                 } else {
                     createDOMElement('div', 'cart-item-condition', 'Disc(s) Only', cartItemInfoLeft)
-                    
+
                 }
 
             } else {
@@ -233,12 +235,26 @@ function changeCartItem(GTIN, purchaseID) {
         itemImage.src = data.productImage
         var changeItemCartInfo = createDOMElement('div', 'cart-item-info-left', 'none', changeItemHeaderDiv)
         createDOMElement('div', 'cart-item-title', data.general.productName, changeItemCartInfo)
-        createDOMElement('div', 'cart-item-condition', itemConditionDict[itemCondition], changeItemCartInfo)
-        const itemPrice = '$' + saleData[itemCondition]
-        createDOMElement('div', 'cart-item-price', itemPrice, changeItemCartInfo)
 
         changeItemNewPrice.innerHTML = '$' + parseFloat(saleData.new).toFixed(2)
         changeItemExcellentPrice.innerHTML = '$' + parseFloat(saleData.usedExcellent).toFixed(2)
+
+        if(itemCondition == 'loose') {
+            changeItemGoodDiv.style.display = 'none'
+
+            if(cartridgeOnlyArray.includes(itemData.platform)) {
+                changeItemAcceptableHeader.innerHTML = 'Cartridge Only'
+            } else {
+                changeItemAcceptableHeader.innerHTML = 'Disc(s) Only'     
+            }
+
+        } else {
+            changeItemGoodDiv.style.display = 'flex'
+        }
+
+        const itemPrice = '$' + saleData[itemCondition]
+        createDOMElement('div', 'cart-item-price', itemPrice, changeItemCartInfo)
+
         changeItemGoodPrice.innerHTML = '$' + parseFloat(saleData.usedGood).toFixed(2)
         changeItemAcceptablePrice.innerHTML = '$' + parseFloat(saleData.usedAcceptable).toFixed(2)
       
