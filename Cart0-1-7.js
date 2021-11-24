@@ -24,9 +24,12 @@ const changeItemNewPrice = document.getElementById('change-item-new-price')
 const changeItemExcellentPrice = document.getElementById('change-item-excellent-price')
 const changeItemGoodPrice = document.getElementById('change-item-good-price')
 const changeItemAcceptablePrice = document.getElementById('change-item-acceptable-price')
+
 const changeItemGoodDiv = document.getElementById('change-item-good-div')
 const changeItemAcceptableHeader = document.getElementById('change-item-acceptable-header')
 const changeItemExcellentHeader = document.getElementById('change-item-excellent-header')
+const changeItemListExcellent = document.getElementById('change-item-list-excellent')
+const changeItemListAcceptable = document.getElementById('change-item-list-acceptable')
 
 //Global Variables
 var database = firebase.firestore()
@@ -249,6 +252,19 @@ function changeCartItem(GTIN, purchaseID) {
             changeItemGoodDiv.style.display = 'none'
             changeItemAcceptablePrice.innerHTML = '$' + parseFloat(saleData.loose).toFixed(2)
 
+            while(changeItemListExcellent.firstChild) {
+                changeItemListExcellent.removeChild(changeItemListExcellent.firstChild)
+            }
+            createDOMElement('div', 'list-item', '• Includes original case and insert(s), if applicable', changeItemListExcellent)
+            createDOMElement('div', 'list-item', '• Tested and backed by the GameTree Guarantee', changeItemListExcellent)
+    
+            while(changeItemListAcceptable.firstChild) {
+                changeItemListAcceptable.removeChild(changeItemListAcceptable.firstChild)
+            }
+            createDOMElement('div', 'list-item', '• Does not include original case', changeItemListAcceptable)
+            createDOMElement('div', 'list-item', '• Tested and backed by the GameTree Guarantee', changeItemListAcceptable)
+
+
             if(itemCondition == 'loose') {
 
                 if(cartridgeOnlyArray.includes(data.platform)) {
@@ -276,6 +292,22 @@ function changeCartItem(GTIN, purchaseID) {
             }
 
         } else {
+
+            while(changeItemListExcellent.firstChild) {
+                changeItemListExcellent.removeChild(changeItemListExcellent.firstChild)
+            }
+            createDOMElement('div', 'list-item', '• Little to no cosmetic signs of use', changeItemListExcellent)
+            createDOMElement('div', 'list-item', '• No scratches, dents, or chips', changeItemListExcellent)
+            createDOMElement('div', 'list-item', '• Includes all original parts/accessories', changeItemListExcellent)
+    
+            while(changeItemListAcceptable.firstChild) {
+                changeItemListAcceptable.removeChild(changeItemListAcceptable.firstChild)
+            }
+            createDOMElement('div', 'list-item', '• Significant cosmetic signs of use', changeItemListAcceptable)
+            createDOMElement('div', 'list-item', '• Any signs of use will not impact performance', changeItemListAcceptable)
+            createDOMElement('div', 'list-item', '• Nonessential parts or accessories may be missing', changeItemListAcceptable)
+
+
             changeItemExcellentHeader.innerHTML = 'Used-Excellent'
 
             createDOMElement('div', 'cart-item-condition', itemConditionDict[itemCondition], changeItemCartInfo)
