@@ -1,3 +1,4 @@
+
 //User Account Creation Screen
 
 window.onload = function() {
@@ -11,6 +12,7 @@ let userEmailField = document.getElementById('user-email-field')
 let userPasswordField = document.getElementById('user-password-field')
 let userConfirmField = document.getElementById('user-confirm-field')
 let userContinueButton = document.getElementById('user-continue-button')
+let accountCreateLoginText = document.getElementById('account-create-login-text')
 
 let userProcessingScreen = document.getElementById('user-processing-screen')
 let userProcessingText = document.getElementById('user-processing-text')
@@ -23,11 +25,16 @@ var userAccountDict = {
     'dateCreated' : new Date() / 1000,
     'referralCode' : '',
     'isAdmin' : false,
+    'isAnonymous' : false,
     'isReceivingDeliveryUpdates' : false,
     'isReceivingPromotions' : false,
     'availableBalance' : 0
 }
 
+
+accountCreateLoginText.addEventListener('click', () => {
+    location.href = 'https://thegametree.io/login'
+})
 
 userContinueButton.addEventListener('click', () => {
     if ( userNameField.value == '' ) {
