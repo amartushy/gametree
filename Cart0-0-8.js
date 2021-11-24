@@ -28,6 +28,7 @@ const changeItemAcceptablePrice = document.getElementById('change-item-acceptabl
 //Global Variables
 var database = firebase.firestore()
 var globalUserId
+const cartridgeOnlyArray = ['Game Boy', 'Game Boy Color', 'Game Boy Advance', 'Nintendo GameCube', 'Nintendo 64', 'NES', 'Nintendo DS', 'Nintendo 3DS', 'Nintendo Switch']
 
 
 window.onload = () => {
@@ -119,7 +120,20 @@ function buildCartItem(purchaseID, GTIN) {
 
             const cartItemInfoLeft = createDOMElement('div', 'cart-item-info-left', 'none', cartItemInfoTop)
             createDOMElement('div', 'cart-item-title', itemData.general.productName, cartItemInfoLeft)
-            createDOMElement('div', 'cart-item-condition', itemConditionDict[itemCondition], cartItemInfoLeft)
+
+            if(itemCondition == 'loose') {
+                if(cartridgeOnlyArray.includes(itemData.platform)) {
+                    createDOMElement('div', 'cart-item-condition', 'Cartridge Only', cartItemInfoLeft)
+
+                } else {
+                    ppAcceptableHeader.innerHTML = 'Disc(s) Only'
+                    createDOMElement('div', 'cart-item-condition', 'Disc(s) Only', cartItemInfoLeft)
+                }
+
+            } else {
+                createDOMElement('div', 'cart-item-condition', itemConditionDict[itemCondition], cartItemInfoLeft)
+            }
+
             const changeItem = createDOMElement('div', 'cart-item-change-button', 'Change', cartItemInfoLeft)
             changeItem.setAttribute('onClick', `changeCartItem("${GTIN}", "${purchaseID}")`)
 
