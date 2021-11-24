@@ -111,8 +111,9 @@ window.onload = () => {
             loadProductPage(productID)
             
         } else {
-            // No user is logged in.
-            console.log('No authenticated user')
+
+            var productID =  document.getElementById('hidden-id').innerHTML
+            loadProductPage(productID)
         }
     })
 }
@@ -228,13 +229,13 @@ function loadPricesAndAvailability(GTIN, saleData, availability, category, platf
             ppListExcellent.removeChild(ppListExcellent.firstChild)
         }
         createDOMElement('div', 'list-item', '• Includes original case and insert(s), if applicable', ppListExcellent)
-        createDOMElement('div', 'list-item', '• Fully tested and backed by the GameTree Guarantee', ppListExcellent)
+        createDOMElement('div', 'list-item', '• Tested and backed by the GameTree Guarantee', ppListExcellent)
 
         while(ppListAcceptable.firstChild) {
             ppListAcceptable.removeChild(ppListAcceptable.firstChild)
         }
         createDOMElement('div', 'list-item', '• Does not include original case', ppListAcceptable)
-        createDOMElement('div', 'list-item', '• Fully tested and backed by the GameTree Guarantee', ppListAcceptable)
+        createDOMElement('div', 'list-item', '• Tested and backed by the GameTree Guarantee', ppListAcceptable)
 
         ppNewPriceText.innerHTML = '$' + parseFloat(saleData.new).toFixed(2)
         ppExcellentPriceText.innerHTML = '$' + parseFloat(saleData.usedExcellent).toFixed(2)
