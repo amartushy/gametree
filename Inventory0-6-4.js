@@ -105,7 +105,7 @@ function createProductSearchResult(results) {
 
         let itemTitle = document.createElement('div')
         itemTitle.className = 'item-grid-item-title-header'
-        itemTitle.innerHTML = instantsearch.highlight({ attribute: `productTitle`, hit })
+        itemTitle.innerHTML = hit.productTitle
         itemGridBlock.appendChild(itemTitle)
 
 
