@@ -2,8 +2,9 @@
 //HTML Elements
 const itemsCountText = document.getElementById('items-count-text')
 const cartItemsContainer = document.getElementById('cart-items-container')
-const orderSubtotal = document.getElementById('order-subtotal')
 const shippingText = document.getElementById('shipping-text')
+const orderSubtotal = document.getElementById('order-subtotal')
+const orderShippingPrice = document.getElementById('order-shipping-price')
 const orderTax = document.getElementById('order-tax')
 const orderTotal = document.getElementById('order-total')
 const checkoutButton = document.getElementById('checkout-button')
@@ -84,6 +85,11 @@ function loadAuthUserCart(userID) {
             //TODO: display no cart items
 
             orderSubtotal.innerHTML = '$0.00'
+            if(orderSubtotal >= 50 ) {
+                orderShippingPrice.innerHTML = 'FREE'
+            } else {
+                orderShippingPrice.innerHTML = '$4.99'
+            }
             orderTax.innerHTML = '$0.00'
             orderTotal.innerHTML = '$0.00'
         }
@@ -141,6 +147,7 @@ function buildCartItem(purchaseID, GTIN) {
 function updateOrderTotal(cartItems) {
 
     var subtotalAmount = 0.00
+    var orderShipping = 0.00
     var taxAmount = 0.00
     var totalAmount = 0.00
 
@@ -151,11 +158,14 @@ function updateOrderTotal(cartItems) {
                 var itemCondition = itemData.availability[item]
                 var itemPrice = itemData.salePrices[itemCondition]
 
-                console.log(item)
-                console.log(itemData.availability)
-                console.log(itemData.availability[item])
                 subtotalAmount += parseFloat(itemPrice)
-                //TODO: Calculate Sales Tax
+
+                if(orderSubtotal >= 50 ) {
+                    orderShippingPrice.innerHTML = 'FREE'
+                } else {
+                    orderShippingPrice.innerHTML = '$4.99'
+                }
+
                 totalAmount = subtotalAmount + taxAmount
 
                 orderSubtotal.innerHTML = '$' + subtotalAmount
