@@ -263,6 +263,7 @@ function changeCartItem(GTIN, purchaseID) {
             } else {
                 const itemPrice = '$' + saleData['usedExcellent']
                 createDOMElement('div', 'cart-item-price', itemPrice, changeItemCartInfo)
+                createDOMElement('div', 'cart-item-condition', 'Pre-Owned', changeItemCartInfo)
             }
 
             if(cartridgeOnlyArray.includes(data.platform)) {
