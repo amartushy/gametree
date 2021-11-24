@@ -253,6 +253,13 @@ function changeCartItem(GTIN, purchaseID) {
                 const itemPrice = '$' + saleData['loose']
                 createDOMElement('div', 'cart-item-price', itemPrice, changeItemCartInfo)
 
+                if(cartridgeOnlyArray.includes(data.platform)) {
+                    createDOMElement('div', 'cart-item-condition', 'Cartridge Only', changeItemCartInfo)
+    
+                } else {
+                    createDOMElement('div', 'cart-item-condition', 'Disc(s) Only', changeItemCartInfo)
+                }
+
             } else {
                 const itemPrice = '$' + saleData['usedExcellent']
                 createDOMElement('div', 'cart-item-price', itemPrice, changeItemCartInfo)
@@ -260,11 +267,9 @@ function changeCartItem(GTIN, purchaseID) {
 
             if(cartridgeOnlyArray.includes(data.platform)) {
                 changeItemAcceptableHeader.innerHTML = 'Cartridge Only'
-                createDOMElement('div', 'cart-item-condition', 'Cartridge Only', changeItemCartInfo)
 
             } else {
                 changeItemAcceptableHeader.innerHTML = 'Disc(s) Only'     
-                createDOMElement('div', 'cart-item-condition', 'Disc(s) Only', changeItemCartInfo)
             }
 
         } else {
