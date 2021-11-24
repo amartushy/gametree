@@ -531,6 +531,7 @@ function addItemToCart(GTIN, purchaseID) {
 //Cart Modal
 function loadCartModal(GTIN, purchaseID) {
 $('#cart-modal').fadeIn().css('display', 'flex')
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
 
     //Get number of items and subtotal
     database.collection('users').doc(globalUserId).get().then( (doc) => {
