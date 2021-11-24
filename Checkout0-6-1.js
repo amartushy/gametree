@@ -607,6 +607,7 @@ function buildCartItem(purchaseID, GTIN) {
 function updateOrderTotal(cartItems) {
 
     var subtotalAmount = 0.00
+    var orderShipping = 0.00
     var taxAmount = 0.00
     var totalAmount = 0.00
 
@@ -618,16 +619,24 @@ function updateOrderTotal(cartItems) {
                 var itemPrice = itemData.salePrices[itemCondition]
 
                 subtotalAmount += parseFloat(itemPrice)
+                
                 //TODO: Calculate Sales Tax
+                if(subtotalAmount >= 50 ) {
+                    orderShippingPrice.innerHTML = 'FREE'
+                } else {
+                    orderShippingPrice.innerHTML = '$3.79'
+                    orderShipping = 3.79
+                }
+
                 totalAmount = subtotalAmount + taxAmount
 
-                orderSubtotal.innerHTML = '$' + subtotalAmount
-                orderTax.innerHTML = '$' + taxAmount
-                orderTotal.innerHTML = '$' + totalAmount
+                orderSubtotal.innerHTML = '$' + subtotalAmount.toFixed(2)
+                orderTax.innerHTML = '$' + taxAmount.toFixed(2)
+                orderTotal.innerHTML = '$' + totalAmount.toFixed(2)
 
-                checkoutDict.itemSubtotal = subtotalAmount
-                checkoutDict.tax = taxAmount
-                checkoutDict.checkoutTotal = totalAmount
+                checkoutDict.itemSubtotal = subtotalAmount.toFixed(2)
+                checkoutDict.tax = taxAmount.toFixed(2)
+                checkoutDict.checkoutTotal = totalAmount.toFixed(2)
 
             })
         }
