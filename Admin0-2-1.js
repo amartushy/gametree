@@ -1,3 +1,5 @@
+
+   
 //HTML Elements
 
 //Global Variables
@@ -120,12 +122,12 @@ updateSalePrices.addEventListener('click', () => {
 //Helper functions
 function downloadProductsCSV() {
     const rows = [
-        ["Product Name", "GTIN", 'Pricecharting ID', "Platform", "Category", "Webflow URL", 'Product Image',]
+        ["Product Name", "GTIN", 'Pricecharting ID', "Platform", "Category", "Webflow URL", 'Product Image', 'Product Description', 'Product Price']
     ];
     database.collection('catalog').get().then( (querySelector) => {
         querySelector.forEach ( (doc) => {
             var data = doc.data()
-            var productRow = [data.productName, doc.id, data.priceChartingID, data.platform, data.category, doc.id, data.productImage]
+            var productRow = [data.productName, doc.id, data.priceChartingID, data.platform, data.category, doc.id, data.productImage, data.overview.description, data.salePrices.usedExcellent]
             rows.push(productRow)
         })
 
