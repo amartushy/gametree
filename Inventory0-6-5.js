@@ -626,7 +626,7 @@ function changeItemStatus(GTIN, itemID, newStatus) {
                 } else {
                     revenueField.className = 'item-grid-revenue-negative'
                 }
-                revenueField.innerHTML = revenueText
+                revenueField.innerHTML = '$' + revenueText.toFixed(2)
             }
         }).catch(function(error) {
             showErrorMessage(error)
