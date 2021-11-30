@@ -1,3 +1,5 @@
+
+
 //HTML Elements
 let atcButton = document.getElementById('atc-button')
 let atcModal = document.getElementById('atc-modal')
@@ -646,7 +648,7 @@ function buildATCGame(data) {
     if(data) {
         globalSpecsObject = {
             'keySpecs' : {
-                'edition' : data ? data.keySpecs.edition : '',
+                'edition' : data.keySpecs.edition ? data.keySpecs.edition : '',
                 'ESRBRating' : data.keySpecs.ESRBRating ? data.keySpecs.ESRBRating : '',
                 'ESRBDescriptors' : data.keySpecs.ESRBDescriptors ? data.keySpecs.ESRBDescriptors : '',
                 'compatiblePlatforms' : data.keySpecs.compatiblePlatforms ? data.keySpecs.compatiblePlatforms : '',
