@@ -1,3 +1,5 @@
+
+
 //HTML Elements
 let atcButton = document.getElementById('atc-button')
 let atcModal = document.getElementById('atc-modal')
@@ -643,28 +645,59 @@ function resetCategoryOptions(option, data) {
 function buildATCGame(data) {
     productObject.category = 'Games'
 
+    if(data) {
+        globalSpecsObject = {
+            'keySpecs' : {
+                'edition' : data ? data.keySpecs.edition : '',
+                'ESRBRating' : data.keySpecs.ESRBRating ? data.keySpecs.ESRBRating : '',
+                'ESRBDescriptors' : data.keySpecs.ESRBDescriptors ? data.keySpecs.ESRBDescriptors : '',
+                'compatiblePlatforms' : data.keySpecs.compatiblePlatforms ? data.keySpecs.compatiblePlatforms : '',
+                'softwareFormat' : data.keySpecs.softwareFormat ? data.keySpecs.softwareFormat : '',
+            },
+            'general' : {
+                'productName' : data.general.productName ? data.general.productName : '',
+                'brand' : data.general.brand ? data.general.brand : '',
+                'publisher' : data.general.publisher ? data.general.publisher : '',
+                'developer' : data.general.developer ? data.general.developer : '',
+                'modelNumber' : data.general.modelNumber ? data.general.modelNumber : '',
+                'releaseDate' : data.general.releaseDate ? data.general.releaseDate : '',
+            },
+            'gameDetails' : {
+                'genre' : data.gameDetails.genre ? data.gameDetails.genre : '',
+                'gameFranchise' : data.gameDetails.gameFranchise ? data.gameDetails.gameFranchise : '',
+                'gameSeries' : data.gameDetails.gameSeries ? data.gameDetails.gameSeries : '',
+                'enhancedFor' : data.gameDetails.enhancedFor ? data.gameDetails.enhancedFor : '',
+                'multiplayer' : data.gameDetails.multiplayer ? data.gameDetails.multiplayer : '',
+            },
+            'other' : {
+                'UPC' : '',
+            }
+        }
+    } else {
+
+    }
     globalSpecsObject = {
         'keySpecs' : {
-            'edition' : data.keySpecs.edition ? data.keySpecs.edition : '',
-            'ESRBRating' : data.keySpecs.ESRBRating ? data.keySpecs.ESRBRating : '',
-            'ESRBDescriptors' : data.keySpecs.ESRBDescriptors ? data.keySpecs.ESRBDescriptors : '',
-            'compatiblePlatforms' : data.keySpecs.compatiblePlatforms ? data.keySpecs.compatiblePlatforms : '',
-            'softwareFormat' : data.keySpecs.softwareFormat ? data.keySpecs.softwareFormat : '',
+            'edition' : ''
+            'ESRBRating' : '',
+            'ESRBDescriptors' : '',
+            'compatiblePlatforms' : '',
+            'softwareFormat' : '',
         },
         'general' : {
-            'productName' : data.general.productName ? data.general.productName : '',
-            'brand' : data.general.brand ? data.general.brand : '',
-            'publisher' : data.general.publisher ? data.general.publisher : '',
-            'developer' : data.general.developer ? data.general.developer : '',
-            'modelNumber' : data.general.modelNumber ? data.general.modelNumber : '',
-            'releaseDate' : data.general.releaseDate ? data.general.releaseDate : '',
+            'productName' : '',
+            'brand' : '',
+            'publisher' :  '',
+            'developer' : '',
+            'modelNumber' :  '',
+            'releaseDate' : '',
         },
         'gameDetails' : {
-            'genre' : data.gameDetails.genre ? data.gameDetails.genre : '',
-            'gameFranchise' : data.gameDetails.gameFranchise ? data.gameDetails.gameFranchise : '',
-            'gameSeries' : data.gameDetails.gameSeries ? data.gameDetails.gameSeries : '',
-            'enhancedFor' : data.gameDetails.enhancedFor ? data.gameDetails.enhancedFor : '',
-            'multiplayer' : data.gameDetails.multiplayer ? data.gameDetails.multiplayer : '',
+            'genre' :  '',
+            'gameFranchise' :  '',
+            'gameSeries' :  '',
+            'enhancedFor' : '',
+            'multiplayer' : '',
         },
         'other' : {
             'UPC' : '',
@@ -682,66 +715,131 @@ function buildATCGame(data) {
 function buildATCConsole(data) {
     productObject.category = 'Consoles'
 
-    globalSpecsObject = {
-        'keySpecs' : {
-            '4KPlayer' : data.keySpecs['4KPlayer'] ? data.keySpecs['4KPlayer'] : '',
-            'maxGraphics' : data.keySpecs.maxGraphics ? data.keySpecs.maxGraphics : '',
-            'maxResolution' : data.keySpecs.maxResolution ? data.keySpecs.maxResolution : '',
-            'HDR' : data.keySpecs.HDR ? data.keySpecs.HDR : '',
-            'bluetooth' : data.keySpecs.bluetooth ? data.keySpecs.bluetooth : '',
-            'numUSBPorts' : data.keySpecs.numUSBPorts ? data.keySpecs.numUSBPorts : '',
-        },
-        'general' : {
-            'productName' : data.general.productName ? data.general.productName : '',
-            'brand' : data.general.brand ? data.general.brand : '',
-            'additionalAccessories' : data.general.additionalAccessories ? data.general.additionalAccessories : '',
-            'parentalControl' : data.general.parentalControl ? data.general.parentalControl : '',
-            'consoleType' : data.general.consoleType ? data.general.consoleType : '',
-            'compatiblePlatforms' : data.general.compatiblePlatforms ? data.general.compatiblePlatforms : '',
-            'modelNumber' : data.general.modelNumber ? data.general.modelNumber : '',
-            'color' : data.general.color ? data.general.color : '',
-        },
-        'features' : {
-            'HDStreaming' : data.features.HDStreaming ? data.features.HDStreaming : '',
-            'blurayPlayer' : data.features.blurayPlayer ? data.features.blurayPlayer : '',
-            'onlineFeatures' : data.features.onlineFeatures ? data.features.onlineFeatures : '',
-        },
-        'display' : {
-            'maxGraphics' : data.display.maxGraphics ? data.display.maxGraphics : '',
-            'maxResolution' : data.display.maxResolution ? data.display.maxResolution : '',
-            'HDR' : data.display['HDR'] ? data.display['HDR'] : '',
-        },
-        'storage' : {
-            'internal' : data.storage.internal ? data.storage.internal : '',
-            'type' : data.storage.type ? data.storage.type : '',
-            'capacity' : data.storage.capacity ? data.storage.capacity : '',
-            'memoryCards' : data.storage.memoryCards ? data.storage.memoryCards : '',
-            'numMemoryCards' : data.storage.numMemoryCards ? data.storage.numMemoryCards : '',
-        },
-        'dimensions' : {
-            'height' : data.dimensions.height ? data.dimensions.height : '',
-            'width' : data.dimensions.width ? data.dimensions.width : '',
-            'length' : data.dimensions.length ? data.dimensions.length : '',
-            'weight' : data.dimensions.weight ? data.dimensions.weight : '',
-        },
-        'connectivity' : {
-            'bluetooth' : data.connectivity.bluetooth ? data.connectivity.bluetooth : '',
-            'internet' : data.connectivity.internet ? data.connectivity.internet : '',
-            'wifi' : data.connectivity.wifi ? data.connectivity.wifi : '',
-            'smartCapable' : data.connectivity.smartCapable ? data.connectivity.smartCapable : '',
-            'usbPorts' : data.connectivity.usbPorts ? data.connectivity.usbPorts : '',
-        },
-        'gameplay' : {
-            'maxPlayers' : data.gameplay.maxPlayers ? data.gameplay.maxPlayers : '',
-            'motionSensing' : data.gameplay.motionSensing ? data.gameplay.motionSensing : '',
-        },
-        'included' : {
-            'controllers' : data.included.controllers ? data.included.controllers : '',
-            'games' : data.included.games ? data.included.games : '',
-            'cables' : data.included.cables ? data.included.cables : '',
-        },
-        'other' : {
-            'UPC' : ''
+    if(data) {
+        globalSpecsObject = {
+            'keySpecs' : {
+                '4KPlayer' : data.keySpecs['4KPlayer'] ? data.keySpecs['4KPlayer'] : '',
+                'maxGraphics' : data.keySpecs.maxGraphics ? data.keySpecs.maxGraphics : '',
+                'maxResolution' : data.keySpecs.maxResolution ? data.keySpecs.maxResolution : '',
+                'HDR' : data.keySpecs.HDR ? data.keySpecs.HDR : '',
+                'bluetooth' : data.keySpecs.bluetooth ? data.keySpecs.bluetooth : '',
+                'numUSBPorts' : data.keySpecs.numUSBPorts ? data.keySpecs.numUSBPorts : '',
+            },
+            'general' : {
+                'productName' : data.general.productName ? data.general.productName : '',
+                'brand' : data.general.brand ? data.general.brand : '',
+                'additionalAccessories' : data.general.additionalAccessories ? data.general.additionalAccessories : '',
+                'parentalControl' : data.general.parentalControl ? data.general.parentalControl : '',
+                'consoleType' : data.general.consoleType ? data.general.consoleType : '',
+                'compatiblePlatforms' : data.general.compatiblePlatforms ? data.general.compatiblePlatforms : '',
+                'modelNumber' : data.general.modelNumber ? data.general.modelNumber : '',
+                'color' : data.general.color ? data.general.color : '',
+            },
+            'features' : {
+                'HDStreaming' : data.features.HDStreaming ? data.features.HDStreaming : '',
+                'blurayPlayer' : data.features.blurayPlayer ? data.features.blurayPlayer : '',
+                'onlineFeatures' : data.features.onlineFeatures ? data.features.onlineFeatures : '',
+            },
+            'display' : {
+                'maxGraphics' : data.display.maxGraphics ? data.display.maxGraphics : '',
+                'maxResolution' : data.display.maxResolution ? data.display.maxResolution : '',
+                'HDR' : data.display['HDR'] ? data.display['HDR'] : '',
+            },
+            'storage' : {
+                'internal' : data.storage.internal ? data.storage.internal : '',
+                'type' : data.storage.type ? data.storage.type : '',
+                'capacity' : data.storage.capacity ? data.storage.capacity : '',
+                'memoryCards' : data.storage.memoryCards ? data.storage.memoryCards : '',
+                'numMemoryCards' : data.storage.numMemoryCards ? data.storage.numMemoryCards : '',
+            },
+            'dimensions' : {
+                'height' : data.dimensions.height ? data.dimensions.height : '',
+                'width' : data.dimensions.width ? data.dimensions.width : '',
+                'length' : data.dimensions.length ? data.dimensions.length : '',
+                'weight' : data.dimensions.weight ? data.dimensions.weight : '',
+            },
+            'connectivity' : {
+                'bluetooth' : data.connectivity.bluetooth ? data.connectivity.bluetooth : '',
+                'internet' : data.connectivity.internet ? data.connectivity.internet : '',
+                'wifi' : data.connectivity.wifi ? data.connectivity.wifi : '',
+                'smartCapable' : data.connectivity.smartCapable ? data.connectivity.smartCapable : '',
+                'usbPorts' : data.connectivity.usbPorts ? data.connectivity.usbPorts : '',
+            },
+            'gameplay' : {
+                'maxPlayers' : data.gameplay.maxPlayers ? data.gameplay.maxPlayers : '',
+                'motionSensing' : data.gameplay.motionSensing ? data.gameplay.motionSensing : '',
+            },
+            'included' : {
+                'controllers' : data.included.controllers ? data.included.controllers : '',
+                'games' : data.included.games ? data.included.games : '',
+                'cables' : data.included.cables ? data.included.cables : '',
+            },
+            'other' : {
+                'UPC' : ''
+            }
+        }
+    } else {
+        globalSpecsObject = {
+            'keySpecs' : {
+                '4KPlayer' : '',
+                'maxGraphics' : '',
+                'maxResolution' : '',
+                'HDR' : '',
+                'bluetooth' : '',
+                'numUSBPorts' : '',
+            },
+            'general' : {
+                'productName' : '',
+                'brand' :  '',
+                'additionalAccessories' : '',
+                'parentalControl' : '',
+                'consoleType' : '',
+                'compatiblePlatforms' : '',
+                'modelNumber' : '',
+                'color' : '',
+            },
+            'features' : {
+                'HDStreaming' : '',
+                'blurayPlayer' : '',
+                'onlineFeatures' : '',
+            },
+            'display' : {
+                'maxGraphics' : '',
+                'maxResolution' : '',
+                'HDR' : '',
+            },
+            'storage' : {
+                'internal' : '',
+                'type' : '',
+                'capacity' : '',
+                'memoryCards' : '',
+                'numMemoryCards' : '',
+            },
+            'dimensions' : {
+                'height' : '',
+                'width' : '',
+                'length' : '',
+                'weight' : '',
+            },
+            'connectivity' : {
+                'bluetooth' : '',
+                'internet' : '',
+                'wifi' : '',
+                'smartCapable' : '',
+                'usbPorts' : '',
+            },
+            'gameplay' : {
+                'maxPlayers' : '',
+                'motionSensing' : '',
+            },
+            'included' : {
+                'controllers' : '',
+                'games' : '',
+                'cables' : '',
+            },
+            'other' : {
+                'UPC' : ''
+            }
         }
     }
 
@@ -760,45 +858,91 @@ function buildATCHeadset(data) {
 function buildATCController(data) {
     productObject.category = 'Controllers'
 
-    globalSpecsObject = {
-        'keySpecs' : {
-            'voiceAssistant' : data.keySpecs.voiceAssistant ? data.keySpecs.voiceAssistant : '',
-            'wireless' : data.keySpecs.wireless ? data.keySpecs.wireless : '',
-            'batterySize' : data.keySpecs.wireless ? data.keySpecs.wireless : '',
-            'compatiblePlatforms' : data.keySpecs.wireless ? data.keySpecs.wireless : '',
-        },
-        'general' : {
-            'productName' : data.keySpecs.productName ? data.keySpecs.productName : '',
-            'brand' : data.keySpecs.brand ? data.keySpecs.brand : '',
-            'additionalAccessories' : data.keySpecs.additionalAccessories ? data.keySpecs.additionalAccessories : '',
-            'modelNumber' : data.keySpecs.modelNumber ? data.keySpecs.modelNumber : '',
-            'color' : data.keySpecs.color ? data.keySpecs.color : '',
-        },
-        'features' : {
-            'headsetJack' : data.features.headsetJack ? data.features.headsetJack : '',
-            'rumbleVibration' : data.features.rumbleVibration ? data.features.rumbleVibration : '',
-            'analogJoysticks' : data.features.analogJoysticks ? data.features.analogJoysticks : '',
-            'buttonMapping' : data.features.buttonMapping ? data.features.buttonMapping : '',
-            'lightingType' : data.features.lightingType ? data.features.lightingType : '',
-            'illumination' : data.features.illumination ? data.features.illumination : '',
-            'shareButton' : data.features.shareButton ? data.features.shareButton : '',
-        },
-        'power' : {
-            'rechargeableBattery' : data.power.rechargeableBattery ? data.power.rechargeableBattery : '',
-            'chargingInterfaces' : data.power.chargingInterfaces ? data.power.chargingInterfaces : '',
-            'batterySize' : data.power.batterySize ? data.power.batterySize : '',
-            'numBatteries' : data.power.numBatteries ? data.power.numBatteries : '',
-            'batteriesIncluded' : data.power.batteriesIncluded ? data.power.batteriesIncluded : '',
-        },
-        'dimensions' : {
-            'height' : data.dimensions.height ? data.dimensions.height : '',
-            'width' : data.dimensions.width ? data.dimensions.width : '',
-            'length' : data.dimensions.length ? data.dimensions.length : '',
-            'weight' : data.dimensions.weight ? data.dimensions.weight : '',
-            'cordLength' : data.dimensions.cordLength ? data.dimensions.cordLength : '',
-        },
-        'other' : {
-            'UPC' : ''
+    if(data) {
+        globalSpecsObject = {
+            'keySpecs' : {
+                'voiceAssistant' : data.keySpecs.voiceAssistant ? data.keySpecs.voiceAssistant : '',
+                'wireless' : data.keySpecs.wireless ? data.keySpecs.wireless : '',
+                'batterySize' : data.keySpecs.wireless ? data.keySpecs.wireless : '',
+                'compatiblePlatforms' : data.keySpecs.wireless ? data.keySpecs.wireless : '',
+            },
+            'general' : {
+                'productName' : data.keySpecs.productName ? data.keySpecs.productName : '',
+                'brand' : data.keySpecs.brand ? data.keySpecs.brand : '',
+                'additionalAccessories' : data.keySpecs.additionalAccessories ? data.keySpecs.additionalAccessories : '',
+                'modelNumber' : data.keySpecs.modelNumber ? data.keySpecs.modelNumber : '',
+                'color' : data.keySpecs.color ? data.keySpecs.color : '',
+            },
+            'features' : {
+                'headsetJack' : data.features.headsetJack ? data.features.headsetJack : '',
+                'rumbleVibration' : data.features.rumbleVibration ? data.features.rumbleVibration : '',
+                'analogJoysticks' : data.features.analogJoysticks ? data.features.analogJoysticks : '',
+                'buttonMapping' : data.features.buttonMapping ? data.features.buttonMapping : '',
+                'lightingType' : data.features.lightingType ? data.features.lightingType : '',
+                'illumination' : data.features.illumination ? data.features.illumination : '',
+                'shareButton' : data.features.shareButton ? data.features.shareButton : '',
+            },
+            'power' : {
+                'rechargeableBattery' : data.power.rechargeableBattery ? data.power.rechargeableBattery : '',
+                'chargingInterfaces' : data.power.chargingInterfaces ? data.power.chargingInterfaces : '',
+                'batterySize' : data.power.batterySize ? data.power.batterySize : '',
+                'numBatteries' : data.power.numBatteries ? data.power.numBatteries : '',
+                'batteriesIncluded' : data.power.batteriesIncluded ? data.power.batteriesIncluded : '',
+            },
+            'dimensions' : {
+                'height' : data.dimensions.height ? data.dimensions.height : '',
+                'width' : data.dimensions.width ? data.dimensions.width : '',
+                'length' : data.dimensions.length ? data.dimensions.length : '',
+                'weight' : data.dimensions.weight ? data.dimensions.weight : '',
+                'cordLength' : data.dimensions.cordLength ? data.dimensions.cordLength : '',
+            },
+            'other' : {
+                'UPC' : ''
+            }
+        }
+
+    } else {
+
+        globalSpecsObject = {
+            'keySpecs' : {
+                'voiceAssistant' : '',
+                'wireless' : '',
+                'batterySize' : '',
+                'compatiblePlatforms' : '',
+            },
+            'general' : {
+                'productName' : '',
+                'brand' : '',
+                'additionalAccessories' : '',
+                'modelNumber' : '',
+                'color' : '',
+            },
+            'features' : {
+                'headsetJack' :  '',
+                'rumbleVibration' :  '',
+                'analogJoysticks' :  '',
+                'buttonMapping' :  '',
+                'lightingType' :  '',
+                'illumination' :  '',
+                'shareButton' :  '',
+            },
+            'power' : {
+                'rechargeableBattery' :  '',
+                'chargingInterfaces' :  '',
+                'batterySize' :  '',
+                'numBatteries' :  '',
+                'batteriesIncluded' :  '',
+            },
+            'dimensions' : {
+                'height' :  '',
+                'width' :  '',
+                'length' :  '',
+                'weight' :  '',
+                'cordLength' :  '',
+            },
+            'other' : {
+                'UPC' : ''
+            }
         }
     }
 
