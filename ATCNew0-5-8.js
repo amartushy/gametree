@@ -674,33 +674,32 @@ function buildATCGame(data) {
             }
         }
     } else {
-
-    }
-    globalSpecsObject = {
-        'keySpecs' : {
-            'edition' : '',
-            'ESRBRating' : '',
-            'ESRBDescriptors' : '',
-            'compatiblePlatforms' : '',
-            'softwareFormat' : '',
-        },
-        'general' : {
-            'productName' : '',
-            'brand' : '',
-            'publisher' :  '',
-            'developer' : '',
-            'modelNumber' :  '',
-            'releaseDate' : '',
-        },
-        'gameDetails' : {
-            'genre' :  '',
-            'gameFranchise' :  '',
-            'gameSeries' :  '',
-            'enhancedFor' : '',
-            'multiplayer' : '',
-        },
-        'other' : {
-            'UPC' : '',
+        globalSpecsObject = {
+            'keySpecs' : {
+                'edition' : '',
+                'ESRBRating' : '',
+                'ESRBDescriptors' : '',
+                'compatiblePlatforms' : '',
+                'softwareFormat' : '',
+            },
+            'general' : {
+                'productName' : '',
+                'brand' : '',
+                'publisher' :  '',
+                'developer' : '',
+                'modelNumber' :  '',
+                'releaseDate' : '',
+            },
+            'gameDetails' : {
+                'genre' :  '',
+                'gameFranchise' :  '',
+                'gameSeries' :  '',
+                'enhancedFor' : '',
+                'multiplayer' : '',
+            },
+            'other' : {
+                'UPC' : '',
+            }
         }
     }
 
