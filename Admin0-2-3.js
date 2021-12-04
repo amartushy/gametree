@@ -169,9 +169,9 @@ function roundToNearestCent(price) {
 
 
 
-// document.getElementById('update-purchases').addEventListener('click', () => {
-//     uploadCSV.click()
-// })
+document.getElementById('update-purchases').addEventListener('click', () => {
+    uploadCSV.click()
+})
 
 
 let uploadCSV = document.getElementById('csvUpload');
@@ -200,30 +200,36 @@ function readCSV(data) {
     let newLinebrk = data.split("\n");
 
     var purchaseUpdateDict = {}
+    var inventoryUpdateDict = {}
 
+    //Loop through all rows in csv
     for(let i = 1; i < newLinebrk.length; i++) {
         var itemArray = newLinebrk[i].split(",")
 
+        //Add item to purchase dict
         var purchaseID = String(itemArray[1]).substring(0,8)
         var subID = createID(4)
         var itemID = purchaseID + '-' + subID
 
-        // var itemData = {
-        //     'GTIN' : itemArray[2],
-        //     'condition' : itemArray[4],
-        //     'productTitle' : itemArray[0],
-        //     'purchasePrice' : 0,
-        //     'revenue' : 0,
-        //     'status' : 'active'
-        // }
+        var purchaseData = {
+            'GTIN' : itemArray[2],
+            'condition' : itemArray[4],
+            'productTitle' : itemArray[0],
+            'purchasePrice' : 0,
+            'revenue' : 0,
+            'status' : 'active'
+        }
 
-        // if (purchaseID in purchaseUpdateDict) {
-        //     purchaseUpdateDict[purchaseID][itemID] = itemData
-        // } else {
-        //     purchaseUpdateDict[purchaseID] = {}
-        //     purchaseUpdateDict[purchaseID][itemID] = itemData
-        // }
+        if (purchaseID in purchaseUpdateDict) {
+            purchaseUpdateDict[purchaseID][itemID] = purchaseData
+        } else {
+            purchaseUpdateDict[purchaseID] = {}
+            purchaseUpdateDict[purchaseID][itemID] = purchaseData
+        }
 
+
+
+        //Add item to inventory dict
         var inventoryData = {
             'GTIN' : itemArray[2],
             'condition' : itemArray[4],
@@ -240,32 +246,14 @@ function readCSV(data) {
             'status' : 'active',
             'taxes' : 0
         }
-
-        purchaseUpdateDict[itemID] = inventoryData 
+    
+        inventoryUpdateDict[itemID] = inventoryData 
     }
 
-    for (var itemID in purchaseUpdateDict) {
-        if (purchaseUpdateDict.hasOwnProperty(itemID)) {
+    console.log(inventoryUpdateDict)
+    console.log(purchaseUpdateDict)
 
-            var itemUpdateDict = purchaseUpdateDict[itemID]
-
-            database.collection('inventory').doc(itemID).set(itemUpdateDict).catch((error) => {
-
-                console.error("Error updating document: ", error);
-                console.log('No Purchase ID: ', purchaseID)
-            });
-
-            var condition = itemUpdateDict.condition
-            var updateDict = {}
-            updateDict[`availability.${itemID}`] = condition
-
-
-            database.collection('catalog').doc(itemUpdateDict.GTIN).update(updateDict).catch( function(error) {
-                console.log(error)
-            })
-        }
-    }
-
+    // //Loop through all keys in purchaseDict and update purchase collection, if applicable
     // for (var purchaseID in purchaseUpdateDict) {
     //     if (purchaseUpdateDict.hasOwnProperty(purchaseID)) {
 
@@ -277,15 +265,41 @@ function readCSV(data) {
     //                 if (itemsArray.hasOwnProperty(itemID)) {
             
     //                     var itemData = itemsArray[itemID]
-    
+
     //                     database.collection('purchases').doc(purchaseID).collection('items').doc(itemID).set(itemData).catch((error) => {
 
     //                         console.error("Error updating document: ", error);
     //                         console.log('No Purchase ID: ', purchaseID)
-    //                     });
+    //                     })
     //                 }
     //             }
     //         }
+    //     }
+    // }
+
+
+
+    // //Loop through all keys in inventoryDict and update inventory collection + catalog availability
+    // for (var itemID in inventoryUpdateDict) {
+    //     if (inventoryUpdateDict.hasOwnProperty(itemID)) {
+
+    //         var itemUpdateDict = inventoryUpdateDict[itemID]
+
+    //         //Update Inventory Collection with inventoryData
+    //         database.collection('inventory').doc(itemID).set(itemUpdateDict).catch((error) => {
+
+    //             console.error("Error updating document: ", error);
+    //             console.log('No Purchase ID: ', purchaseID)
+    //         });
+
+    //         var condition = itemUpdateDict.condition
+    //         var updateDict = {}
+    //         updateDict[`availability.${itemID}`] = condition
+
+    //         //Update Catalog with item availability/condition
+    //         database.collection('catalog').doc(itemUpdateDict.GTIN).update(updateDict).catch( function(error) {
+    //             console.log(error)
+    //         })
     //     }
     // }
 
