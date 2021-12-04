@@ -250,59 +250,55 @@ function readCSV(data) {
         inventoryUpdateDict[itemID] = inventoryData 
     }
 
-    console.log(inventoryUpdateDict)
-    console.log(purchaseUpdateDict)
+    //Loop through all keys in purchaseDict and update purchase collection, if applicable
+    for (var purchaseID in purchaseUpdateDict) {
+        if (purchaseUpdateDict.hasOwnProperty(purchaseID)) {
 
-    // //Loop through all keys in purchaseDict and update purchase collection, if applicable
-    // for (var purchaseID in purchaseUpdateDict) {
-    //     if (purchaseUpdateDict.hasOwnProperty(purchaseID)) {
-
-    //         if(purchaseID != 'NO LABEL') {
-    //             var itemsArray = purchaseUpdateDict[purchaseID]
+            if(purchaseID != 'NO LABEL') {
+                var itemsArray = purchaseUpdateDict[purchaseID]
 
 
-    //             for (var itemID in itemsArray) {
-    //                 if (itemsArray.hasOwnProperty(itemID)) {
+                for (var itemID in itemsArray) {
+                    if (itemsArray.hasOwnProperty(itemID)) {
             
-    //                     var itemData = itemsArray[itemID]
+                        var itemData = itemsArray[itemID]
 
-    //                     database.collection('purchases').doc(purchaseID).collection('items').doc(itemID).set(itemData).catch((error) => {
+                        database.collection('purchases').doc(purchaseID).collection('items').doc(itemID).set(itemData).catch((error) => {
 
-    //                         console.error("Error updating document: ", error);
-    //                         console.log('No Purchase ID: ', purchaseID)
-    //                     })
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
+                            console.error("Error updating document: ", error);
+                            console.log('No Purchase ID: ', purchaseID)
+                        })
+                    }
+                }
+            }
+        }
+    }
 
 
 
-    // //Loop through all keys in inventoryDict and update inventory collection + catalog availability
-    // for (var itemID in inventoryUpdateDict) {
-    //     if (inventoryUpdateDict.hasOwnProperty(itemID)) {
+    //Loop through all keys in inventoryDict and update inventory collection + catalog availability
+    for (var itemID in inventoryUpdateDict) {
+        if (inventoryUpdateDict.hasOwnProperty(itemID)) {
 
-    //         var itemUpdateDict = inventoryUpdateDict[itemID]
+            var itemUpdateDict = inventoryUpdateDict[itemID]
 
-    //         //Update Inventory Collection with inventoryData
-    //         database.collection('inventory').doc(itemID).set(itemUpdateDict).catch((error) => {
+            //Update Inventory Collection with inventoryData
+            database.collection('inventory').doc(itemID).set(itemUpdateDict).catch((error) => {
 
-    //             console.error("Error updating document: ", error);
-    //             console.log('No Purchase ID: ', purchaseID)
-    //         });
+                console.error("Error updating document: ", error);
+                console.log('No Purchase ID: ', purchaseID)
+            });
 
-    //         var condition = itemUpdateDict.condition
-    //         var updateDict = {}
-    //         updateDict[`availability.${itemID}`] = condition
+            var condition = itemUpdateDict.condition
+            var updateDict = {}
+            updateDict[`availability.${itemID}`] = condition
 
-    //         //Update Catalog with item availability/condition
-    //         database.collection('catalog').doc(itemUpdateDict.GTIN).update(updateDict).catch( function(error) {
-    //             console.log(error)
-    //         })
-    //     }
-    // }
-
+            //Update Catalog with item availability/condition
+            database.collection('catalog').doc(itemUpdateDict.GTIN).update(updateDict).catch( function(error) {
+                console.log(error)
+            })
+        }
+    }
 }
 
 
