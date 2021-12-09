@@ -80,37 +80,92 @@ updateSalePrices.addEventListener('click', () => {
                     var baseSellPrice = roundToNearestCent( response['cib-price'] )
 
                     var purchaseMultiplier
-                    if ( data.category == 'Consoles' ) {
-                        //30% discount for consoles
-                        purchaseMultiplier = 70
-                    } else {
+                    // if ( data.category == 'Consoles' ) {
+                    //     //30% discount for consoles
+                    //     purchaseMultiplier = 70
+                    // } else {
 
-                        //45% discount for games, headsets, etc
+                    //     //45% discount for games, headsets, etc
+                    //     purchaseMultiplier = 55
+                    // }
+
+                    var basePurchasePrice = roundToNearestCent( baseSellPrice * purchaseMultiplier )
+
+                    // var pricingDict = {
+                    //     'purchasePrices' : {
+                    //         'new' : roundToNearestCent( response['new-price'] * purchaseMultiplier / 100 ),
+                    //         'usedExcellent' : basePurchasePrice,
+                    //         'usedGood' : roundToNearestCent( basePurchasePrice * 95 ),
+                    //         'usedAcceptable' : roundToNearestCent( basePurchasePrice * 90 ),
+                    //         'loose' : roundToNearestCent(response['loose-price'] * purchaseMultiplier / 100 ),
+                    //     },
+
+                    //     'salePrices' : {
+                    //         'new' : roundToNearestCent(response['new-price'] ),
+                    //         'usedExcellent' : baseSellPrice,
+                    //         'usedGood' : roundToNearestCent( baseSellPrice * 95 ),
+                    //         'usedAcceptable' : roundToNearestCent( baseSellPrice * 90 ),
+                    //         'loose' : roundToNearestCent(response['loose-price'] ),
+                    //     }
+                    // }
+                    // database.collection('catalog').doc(GTIN).update(pricingDict)
+
+                    if(data.category == 'Games') {
+
                         purchaseMultiplier = 55
 
-                        var basePurchasePrice = roundToNearestCent( baseSellPrice * purchaseMultiplier )
-
                         var pricingDict = {
-                            'purchasePrices' : {
-                                'new' : roundToNearestCent( response['new-price'] * purchaseMultiplier / 100 ),
-                                'usedExcellent' : basePurchasePrice,
-                                'usedGood' : roundToNearestCent( basePurchasePrice * 95 ),
-                                'usedAcceptable' : roundToNearestCent( basePurchasePrice * 90 ),
-                                'loose' : roundToNearestCent(response['loose-price'] * purchaseMultiplier / 100 ),
-                            },
-    
-                            'salePrices' : {
-                                'new' : roundToNearestCent(response['new-price'] ),
-                                'usedExcellent' : baseSellPrice,
-                                'usedGood' : roundToNearestCent( baseSellPrice * 95 ),
-                                'usedAcceptable' : roundToNearestCent( baseSellPrice * 90 ),
-                                'loose' : roundToNearestCent(response['loose-price'] ),
-                            }
+                            'purchasePrices' : {},
+                            'salePrices' : {}
                         }
+
+                        var retailNewBuy = response['retail-new-buy']
+                        var retailCIBBuy = response['retail-cib-buy']
+                        var retailLooseBuy = response['retail-cib-buy']
+
+                        if( retailNewBuy == null) {
+                            pricingDict.purchasePrices['new'] = roundToNearestCent( response['new-price'] * purchaseMultiplier / 100 ),
+                        } else {
+                            pricingDict.purchasePrices['new'] = retailNewBuy
+                        }
+
+                        if( retailCIBBuy == null) {
+                            pricingDict.purchasePrices['usedExcellent'] = basePurchasePrice
+                        } else {
+                            pricingDict.purchasePrices['usedExcellent'] = retailCIBBuy
+                        }
+
+                        if( retailLooseBuy == null) {
+                            pricingDict.purchasePrices['loose'] = roundToNearestCent(response['loose-price'] * purchaseMultiplier / 100 ),
+                        } else {
+                            pricingDict.purchasePrices['loose'] = retailLooseBuy
+                        }
+
+
+                        var retailNewSell = response['retail-new-sell']
+                        var retailCIBSell = response['retail-cib-sell']
+                        var retailLooseSell = response['retail-loose-sell']
+
+                        if( retailNewSell == null) {
+                            pricingDict.salePrices['new'] = response['new-price']
+                        } else {
+                            pricingDict.salePrices['new'] = retailNewSell
+                        }
+
+                        if( retailCIBSell == null) {
+                            pricingDict.salePrices['usedExcellent'] = response['cib-price']
+                        } else {
+                            pricingDict.salePrices['usedExcellent'] = retailCIBSell
+                        }
+
+                        if( retailLooseSell == null) {
+                            pricingDict.salePrices['loose'] = response['loose-price']
+                        } else {
+                            pricingDict.salePrices['loose'] = retailLooseSell
+                        }
+
                         database.collection('catalog').doc(GTIN).update(pricingDict)
                     }
-
-
                 }
             }
             xhttp.open("GET", priceChartingURL, true);
