@@ -1,3 +1,5 @@
+
+   
 //HTML Elements
 
 //Global Variables
@@ -77,59 +79,38 @@ updateSalePrices.addEventListener('click', () => {
 
                     var baseSellPrice = roundToNearestCent( response['cib-price'] )
 
-                    // var purchaseMultiplier
-                    // if ( data.category == 'Consoles' ) {
-                    //     //30% discount for consoles
-                    //     purchaseMultiplier = 70
-                    // } else {
+                    var purchaseMultiplier
+                    if ( data.category == 'Consoles' ) {
+                        //30% discount for consoles
+                        purchaseMultiplier = 70
+                    } else {
 
-                    //     //45% discount for games, headsets, etc
-                    //     purchaseMultiplier = 55
-                    // }
+                        //45% discount for games, headsets, etc
+                        purchaseMultiplier = 55
 
-                    // var basePurchasePrice = roundToNearestCent( baseSellPrice * purchaseMultiplier )
-
-                    // var pricingDict = {
-                    //     'purchasePrices' : {
-                    //         'new' : roundToNearestCent( response['new-price'] * purchaseMultiplier / 100 ),
-                    //         'usedExcellent' : basePurchasePrice,
-                    //         'usedGood' : roundToNearestCent( basePurchasePrice * 95 ),
-                    //         'usedAcceptable' : roundToNearestCent( basePurchasePrice * 90 ),
-                    //         'loose' : roundToNearestCent(response['loose-price'] * purchaseMultiplier / 100 ),
-                    //     },
-
-                    //     'salePrices' : {
-                    //         'new' : roundToNearestCent(response['new-price'] ),
-                    //         'usedExcellent' : baseSellPrice,
-                    //         'usedGood' : roundToNearestCent( baseSellPrice * 95 ),
-                    //         'usedAcceptable' : roundToNearestCent( baseSellPrice * 90 ),
-                    //         'loose' : roundToNearestCent(response['loose-price'] ),
-                    //     }
-                    // }
-                    // database.collection('catalog').doc(GTIN).update(pricingDict)
-
-                    if(data.category == 'Games') {
+                        var basePurchasePrice = roundToNearestCent( baseSellPrice * purchaseMultiplier )
 
                         var pricingDict = {
                             'purchasePrices' : {
-                                'new' : response['retail-new-buy'],
-                                'usedExcellent' : response['retail-cib-buy'],
-                                'usedGood' : 0,
-                                'usedAcceptable' : 0,
-                                'loose' : response['retail-loose-buy'],
+                                'new' : roundToNearestCent( response['new-price'] * purchaseMultiplier / 100 ),
+                                'usedExcellent' : basePurchasePrice,
+                                'usedGood' : roundToNearestCent( basePurchasePrice * 95 ),
+                                'usedAcceptable' : roundToNearestCent( basePurchasePrice * 90 ),
+                                'loose' : roundToNearestCent(response['loose-price'] * purchaseMultiplier / 100 ),
                             },
-
+    
                             'salePrices' : {
-                                'new' : response['retail-new-sell'],
-                                'usedExcellent' : response['retail-cib-sell'],
-                                'usedGood' : 0,
-                                'usedAcceptable' : 0,
-                                'loose' : response['retail-loose-sell'],
+                                'new' : roundToNearestCent(response['new-price'] ),
+                                'usedExcellent' : baseSellPrice,
+                                'usedGood' : roundToNearestCent( baseSellPrice * 95 ),
+                                'usedAcceptable' : roundToNearestCent( baseSellPrice * 90 ),
+                                'loose' : roundToNearestCent(response['loose-price'] ),
                             }
                         }
-
                         database.collection('catalog').doc(GTIN).update(pricingDict)
                     }
+
+
                 }
             }
             xhttp.open("GET", priceChartingURL, true);
