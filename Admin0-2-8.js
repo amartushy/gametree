@@ -1,5 +1,3 @@
-
-   
 //HTML Elements
 
 //Global Variables
@@ -124,7 +122,7 @@ updateSalePrices.addEventListener('click', () => {
                         var retailLooseBuy = response['retail-cib-buy']
 
                         if( retailNewBuy == null) {
-                            pricingDict.purchasePrices['new'] = roundToNearestCent( response['new-price'] * purchaseMultiplier / 100 ),
+                            pricingDict.purchasePrices['new'] = roundToNearestCent( response['new-price'] * purchaseMultiplier / 100 )
                         } else {
                             pricingDict.purchasePrices['new'] = retailNewBuy
                         }
@@ -136,7 +134,7 @@ updateSalePrices.addEventListener('click', () => {
                         }
 
                         if( retailLooseBuy == null) {
-                            pricingDict.purchasePrices['loose'] = roundToNearestCent(response['loose-price'] * purchaseMultiplier / 100 ),
+                            pricingDict.purchasePrices['loose'] = roundToNearestCent(response['loose-price'] * purchaseMultiplier / 100 )
                         } else {
                             pricingDict.purchasePrices['loose'] = retailLooseBuy
                         }
