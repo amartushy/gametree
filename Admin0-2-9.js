@@ -117,9 +117,9 @@ updateSalePrices.addEventListener('click', () => {
                             'salePrices' : {}
                         }
 
-                        var retailNewBuy = response['retail-new-buy']
-                        var retailCIBBuy = response['retail-cib-buy']
-                        var retailLooseBuy = response['retail-cib-buy']
+                        var retailNewBuy = response['retail-new-buy'] / 100
+                        var retailCIBBuy = response['retail-cib-buy'] / 100
+                        var retailLooseBuy = response['retail-cib-buy'] / 100
 
                         if( retailNewBuy == null) {
                             pricingDict.purchasePrices['new'] = roundToNearestCent( response['new-price'] * purchaseMultiplier / 100 )
@@ -140,9 +140,9 @@ updateSalePrices.addEventListener('click', () => {
                         }
 
 
-                        var retailNewSell = response['retail-new-sell']
-                        var retailCIBSell = response['retail-cib-sell']
-                        var retailLooseSell = response['retail-loose-sell']
+                        var retailNewSell = response['retail-new-sell'] / 100
+                        var retailCIBSell = response['retail-cib-sell'] / 100
+                        var retailLooseSell = response['retail-loose-sell'] / 100
 
                         if( retailNewSell == null) {
                             pricingDict.salePrices['new'] = response['new-price']
